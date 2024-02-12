@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
   <persistence-unit name="default">
+      <class>Tabulky.BNahradnyDiel</class>
+      <class>Tabulky.BObjednavka</class>
+      <class>Tabulky.BPolozkaObjednavky</class>
+      <class>Tabulky.BPorucha</class>
+      <class>Tabulky.BStroj</class>
+      <class>Tabulky.BTypStroja</class>
+      <class>Tabulky.BUdrzbaPoruchy</class>
+      <class>Tabulky.BUdrzbaPoruchyNahradnyDiel</class>
+      <class>Tabulky.BZamestnanec</class>
 
+      <properties>
+          <property name="hibernate.connection.url" value="jdbc:oracle:thin:@obelix.fri.uniza.sk:1521:orcl"/>
+          <property name="hibernate.connection.driver_class" value="oracle.jdbc.OracleDriver"/>
+          <property name="hibernate.connection.username" value="stachera"/>
+          <property name="hibernate.connection.password" value="namestovo7134"/>
+          <property name="hibernate.show_sql" value="true"/>
+          <property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/>
+      </properties>
   </persistence-unit>
 </persistence>

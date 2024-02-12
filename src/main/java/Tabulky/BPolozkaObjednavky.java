@@ -4,18 +4,17 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@javax.persistence.Table(name = "B_POLOZKA_OBJEDNAVKY", schema = "STACHERA", catalog = "")
+@javax.persistence.Table(name = "B_POLOZKA_OBJEDNAVKY", schema = "STACHERA")
 @IdClass(Tabulky.BPolozkaObjednavkyPK.class)
 public class BPolozkaObjednavky {
-    @Basic
     @javax.persistence.Column(name = "CENA", nullable = false, precision = 2)
-    private int cena;
+    private double cena;
 
-    public int getCena() {
+    public double getCena() {
         return cena;
     }
 
-    public void setCena(int cena) {
+    public void setCena(double cena) {
         this.cena = cena;
     }
 
@@ -31,7 +30,6 @@ public class BPolozkaObjednavky {
         this.mnozstvo = mnozstvo;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "CISLO_OBJEDNAVKY", nullable = false, precision = 0)
     private BigInteger cisloObjednavky;
@@ -44,7 +42,6 @@ public class BPolozkaObjednavky {
         this.cisloObjednavky = cisloObjednavky;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "CISLO_ND", nullable = false, precision = 0)
     private BigInteger cisloNd;
@@ -75,10 +72,10 @@ public class BPolozkaObjednavky {
 
     @Override
     public int hashCode() {
-        int result = cena;
+        double result = cena;
         result = 31 * result + (mnozstvo != null ? mnozstvo.hashCode() : 0);
         result = 31 * result + (cisloObjednavky != null ? cisloObjednavky.hashCode() : 0);
         result = 31 * result + (cisloNd != null ? cisloNd.hashCode() : 0);
-        return result;
+        return (int) result;
     }
 }

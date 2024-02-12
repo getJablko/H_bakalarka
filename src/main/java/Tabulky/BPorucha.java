@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@javax.persistence.Table(name = "B_PORUCHA", schema = "STACHERA", catalog = "")
+@javax.persistence.Table(name = "B_PORUCHA", schema = "STACHERA")
 public class BPorucha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

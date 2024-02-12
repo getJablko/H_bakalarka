@@ -1,11 +1,13 @@
 
-package GUI;
+package GUI.Menu;
+
+import GUI.GUIInterface;
 
 /**
  *
  * @author Mario
  */
-public class HlavneMenuGUI extends javax.swing.JFrame {
+public class HlavneMenuGUI extends javax.swing.JFrame implements GUIInterface {
 
     /**
      * Creates new form HlavneMenu
@@ -37,6 +39,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HlavneMenuGUI");
+        setResizable(false);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel1.setLayout(null);

@@ -10,15 +10,15 @@ import java.math.BigInteger;
 public class BUdrzbaPoruchyNahradnyDielPK implements Serializable {
     @Column(name = "ID_PORUCHY", nullable = false, precision = 0)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private BigInteger idPoruchy;
     @Column(name = "OS_CISLO_OPRAVY", nullable = false, precision = 0)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private BigInteger osCisloOpravy;
     @Column(name = "CISLO_ND", nullable = false, precision = 0)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private BigInteger cisloNd;
 
     public BigInteger getIdPoruchy() {

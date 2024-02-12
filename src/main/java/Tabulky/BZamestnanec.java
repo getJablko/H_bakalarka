@@ -4,10 +4,12 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "B_ZAMESTNANEC", schema = "STACHERA", catalog = "")
+@Table(name = "B_ZAMESTNANEC", schema = "STACHERA")
 public class BZamestnanec {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "b_zamestnanec_oc")
+    @SequenceGenerator(name = "b_zamestnanec_oc", sequenceName = "b_zamestnanec_oc", allocationSize = 1)
     @Column(name = "OS_CISLO", nullable = false, precision = 0)
     private BigInteger osCislo;
     @Basic

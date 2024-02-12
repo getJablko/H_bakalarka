@@ -2,9 +2,10 @@ package Tabulky;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.Objects;
 
 @Entity
-@javax.persistence.Table(name = "B_UDRZBA_PORUCHY", schema = "STACHERA", catalog = "")
+@javax.persistence.Table(name = "B_UDRZBA_PORUCHY", schema = "STACHERA")
 @IdClass(Tabulky.BUdrzbaPoruchyPK.class)
 public class BUdrzbaPoruchy {
     @Basic
@@ -21,13 +22,13 @@ public class BUdrzbaPoruchy {
 
     @Basic
     @javax.persistence.Column(name = "DOBA_OPRAVY", nullable = true, precision = 0)
-    private BigInteger dobaOpravy;
+    private double dobaOpravy;
 
-    public BigInteger getDobaOpravy() {
+    public double getDobaOpravy() {
         return dobaOpravy;
     }
 
-    public void setDobaOpravy(BigInteger dobaOpravy) {
+    public void setDobaOpravy(double dobaOpravy) {
         this.dobaOpravy = dobaOpravy;
     }
 
@@ -55,7 +56,6 @@ public class BUdrzbaPoruchy {
         this.pricinaPoruchy = pricinaPoruchy;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID_PORUCHY", nullable = false, precision = 0)
     private BigInteger idPoruchy;
@@ -68,7 +68,6 @@ public class BUdrzbaPoruchy {
         this.idPoruchy = idPoruchy;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "OS_CISLO_OPRAVY", nullable = false, precision = 0)
     private BigInteger osCisloOpravy;
@@ -90,7 +89,7 @@ public class BUdrzbaPoruchy {
 
         if (prebratiePoruchy != null ? !prebratiePoruchy.equals(that.prebratiePoruchy) : that.prebratiePoruchy != null)
             return false;
-        if (dobaOpravy != null ? !dobaOpravy.equals(that.dobaOpravy) : that.dobaOpravy != null) return false;
+        if (!Objects.equals(dobaOpravy, that.dobaOpravy)) return false;
         if (popisUdrzby != null ? !popisUdrzby.equals(that.popisUdrzby) : that.popisUdrzby != null) return false;
         if (pricinaPoruchy != null ? !pricinaPoruchy.equals(that.pricinaPoruchy) : that.pricinaPoruchy != null)
             return false;
@@ -104,7 +103,9 @@ public class BUdrzbaPoruchy {
     @Override
     public int hashCode() {
         int result = prebratiePoruchy != null ? prebratiePoruchy.hashCode() : 0;
-        result = 31 * result + (dobaOpravy != null ? dobaOpravy.hashCode() : 0);
+        long temp;
+        temp = Double.doubleToLongBits(dobaOpravy);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (popisUdrzby != null ? popisUdrzby.hashCode() : 0);
         result = 31 * result + (pricinaPoruchy != null ? pricinaPoruchy.hashCode() : 0);
         result = 31 * result + (idPoruchy != null ? idPoruchy.hashCode() : 0);

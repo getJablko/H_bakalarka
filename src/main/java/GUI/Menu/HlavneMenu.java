@@ -1,5 +1,5 @@
 
-package GUI;
+package GUI.Menu;
 
 
 public class HlavneMenu {

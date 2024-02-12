@@ -4,18 +4,18 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "B_UDRZBA_PORUCHY_NAHRADNY_DIEL", schema = "STACHERA", catalog = "")
+@Table(name = "B_UDRZBA_PORUCHY_NAHRADNY_DIEL", schema = "STACHERA")
 @IdClass(BUdrzbaPoruchyNahradnyDielPK.class)
 public class BUdrzbaPoruchyNahradnyDiel {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "ID_PORUCHY", nullable = false, precision = 0)
     private BigInteger idPoruchy;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "OS_CISLO_OPRAVY", nullable = false, precision = 0)
     private BigInteger osCisloOpravy;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "CISLO_ND", nullable = false, precision = 0)
     private BigInteger cisloNd;

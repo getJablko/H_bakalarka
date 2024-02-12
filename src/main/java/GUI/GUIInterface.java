@@ -1,2 +1,4 @@
-package GUI;public interface GUIInterface {
+package GUI;
+
+public interface GUIInterface {
 }

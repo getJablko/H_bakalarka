@@ -3,7 +3,7 @@ package Tabulky;
 import javax.persistence.*;
 
 @Entity
-@javax.persistence.Table(name = "B_TYP_STROJA", schema = "STACHERA", catalog = "")
+@javax.persistence.Table(name = "B_TYP_STROJA", schema = "STACHERA")
 public class BTypStroja {
     @Basic
     @javax.persistence.Column(name = "PRIORITA_D", nullable = false, length = 1)
@@ -17,7 +17,6 @@ public class BTypStroja {
         this.prioritaD = prioritaD;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "TYP_STROJA", nullable = false, length = 20)
     private String typStroja;

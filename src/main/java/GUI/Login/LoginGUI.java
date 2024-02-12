@@ -1,20 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package GUI.Login;
+
+import GUI.GUIInterface;
+import GUI.GUIManager;
+import GUI.Menu.HlavneMenuGUI;
+import Sifrovanie.PasswordUtils;
+import org.hibernate.Transaction;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.swing.*;
 
 /**
  *
  * @author Mario
  */
-public class Login extends javax.swing.JFrame {
+
+public class LoginGUI extends javax.swing.JFrame implements GUIInterface {
+    //public static boolean prihlasenie = false;
 
     /**
      * Creates new form Login
      */
-    public Login() {
+    //private EntityManagerFactory ef;
+    //private EntityManager e;
+    //private EntityTransaction t;
+    private GUIManager guiManager;
+
+    //EntityManagerFactory ef, EntityManager e, EntityTransaction t
+    public LoginGUI(GUIManager guiManager) {
+        //this.ef=ef;
+        //this.e=e;
+        //this.t=t;
         initComponents();
+        this.guiManager = guiManager;
     }
 
     /**
@@ -83,6 +103,10 @@ public class Login extends javax.swing.JFrame {
         jButtonZabudnute.setBackground(new java.awt.Color(255, 255, 254));
         jButtonZabudnute.setText("Zabudnuté prihlasovacie údaje?");
         jButtonZabudnute.setBorder(null);
+
+        jButtonZabudnute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {jButtonZabudnuteActionPerformed(evt);}
+        });
 
         javax.swing.GroupLayout LeftLayout = new javax.swing.GroupLayout(Left);
         Left.setLayout(LeftLayout);
@@ -176,12 +200,63 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
+
     private void jButtonPrihlasenieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrihlasenieActionPerformed
         // TODO add your handling code here:
+        // Získajte hodnoty zo vstupných polí
+        try {
+            String osobneCisloText = jTextField1.getText().trim(); // Trim to remove leading/trailing whitespaces
+            if (osobneCisloText.isEmpty()) {
+                throw new NumberFormatException();  // Throw exception for empty input
+            }
+        int osobneCislo = Integer.parseInt(jTextField1.getText());
+        String zadaneHeslo = new String(jPasswordField1.getPassword());
+
+        if (osobneCislo <= 0 || zadaneHeslo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            // Príklad výpisu hodnôt pre overenie
+            //System.out.println("Osobné číslo: " + osobneCislo);
+            //System.out.println("Heslo: " + zadaneHeslo);
+
+            PasswordUtils pu = new PasswordUtils();
+            String dobreHeslo = pu.vratHesloVseobecne(osobneCislo);
+            //String dobreHeslo = pu.vratHeslo(osobneCislo,ef,e,t);
+            if (PasswordUtils.checkPassword(zadaneHeslo, dobreHeslo)) {
+
+                //TODO
+                //prihlasenie=true;
+                /*
+                this.dispose();
+
+                HlavneMenuGUI hlavneMenu = new HlavneMenuGUI();
+                hlavneMenu.pack();
+                hlavneMenu.setLocationRelativeTo(null);
+                hlavneMenu.setVisible(true);
+                */
+
+                guiManager.zobrazHlavneMunu();
+
+
+            } else {
+                // Nespravne prihlasovacie udaje
+                JOptionPane.showMessageDialog(this, "Zadali ste nesprávne prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_jButtonPrihlasenieActionPerformed
 
-    
-    
+    private void jButtonZabudnuteActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Kontaktujte svojho nadriadeného, pre resetovanie prihlasovacích údajov!", "Zabudnuté prihlasovacie údaje", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Left;
