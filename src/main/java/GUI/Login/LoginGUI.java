@@ -1,15 +1,9 @@
 
 package GUI.Login;
 
-import GUI.GUIInterface;
 import GUI.GUIManager;
-import GUI.Menu.HlavneMenuGUI;
 import Sifrovanie.PasswordUtils;
-import org.hibernate.Transaction;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.swing.*;
 
 /**
@@ -17,7 +11,7 @@ import javax.swing.*;
  * @author Mario
  */
 
-public class LoginGUI extends javax.swing.JFrame implements GUIInterface {
+public class LoginGUI extends javax.swing.JFrame {
     //public static boolean prihlasenie = false;
 
     /**

@@ -1,13 +1,11 @@
 
 package GUI.Menu;
 
-import GUI.GUIInterface;
-
 /**
  *
  * @author Mario
  */
-public class HlavneMenuGUI extends javax.swing.JFrame implements GUIInterface {
+public class HlavneMenuGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form HlavneMenu

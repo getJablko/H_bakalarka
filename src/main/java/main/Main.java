@@ -1,17 +1,11 @@
 package main;
 
 import GUI.GUIManager;
-import GUI.Login.Login;
-import GUI.Login.LoginGUI;
-import GUI.Menu.HlavneMenuGUI;
-import Sifrovanie.PasswordUtils;
-import Tabulky.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.math.BigInteger;
 
 //import static GUI.Login.LoginGUI.prihlasenie;
 
@@ -155,24 +149,16 @@ public class Main {
 
 
 */
-/*            PasswordUtils passwordUtils = new PasswordUtils();
+
+
+/*          PasswordUtils passwordUtils = new PasswordUtils();
             passwordUtils.vratHeslo(27,entityManager,transaction);
 */
-            //Login login = new Login(entityManagerFactory,entityManager,transaction);
 
-            //Login login = new Login();
 
             GUIManager guiManager = new GUIManager();
             guiManager.zobrazLogin();
 
-
-
-            //if (prihlasenie) {
-            //    HlavneMenuGUI hlavneMenu = new HlavneMenuGUI();
-            //    hlavneMenu.pack();
-            //    hlavneMenu.setLocationRelativeTo(null);
-            //    hlavneMenu.setVisible(true);
-            //}
 
 
             transaction.commit();
