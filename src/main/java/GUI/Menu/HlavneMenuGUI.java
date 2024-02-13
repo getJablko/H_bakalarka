@@ -3,8 +3,6 @@ package GUI.Menu;
 
 import GUI.GUIManager;
 
-import javax.swing.*;
-
 /**
  *
  * @author Mario
@@ -69,7 +67,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jButton1.setBorder(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton1_UDRZBA_PORUCHY_ActionPerformed(evt);
             }
         });
 
@@ -80,7 +78,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jButton3.setBorder(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButton3_STROJE_ActionPerformed(evt);
             }
         });
 
@@ -91,7 +89,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jButton5.setBorder(null);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jButton5_ZAMESTNANCI_ActionPerformed(evt);
             }
         });
 
@@ -102,7 +100,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jButton6.setBorder(null);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                jButton6_OBJEDNAVKY_ActionPerformed(evt);
             }
         });
 
@@ -113,7 +111,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton2_NAHLASENIE_PORUCHY_ActionPerformed(evt);
             }
         });
 
@@ -202,27 +200,27 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here: - UDRZBA PORUCHY
+    private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here: - NAHLASENIE PORUCHY
-
-    }
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here: - STROJE
+    private void jButton2_NAHLASENIE_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
 
     }
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here: - OBJEDNAVKY
+    private void jButton3_STROJE_ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
 
     }
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here: - ZAMESTNANCI
+    private void jButton6_OBJEDNAVKY_ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+
+    }
+
+    private void jButton5_ZAMESTNANCI_ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
         guiManager.zobrazTabulkuZam();
     }
 

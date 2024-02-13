@@ -160,7 +160,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jButton1.setText("INSERT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton1_INSERT_ActionPerformed(evt);
             }
         });
 
@@ -176,7 +176,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jButton4.setText("H");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton4_HOME_ActionPerformed(evt);
             }
         });
 
@@ -291,8 +291,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here: - INSERT
+    private void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
       
         String meno = jTextField1.getText();
         String priezvisko = jTextField2.getText();
@@ -343,8 +343,9 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

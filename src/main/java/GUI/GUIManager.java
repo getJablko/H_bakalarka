@@ -31,6 +31,17 @@ public class GUIManager {
         hlavneMenuGUI.setVisible(true);
     }
 
+    public void zviditelniHlavneMenu(){
+
+        if(zamestnanciGUI.isVisible()){
+            zamestnanciGUI.dispose();
+        }
+
+        if(!hlavneMenuGUI.isVisible()){
+            hlavneMenuGUI.setVisible(true);
+        }
+    }
+
     public void zobrazTabulkuZam(){
         if(hlavneMenuGUI.isVisible()){
             hlavneMenuGUI.setVisible(false);
