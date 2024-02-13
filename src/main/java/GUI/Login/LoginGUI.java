@@ -17,16 +17,10 @@ public class LoginGUI extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    //private EntityManagerFactory ef;
-    //private EntityManager e;
-    //private EntityTransaction t;
+
     private GUIManager guiManager;
 
-    //EntityManagerFactory ef, EntityManager e, EntityTransaction t
     public LoginGUI(GUIManager guiManager) {
-        //this.ef=ef;
-        //this.e=e;
-        //this.t=t;
         initComponents();
         this.guiManager = guiManager;
     }
@@ -216,22 +210,10 @@ public class LoginGUI extends javax.swing.JFrame {
 
             PasswordUtils pu = new PasswordUtils();
             String dobreHeslo = pu.vratHesloVseobecne(osobneCislo);
-            //String dobreHeslo = pu.vratHeslo(osobneCislo,ef,e,t);
+
             if (PasswordUtils.checkPassword(zadaneHeslo, dobreHeslo)) {
 
-                //TODO
-                //prihlasenie=true;
-                /*
-                this.dispose();
-
-                HlavneMenuGUI hlavneMenu = new HlavneMenuGUI();
-                hlavneMenu.pack();
-                hlavneMenu.setLocationRelativeTo(null);
-                hlavneMenu.setVisible(true);
-                */
-
-                guiManager.zobrazHlavneMunu();
-
+                guiManager.zobrazHlavneMenu();
 
             } else {
                 // Nespravne prihlasovacie udaje
@@ -249,7 +231,6 @@ public class LoginGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(this, "Kontaktujte svojho nadriadeného, pre resetovanie prihlasovacích údajov!", "Zabudnuté prihlasovacie údaje", JOptionPane.INFORMATION_MESSAGE);
     }
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
