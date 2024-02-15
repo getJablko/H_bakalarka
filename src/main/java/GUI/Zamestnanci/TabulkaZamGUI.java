@@ -327,7 +327,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             ex.printStackTrace();
         } finally {
             //TODO
-            // Close EntityManager and EntityManagerFactory - nevykonam - otazka? POUZITIE DVOCH ENTITYMANAGEROV???
+            // Close EntityManager and EntityManagerFactory - nezatvaram lebo by to nefungovalo opakovane
             //entityManager.close();
             //entityManagerFactory.close();
         }
@@ -393,9 +393,9 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
-                // TODO zatvorenie entityManagera ??? - co ak chcem pridat 2 a viac zamestnancov???
-                entityManager.close();
-                entityManagerFactory.close();
+                // TODO zatvorenie entityManagera - nezatvaram lebo mozem pridat aj viac zamestnancov
+                //entityManager.close();
+                //entityManagerFactory.close();
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -420,6 +420,10 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jComboBox1.setSelectedItem(" ");
         jComboBox2.setSelectedItem(" ");
         jComboBox3.setSelectedItem(" ");
+
+        // TODO zatvorenie manazera + factory
+        entityManager.close();
+        entityManagerFactory.close();
 
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButton4ActionPerformed
