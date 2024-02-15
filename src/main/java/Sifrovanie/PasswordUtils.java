@@ -52,7 +52,7 @@ public class PasswordUtils extends Component {
         return string;
     }
 
-    public String vratHesloVseobecne(int id) {
+    public static String vratHesloVseobecne(int id) {
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -66,7 +66,7 @@ public class PasswordUtils extends Component {
             string = existujuciZamestnanec.getPassword();
         } else {
             // Ak zamestnanec s os_cislom neexistuje
-            JOptionPane.showMessageDialog(this, "Zamestnanec s os_cislom " + id + " neexistuje.", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Zamestnanec s os_cislom " + id + " neexistuje.", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
             //System.out.println("Zamestnanec s os_cislom " + id + " neexistuje.");
         }
         transaction.commit();

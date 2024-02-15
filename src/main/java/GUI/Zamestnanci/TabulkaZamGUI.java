@@ -9,12 +9,12 @@ import GUI.GUIManager;
 import Sifrovanie.PasswordUtils;
 import Tabulky.BZamestnanec;
 
-import javax.swing.JOptionPane;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseEvent;
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
@@ -33,6 +33,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     public TabulkaZamGUI(GUIManager guiManager) {
         initComponents();
         this.guiManager = guiManager;
+        // na zaciatku zobrazi hodnoty z tabulky
+        displayDataInTable();
     }
 
     /**
@@ -71,11 +73,9 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
+                // reprezentuje uvodne riadky - momentalne po spusteni nie su ziadne prazdne riadky navyse
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "os_cislo", "meno", "priezvisko", "dostupnost_zam", "pracovisko_d", "typ_zam_d", "password"
@@ -96,6 +96,13 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClick_ActionPerformed(evt);
+            }
+        });
+
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 153));
@@ -105,7 +112,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                jTextField2_PRIEZVISKO_ActionPerformed(evt);
             }
         });
 
@@ -114,7 +121,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextField1_MENO_ActionPerformed(evt);
             }
         });
 
@@ -133,27 +140,27 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jLabel4.setText("dostupnost_zam*:");
 
         jComboBox1.setBackground(new java.awt.Color(254, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ","0", "1" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jComboBox1_DOSTUPNOST_ActionPerformed(evt);
             }
         });
 
         jLabel5.setText("pracovisko_d*:");
 
         jComboBox2.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ","HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                jComboBox2_PRACOVISKO_ActionPerformed(evt);
             }
         });
 
         jLabel6.setText("typ_zam_d*:");
 
         jComboBox3.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "E", "V", "M", "S", "I" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {" ","E", "V", "M", "S", "I" }));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 254));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -283,16 +290,59 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    // metoda na zobraznie udajov v tabulke jTable1 z databazovej tabulky BZamestnanec
+    private void displayDataInTable() {
+        try {
+            // Begin a transaction
+            transaction.begin();
+
+            // Retrieve data from the database
+            // nejedna sa o typicky SQL statement (nepouzivam SELECT * FROM BZamestnanec), toto je pouzitie JPQL - rozumie tomu framework hibernate
+            TypedQuery<BZamestnanec> query = entityManager.createQuery("SELECT b FROM BZamestnanec b", BZamestnanec.class);
+            // List zamestnancov - preto lebo ma vela metod,dynamicku velkost,dobre sa pracje s insert/delete
+            List<BZamestnanec> employees = query.getResultList();
+
+            // nahra udaje priamo do tabulky jTable1
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (BZamestnanec employee : employees) {
+                Object[] row = {
+                        employee.getOsCislo(),
+                        employee.getMeno(),
+                        employee.getPriezvisko(),
+                        employee.getDostupnostZam(),
+                        employee.getPracoviskoD(),
+                        employee.getTypZamD(),
+                        employee.getPassword()
+                };
+                model.addRow(row);
+            }
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception ex) {
+            // Handle exceptions
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            //TODO
+            // Close EntityManager and EntityManagerFactory - nevykonam - otazka? POUZITIE DVOCH ENTITYMANAGEROV???
+            //entityManager.close();
+            //entityManagerFactory.close();
+        }
+    }
+
+    private void jTextField1_MENO_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jComboBox2_PRACOVISKO_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // nacitam si vypisane udaje
       
         String meno = jTextField1.getText();
         String priezvisko = jTextField2.getText();
@@ -300,15 +350,18 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         String dostupnost = (String) jComboBox1.getSelectedItem();
         String pracovisko = (String) jComboBox2.getSelectedItem();
         String typZam = (String) jComboBox3.getSelectedItem();
-        
+
+        // overenie vypisania udajov
         if (meno.equals("") || priezvisko.equals("") || heslo.equals("") ||
-                dostupnost.equals("") || pracovisko.equals("") || typZam.equals("")) {
+                dostupnost.equals(" ") || pracovisko.equals(" ") || typZam.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+
         } else {
 
             try {
                 transaction.begin();
 
+                // vytvorenie noveho zamestnanca s vypisanymi udajmi
                 BZamestnanec novyZamestnanec = new BZamestnanec();
                 novyZamestnanec.setPriezvisko(priezvisko);
                 novyZamestnanec.setMeno(meno);
@@ -318,20 +371,36 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 novyZamestnanec.setTypZamD(typZam);
 
                 entityManager.persist(novyZamestnanec);
-
                 transaction.commit();
+                JOptionPane.showMessageDialog(null, "Nový zamestnanec bol vlozeny!");
+
+                // vynulujem tabulku
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+
+                // nacitam ju znova
+                displayDataInTable();
+
+                // vynulovanie textovych policok
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jPasswordField1.setText("");
+                jComboBox1.setSelectedItem(" ");
+                jComboBox2.setSelectedItem(" ");
+                jComboBox3.setSelectedItem(" ");
+
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
+                // TODO zatvorenie entityManagera ??? - co ak chcem pridat 2 a viac zamestnancov???
                 entityManager.close();
                 entityManagerFactory.close();
             }
-
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextField2_PRIEZVISKO_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
@@ -339,13 +408,48 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jComboBox1_DOSTUPNOST_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        // vynulovanie textovych policok
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jPasswordField1.setText("");
+        jComboBox1.setSelectedItem(" ");
+        jComboBox2.setSelectedItem(" ");
+        jComboBox3.setSelectedItem(" ");
+
         guiManager.zviditelniHlavneMenu();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        int rowNumber = jTable1.getSelectedRow();
+
+        // pre vratenie hesla
+        BigInteger id = (BigInteger) jTable1.getValueAt(rowNumber,0);
+
+        String meno = (String) jTable1.getValueAt(rowNumber, 1);
+        jTextField1.setText(meno);
+
+        String priezvisko = (String) jTable1.getValueAt(rowNumber,2);
+        jTextField2.setText(priezvisko);
+
+        // TODO - vratenie hesla ??? je to nutne?
+        //String heslo = (String) PasswordUtils.vratHesloVseobecne(id.intValueExact());
+        //jPasswordField1.setText(heslo);
+
+        BigInteger dostupnost = (BigInteger) jTable1.getValueAt(rowNumber,3);
+        jComboBox1.setSelectedItem(dostupnost.toString());
+
+        String pracovisko = (String) jTable1.getValueAt(rowNumber,4);
+        jComboBox2.setSelectedItem(pracovisko);
+
+        String typZam = (String) jTable1.getValueAt(rowNumber,5);
+        jComboBox3.setSelectedItem(typZam);
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

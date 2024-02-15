@@ -157,8 +157,8 @@ public class Main {
 
 
             GUIManager guiManager = new GUIManager();
-            guiManager.zobrazLogin();
-            //guiManager.zobrazHlavneMenu();
+            //guiManager.zobrazLogin();
+            guiManager.zobrazHlavneMenu();
 
 
             transaction.commit();
