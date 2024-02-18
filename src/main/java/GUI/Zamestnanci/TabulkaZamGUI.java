@@ -25,14 +25,18 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
+
+
     private GUIManager guiManager;
 
     /**
      * Creates new form tabulkaZamGUI
      */
     public TabulkaZamGUI(GUIManager guiManager) {
+
         initComponents();
         this.guiManager = guiManager;
+
         // na zaciatku zobrazi hodnoty z tabulky
         displayDataInTable();
     }
@@ -110,30 +114,18 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jLabel2.setText("meno*:");
 
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2_PRIEZVISKO_ActionPerformed(evt);
-            }
-        });
+
 
         jLabel3.setText("priezvisko*:");
 
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1_MENO_ActionPerformed(evt);
-            }
-        });
+
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("ZAMESTNANCI");
 
         jPasswordField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
+
 
         jLabel7.setText("heslo*:");
 
@@ -141,21 +133,13 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
         jComboBox1.setBackground(new java.awt.Color(254, 255, 255));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ","0", "1" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1_DOSTUPNOST_ActionPerformed(evt);
-            }
-        });
+
 
         jLabel5.setText("pracovisko_d*:");
 
         jComboBox2.setBackground(new java.awt.Color(255, 255, 254));
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ","HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2_PRACOVISKO_ActionPerformed(evt);
-            }
-        });
+
 
         jLabel6.setText("typ_zam_d*:");
 
@@ -174,10 +158,22 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(255, 255, 254));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setText("UPDATE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2_UPDATE_ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(255, 255, 254));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton3.setText("DELETE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2_DELETE_ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(255, 255, 254));
         jButton4.setText("H");
@@ -299,7 +295,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             // Retrieve data from the database
             // nejedna sa o typicky SQL statement (nepouzivam SELECT * FROM BZamestnanec), toto je pouzitie JPQL - rozumie tomu framework hibernate
             TypedQuery<BZamestnanec> query = entityManager.createQuery("SELECT b FROM BZamestnanec b", BZamestnanec.class);
-            // List zamestnancov - preto lebo ma vela metod,dynamicku velkost,dobre sa pracje s insert/delete
+            // List zamestnancov - preto lebo ma vela metod,dynamicku velkost,dobre sa pracuje s insert/delete
             List<BZamestnanec> employees = query.getResultList();
 
             // nahra udaje priamo do tabulky jTable1
@@ -316,34 +312,35 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 };
                 model.addRow(row);
             }
-
             // Commit the transaction
             transaction.commit();
-        } catch (Exception ex) {
-            // Handle exceptions
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            ex.printStackTrace();
-        } finally {
-            //TODO
-            // Close EntityManager and EntityManagerFactory - nezatvaram lebo by to nefungovalo opakovane
-            //entityManager.close();
-            //entityManagerFactory.close();
         }
     }
 
-    private void jTextField1_MENO_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
 
-    private void jComboBox2_PRACOVISKO_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        // nacitam ju znova
+        displayDataInTable();
+
+        // vynulovanie textovych policok
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jPasswordField1.setText("");
+        jComboBox1.setSelectedItem(" ");
+        jComboBox2.setSelectedItem(" ");
+        jComboBox3.setSelectedItem(" ");
+    }
 
     private void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // nacitam si vypisane udaje
-      
         String meno = jTextField1.getText();
         String priezvisko = jTextField2.getText();
         String heslo = new String(jPasswordField1.getPassword());
@@ -357,7 +354,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
 
         } else {
-
             try {
                 transaction.begin();
 
@@ -374,43 +370,69 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Nový zamestnanec bol vlozeny!");
 
-                // vynulujem tabulku
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.setRowCount(0);
+                refreshTable();
 
-                // nacitam ju znova
-                displayDataInTable();
-
-                // vynulovanie textovych policok
-                jTextField1.setText("");
-                jTextField2.setText("");
-                jPasswordField1.setText("");
-                jComboBox1.setSelectedItem(" ");
-                jComboBox2.setSelectedItem(" ");
-                jComboBox3.setSelectedItem(" ");
-
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
-                // TODO zatvorenie entityManagera - nezatvaram lebo mozem pridat aj viac zamestnancov
-                //entityManager.close();
-                //entityManagerFactory.close();
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField2_PRIEZVISKO_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    private void jButton2_UPDATE_ActionPerformed(java.awt.event.ActionEvent evt){
+        // nacitam si vstupne udaje
+        String meno = jTextField1.getText();
+        String priezvisko = jTextField2.getText();
+        String heslo = new String(jPasswordField1.getPassword());
+        String dostupnost = (String) jComboBox1.getSelectedItem();
+        String pracovisko = (String) jComboBox2.getSelectedItem();
+        String typZam = (String) jComboBox3.getSelectedItem();
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+        // overenie vypisania udajov
+        if (meno.equals("") || priezvisko.equals("") || heslo.equals("") ||
+                dostupnost.equals(" ") || pracovisko.equals(" ") || typZam.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosim vyberte zamestnanca z tabulky a vypiste potrebne zmeny!");
+        } else {
+            try {
+                transaction.begin();
 
-    private void jComboBox1_DOSTUPNOST_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+                // pre vratenie ID
+                int rowNumber = jTable1.getSelectedRow();
+                BigInteger id = (BigInteger) jTable1.getValueAt(rowNumber, 0);
+
+                // Načítanie záznamu z databázy na základe ID
+                BZamestnanec updateZam = entityManager.find(BZamestnanec.class, id);
+                // vykonanie zmien
+                updateZam.setMeno(meno);
+                updateZam.setPriezvisko(priezvisko);
+                updateZam.setPassword(PasswordUtils.hashPassword(heslo));
+                updateZam.setPracoviskoD(pracovisko);
+                updateZam.setDostupnostZam(BigInteger.valueOf(Long.parseLong(dostupnost)));
+                updateZam.setTypZamD(typZam);
+
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
+
+                refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        }
+    }
+
+    public void jButton2_DELETE_ActionPerformed(java.awt.event.ActionEvent evt){
+        // TODO delete button - je ho treba??
+    }
 
     private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // vynulovanie textovych policok
@@ -421,7 +443,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jComboBox2.setSelectedItem(" ");
         jComboBox3.setSelectedItem(" ");
 
-        // TODO zatvorenie manazera + factory
+        // zatvorenie managerov
         entityManager.close();
         entityManagerFactory.close();
 
@@ -431,7 +453,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
         int rowNumber = jTable1.getSelectedRow();
-
         // pre vratenie hesla
         BigInteger id = (BigInteger) jTable1.getValueAt(rowNumber,0);
 
@@ -443,6 +464,10 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
         // TODO - vratenie hesla ??? je to nutne?
         //String heslo = (String) PasswordUtils.vratHesloVseobecne(id.intValueExact());
+        //jPasswordField1.setText(heslo);
+
+        // hash-ovane heslo
+        //String heslo = (String) jTable1.getValueAt(rowNumber,6);
         //jPasswordField1.setText(heslo);
 
         BigInteger dostupnost = (BigInteger) jTable1.getValueAt(rowNumber,3);
