@@ -13,6 +13,8 @@ import javax.persistence.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -36,6 +38,14 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
         initComponents();
         this.guiManager = guiManager;
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                guiManager.zviditelniHlavneMenu();
+            }
+        });
 
         // na zaciatku zobrazi hodnoty z tabulky
         displayDataInTable();
@@ -339,6 +349,16 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jComboBox3.setSelectedItem(" ");
     }
 
+    private void closeApplication() {
+        // cleanup code:
+        entityManager.close();
+        entityManagerFactory.close();
+
+        // Exit the application
+        //System.out.println("tu som!");
+        //System.exit(0);
+    }
+
     private void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // nacitam si vypisane udaje
         String meno = jTextField1.getText();
@@ -443,10 +463,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jComboBox2.setSelectedItem(" ");
         jComboBox3.setSelectedItem(" ");
 
-        // zatvorenie managerov
-        entityManager.close();
-        entityManagerFactory.close();
-
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -462,7 +478,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         String priezvisko = (String) jTable1.getValueAt(rowNumber,2);
         jTextField2.setText(priezvisko);
 
-        // TODO - vratenie hesla ??? je to nutne?
+        //vratenie hesla ??? je to nutne - NIE JE!!
+
         //String heslo = (String) PasswordUtils.vratHesloVseobecne(id.intValueExact());
         //jPasswordField1.setText(heslo);
 

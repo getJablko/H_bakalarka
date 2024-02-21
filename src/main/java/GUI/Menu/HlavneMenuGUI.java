@@ -210,7 +210,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }
 
     private void jButton3_STROJE_ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        guiManager.zobrazStoje();
 
     }
 
@@ -220,7 +220,6 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }
 
     private void jButton5_ZAMESTNANCI_ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         guiManager.zobrazTabulkuZam();
     }
 

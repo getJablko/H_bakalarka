@@ -2,17 +2,23 @@ package GUI;
 
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
+import GUI.Stroje.StrojeGUI;
+import GUI.Stroje.TypStroja.TypStrojaGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
 
 public class GUIManager {
     private LoginGUI login;
     private HlavneMenuGUI hlavneMenuGUI;
     private TabulkaZamGUI zamestnanciGUI;
+    private StrojeGUI strojeGUI;
+    private TypStrojaGUI typStrojaGUI;
 
     public GUIManager(){
         login = new LoginGUI(this);
         hlavneMenuGUI = new HlavneMenuGUI(this);
         zamestnanciGUI = new TabulkaZamGUI(this);
+        strojeGUI = new StrojeGUI(this);
+        typStrojaGUI = new TypStrojaGUI(this);
     }
 
     public void zobrazLogin(){
@@ -35,6 +41,8 @@ public class GUIManager {
 
         if(zamestnanciGUI.isVisible()){
             zamestnanciGUI.dispose();
+        } else if (strojeGUI.isVisible()) {
+            strojeGUI.dispose();
         }
 
         if(!hlavneMenuGUI.isVisible()){
@@ -47,8 +55,36 @@ public class GUIManager {
             hlavneMenuGUI.setVisible(false);
         }
 
-        zamestnanciGUI.pack();
-        zamestnanciGUI.setLocationRelativeTo(null);
-        zamestnanciGUI.setVisible(true);
+        if (zamestnanciGUI.isActive()){
+            zamestnanciGUI.setVisible(true);
+        } else {
+            zamestnanciGUI.pack();
+            zamestnanciGUI.setLocationRelativeTo(null);
+            zamestnanciGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazStoje(){
+        if(hlavneMenuGUI.isVisible()){
+            hlavneMenuGUI.setVisible(false);
+        }
+        if (strojeGUI.isActive()) {
+            strojeGUI.setVisible(true);
+        } else {
+            strojeGUI.pack();
+            strojeGUI.setLocationRelativeTo(null);
+            strojeGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazTypStroja(){
+        if (typStrojaGUI.isActive()) {
+            typStrojaGUI.setVisible(true);
+        } else {
+            typStrojaGUI.pack();
+            typStrojaGUI.setLocationRelativeTo(null);
+            typStrojaGUI.setAlwaysOnTop(true);
+            typStrojaGUI.setVisible(true);
+        }
     }
 }

@@ -162,6 +162,7 @@ public class Main {
 
 
             transaction.commit();
+
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
