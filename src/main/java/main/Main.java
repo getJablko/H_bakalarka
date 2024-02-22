@@ -7,17 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-//import static GUI.Login.LoginGUI.prihlasenie;
-
 public class Main {
-    /*public static final EntityManagerFactory entityManagerFactory;
 
-    static {
-        // Initialize the EntityManagerFactory at the class initialization
-        entityManagerFactory = Persistence.createEntityManagerFactory("default");
-    }
-
-     */
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         EntityManager entityManager = entityManagerFactory.createEntityManager();

@@ -6,8 +6,12 @@ package GUI.Stroje;
 
 import GUI.GUIManager;
 
+import javax.persistence.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 /**
  *
@@ -15,6 +19,9 @@ import java.awt.event.WindowEvent;
  */
 public class StrojeGUI extends javax.swing.JFrame {
 
+    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    private EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
 
     /**
@@ -30,6 +37,7 @@ public class StrojeGUI extends javax.swing.JFrame {
                 guiManager.zviditelniHlavneMenu();
             }
         });
+        displayDataInTable();
     }
 
     /**
@@ -218,10 +226,7 @@ public class StrojeGUI extends javax.swing.JFrame {
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID_stroja", "typ_stroja", "priorita", "cislo_haly", "zaradenie", "vyradenie", "popis"
@@ -262,9 +267,45 @@ public class StrojeGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // metoda na zobraznie udajov v tabulke jTable1 z databazovej tabulky BZamestnanec
+    private void displayDataInTable() {
+        try {
+            // Begin a transaction
+            transaction.begin();
+
+            // Retrieve data from the database
+            //pouzitie JPQL - rozumie tomu framework hibernate
+            TypedQuery<Object[]> query = entityManager.createQuery(
+                    "SELECT s.idStroja, s.typStroja, s.cisloHaly, s.zaradenie, s.vyradenie, s.popis, t.prioritaD " +
+                            "FROM BStroj s " +
+                            "JOIN BTypStroja t ON s.typStroja = t.typStroja", Object[].class);
+            List<Object[]> results = query.getResultList();
+            // nahra udaje priamo do tabulky jTable1
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (Object[] result : results) {
+                Object[] row = {
+                        result[0],  // idStroja
+                        result[1],  // typStroja
+                        result[6],  // priorita_d
+                        result[2],  // cisloHaly
+                        result[3],  // zaradenie
+                        result[4],  // vyradenie
+                        result[5],  // popis
+                };
+                model.addRow(row);
+            }
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_homeButtonActionPerformed
 
@@ -274,7 +315,7 @@ public class StrojeGUI extends javax.swing.JFrame {
 
     private void jButtonNovyStrojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovyStrojActionPerformed
         guiManager.zobrazTypStroja();
-    }//GEN-LAST:event_jButtonNovyStrojActionPerformed
+    }
 
     private void jTextFieldTypStrojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTypStrojaActionPerformed
         // TODO add your handling code here:

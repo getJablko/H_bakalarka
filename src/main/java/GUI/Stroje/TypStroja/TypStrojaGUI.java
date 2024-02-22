@@ -5,9 +5,16 @@
 package GUI.Stroje.TypStroja;
 
 import GUI.GUIManager;
+import Tabulky.BTypStroja;
 
+import javax.persistence.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
@@ -15,16 +22,26 @@ import java.awt.event.WindowEvent;
  */
 public class TypStrojaGUI extends javax.swing.JFrame {
 
+    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    private EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
 
     /**
      * Creates new form TypStrojaGUI
      */
     public TypStrojaGUI(GUIManager guiManager) {
-        initComponents();
         this.guiManager = guiManager;
-
+        initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();
+                //closeApplication();
+            }
+        });
+        displayDataInTable();
     }
 
     /**
@@ -62,14 +79,10 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         jLabel1.setText("TYP STROJA");
 
         jComboBox1.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1", "2", "3", "4" }));
 
         jTextFieldTypStroja.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jTextFieldTypStroja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldTypStrojaActionPerformed(evt);
-            }
-        });
+
 
         jLabel2.setText("typ stroja*:");
 
@@ -78,6 +91,11 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         jButtonInsert.setBackground(new java.awt.Color(255, 255, 254));
         jButtonInsert.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonInsert.setText("INSERT");
+        jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInsertActionPerformed(evt);
+            }
+        });
 
         jButtonUpdate.setBackground(new java.awt.Color(255, 255, 254));
         jButtonUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -160,10 +178,6 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         jTable1.setBackground(new java.awt.Color(255, 255, 254));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
             },
             new String [] {
                 "typ_stroja", "priorita"
@@ -184,6 +198,12 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClick_ActionPerformed(evt);
+            }
+        });
+
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1);
@@ -192,24 +212,151 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void displayDataInTable() {
+        try {
+            // Begin a transaction
+            transaction.begin();
 
-    private void jTextFieldTypStrojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTypStrojaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldTypStrojaActionPerformed
+            // Retrieve data from the database
+            //pouzitie JPQL - rozumie tomu framework hibernate
+            TypedQuery<Object[]> query = entityManager.createQuery(
+                    "SELECT t.typStroja, t.prioritaD FROM BTypStroja t", Object[].class);
+            List<Object[]> results = query.getResultList();
+            // nahra udaje priamo do tabulky jTable1
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (Object[] result : results) {
+                Object[] row = {
+                        result[0],  // typ stroja
+                        result[1],  // priorita
+                };
+                model.addRow(row);
+            }
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        // nacitam ju znova
+        displayDataInTable();
+
+        // vynulovanie textovych policok
+        jTextFieldTypStroja.setText("");
+        jComboBox1.setSelectedItem(" ");
+    }
+
+    private void closeApplication() {
+        // cleanup code:
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        int rowNumber = jTable1.getSelectedRow();
+
+        String typStroja = (String) jTable1.getValueAt(rowNumber, 0);
+        jTextFieldTypStroja.setText(typStroja);
+
+        String priorita = (String) jTable1.getValueAt(rowNumber,1);
+        jComboBox1.setSelectedItem(priorita);
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {
+
+        String typStroja = jTextFieldTypStroja.getText();
+        String priorita = (String) jComboBox1.getSelectedItem();
+
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
+
+        if (typStroja.equals("") || priorita.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // vytvorenie noveho stroja s vypisanymi udajmi
+                BTypStroja bTypStroja = new BTypStroja();
+                bTypStroja.setTypStroja(typStroja);
+                bTypStroja.setPrioritaD(priorita);
+
+                entityManager.persist(bTypStroja);
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Nový typ stroja bol vložený!");
+
+                refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+            JOptionPane.getRootFrame().setAlwaysOnTop(false);
+        }
+    }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO add your handling code here:
+
+        String typStroja = jTextFieldTypStroja.getText();
+        String priorita = (String) jComboBox1.getSelectedItem();
+        // zobrazim okno ako alwaysOnTop pretože samotne GUI je nastavene rovnako!
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
+
+        if (typStroja.equals("") || priorita.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // ziskanie ID
+                int rowNumber = jTable1.getSelectedRow();
+                String idStroja = (String) jTable1.getValueAt(rowNumber, 0);
+
+                // najdenie stroja na zaklade PK (ID)
+                BTypStroja bTypStroja = entityManager.find(BTypStroja.class,idStroja);
+
+                // vykonanie zmien
+                bTypStroja.setTypStroja(typStroja);
+                bTypStroja.setPrioritaD(priorita);
+
+                entityManager.persist(bTypStroja);
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
+                refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri upravovaní záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+            JOptionPane.getRootFrame().setAlwaysOnTop(false);
+        }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButtonExitActionPerformed
 
     /**
      * @param args the command line arguments
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonExit;

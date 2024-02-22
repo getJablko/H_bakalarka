@@ -353,10 +353,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         // cleanup code:
         entityManager.close();
         entityManagerFactory.close();
-
-        // Exit the application
-        //System.out.println("tu som!");
-        //System.exit(0);
     }
 
     private void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
