@@ -5,12 +5,16 @@
 package GUI.Stroje;
 
 import GUI.GUIManager;
+import Tabulky.BStroj;
+import Tabulky.BTypStroja;
 
 import javax.persistence.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -34,10 +38,18 @@ public class StrojeGUI extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                // vynulovanie policok
+                jComboBoxTypStroja.setSelectedItem(" ");
+                jComboBoxCisloHaly.setSelectedItem(" ");
+                jTextFieldZaradenie.setText("");
+                jTextFieldVyradenie.setText("");
+                jTextAreaPopis.setText("");
+
                 guiManager.zviditelniHlavneMenu();
             }
         });
         displayDataInTable();
+        naplnComboBoxTypyStrojov();
     }
 
     /**
@@ -48,14 +60,13 @@ public class StrojeGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         jPanel1 = new javax.swing.JPanel();
         homeButton = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jButtonInsert = new javax.swing.JButton();
         jButtonUpdate = new javax.swing.JButton();
         jButtonNovyStroj = new javax.swing.JButton();
-        jTextFieldTypStroja = new javax.swing.JTextField();
+        jComboBoxTypStroja = new javax.swing.JComboBox<>(); // Zmena tu
         jTextFieldZaradenie = new javax.swing.JTextField();
         jComboBoxCisloHaly = new javax.swing.JComboBox<>();
         jTextFieldVyradenie = new javax.swing.JTextField();
@@ -98,6 +109,11 @@ public class StrojeGUI extends javax.swing.JFrame {
         jButtonUpdate.setBackground(new java.awt.Color(255, 255, 254));
         jButtonUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonUpdate.setText("UPDATE");
+        jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUpdateActionPerformed(evt);
+            }
+        });
 
         jButtonNovyStroj.setBackground(new java.awt.Color(255, 255, 254));
         jButtonNovyStroj.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -108,24 +124,18 @@ public class StrojeGUI extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldTypStroja.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jTextFieldTypStroja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldTypStrojaActionPerformed(evt);
-            }
-        });
+        // Zmena tu - vytvorenie JComboBox pre typ stroja
+        jComboBoxTypStroja.setBackground(new java.awt.Color(255, 255, 254));
+        //jComboBoxTypStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Typ 1", "Typ 2", "Typ 3", "Typ 4" }));
+        // Koniec zmeny
 
         jTextFieldZaradenie.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jComboBoxCisloHaly.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxCisloHaly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200" }));
+        jComboBoxCisloHaly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "6400", "6100", "5900", "5700", "5400", "5200" }));
 
         jTextFieldVyradenie.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jTextFieldVyradenie.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldVyradenieActionPerformed(evt);
-            }
-        });
+
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -148,95 +158,95 @@ public class StrojeGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBoxCisloHaly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldTypStroja, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldZaradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldVyradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonNovyStroj)
-                        .addGap(15, 15, 15))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(145, 145, 145))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(homeButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel5)
+                                                        .addComponent(jLabel3)
+                                                        .addComponent(jLabel4)
+                                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(15, 15, 15)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jComboBoxCisloHaly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jComboBoxTypStroja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE) // Zmena tu
+                                        .addComponent(jTextFieldZaradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldVyradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(26, 26, 26))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(11, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButtonNovyStroj)
+                                                .addGap(15, 15, 15))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel1)
+                                                .addGap(145, 145, 145))))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(homeButton)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(homeButton)
-                .addGap(1, 1, 1)
-                .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldTypStroja, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxCisloHaly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldZaradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextFieldVyradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonNovyStroj, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel6))
-                .addContainerGap())
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(homeButton)
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel1)
+                                .addGap(40, 40, 40)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jComboBoxTypStroja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)) // Zmena tu
+                                .addGap(35, 35, 35)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jComboBoxCisloHaly, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jTextFieldZaradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel4))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jTextFieldVyradenie, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(50, 50, 50)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonNovyStroj, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel6))
+                                .addContainerGap())
         );
 
         jTable1.setBackground(new java.awt.Color(255, 255, 254));
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
-            },
-            new String [] {
-                "ID_stroja", "typ_stroja", "priorita", "cislo_haly", "zaradenie", "vyradenie", "popis"
-            }
+                },
+                new String [] {
+                        "ID_stroja", "typ_stroja", "priorita", "cislo_haly", "zaradenie", "vyradenie", "popis"
+                }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                    false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -247,30 +257,35 @@ public class StrojeGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClick_ActionPerformed(evt);
+            }
+        });
+
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 793, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 793, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
     // metoda na zobraznie udajov v tabulke jTable1 z databazovej tabulky BZamestnanec
     private void displayDataInTable() {
         try {
-            // Begin a transaction
             transaction.begin();
 
             // Retrieve data from the database
@@ -279,7 +294,9 @@ public class StrojeGUI extends javax.swing.JFrame {
                     "SELECT s.idStroja, s.typStroja, s.cisloHaly, s.zaradenie, s.vyradenie, s.popis, t.prioritaD " +
                             "FROM BStroj s " +
                             "JOIN BTypStroja t ON s.typStroja = t.typStroja", Object[].class);
+
             List<Object[]> results = query.getResultList();
+
             // nahra udaje priamo do tabulky jTable1
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             for (Object[] result : results) {
@@ -294,8 +311,8 @@ public class StrojeGUI extends javax.swing.JFrame {
                 };
                 model.addRow(row);
             }
-            // Commit the transaction
             transaction.commit();
+
         } catch (Exception e) {
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
@@ -305,25 +322,213 @@ public class StrojeGUI extends javax.swing.JFrame {
         }
     }
 
+    private void naplnComboBoxTypyStrojov() {
+        try {
+            // Begin a transaction
+            transaction.begin();
+
+            // Retrieve data from the database
+            TypedQuery<BTypStroja> query = entityManager.createQuery("SELECT t FROM BTypStroja t", BTypStroja.class);
+            List<BTypStroja> typyStrojov = query.getResultList();
+
+            // Vytvorte model pre JComboBox
+            DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+            comboBoxModel.addElement(" ");
+            for (BTypStroja typStroja : typyStrojov) {
+                comboBoxModel.addElement(typStroja.getTypStroja());
+            }
+            //comboBoxModel.addElement(" ");
+
+            // Nastavte model do JComboBox
+            jComboBoxTypStroja.setModel(comboBoxModel);
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní typov strojov: " + e.getMessage() + " skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        // nacitam ju znova
+        displayDataInTable();
+
+        // vynulovanie textovych policok
+        jComboBoxTypStroja.setSelectedItem(" ");
+        jComboBoxCisloHaly.setSelectedItem(" ");
+        jTextFieldZaradenie.setText("");
+        jTextFieldVyradenie.setText("");
+        jTextAreaPopis.setText("");
+    }
+
+    private void closeApplication() {
+        // cleanup code:
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        int rowNumber = jTable1.getSelectedRow();
+
+        String typStroja = (String) jTable1.getValueAt(rowNumber, 1);
+        jComboBoxTypStroja.setSelectedItem(typStroja);
+
+        String cisloHaly = (String) jTable1.getValueAt(rowNumber,3);
+        jComboBoxCisloHaly.setSelectedItem(cisloHaly);
+
+        String zaradenie = (String) jTable1.getValueAt(rowNumber, 4);
+        jTextFieldZaradenie.setText(zaradenie);
+
+        if (jTable1.getValueAt(rowNumber, 5) != null) {
+            String vyradenie = (String) jTable1.getValueAt(rowNumber, 5);
+            jTextFieldVyradenie.setText(vyradenie);
+        } else {
+            jTextFieldVyradenie.setText("");
+        }
+
+        if (jTable1.getValueAt(rowNumber, 6) != null) {
+            String popis = (String) jTable1.getValueAt(rowNumber, 6);
+            jTextAreaPopis.setText(popis);
+        } else {
+            jTextAreaPopis.setText("");
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
+        // vynulovanie policok
+        jComboBoxTypStroja.setSelectedItem(" ");
+        jComboBoxCisloHaly.setSelectedItem(" ");
+        jTextFieldZaradenie.setText("");
+        jTextFieldVyradenie.setText("");
+        jTextAreaPopis.setText("");
+
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-        // TODO add your handling code here:
+
+        String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
+        String cisloHaly = (String) jComboBoxCisloHaly.getSelectedItem();
+        String zaradenie = jTextFieldZaradenie.getText();
+        String vyradenie = jTextFieldVyradenie.getText();
+        String popis = jTextAreaPopis.getText();
+
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
+
+        if (typStroja.equals(" ") || cisloHaly.equals(" ") || zaradenie.equals("")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // vytvorenie noveho stroja s vypisanymi udajmi
+                BStroj bStroj = new BStroj();
+                bStroj.setTypStroja(typStroja);
+                bStroj.setCisloHaly(cisloHaly);
+                bStroj.setZaradenie(zaradenie);
+
+                if (vyradenie != null) {
+                    bStroj.setVyradenie(vyradenie);
+                } else {
+                    bStroj.setVyradenie(null);
+                }
+
+                if (popis != null) {
+                    bStroj.setPopis(popis);
+                } else {
+                    bStroj.setPopis(null);
+                }
+
+                entityManager.persist(bStroj);
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Nový stroj bol vložený!");
+
+                refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+            JOptionPane.getRootFrame().setAlwaysOnTop(false);
+        }
+    }//GEN-LAST:event_jButtonInsertActionPerformed
+
+    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
+
+        String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
+        String cisloHaly = (String) jComboBoxCisloHaly.getSelectedItem();
+        String zaradenie = jTextFieldZaradenie.getText();
+        String vyradenie = jTextFieldVyradenie.getText();
+        String popis = jTextAreaPopis.getText();
+
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
+
+        if (typStroja.equals(" ") || cisloHaly.equals(" ") || zaradenie.equals("")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // ziskanie ID
+                int rowNumber = jTable1.getSelectedRow();
+                BigInteger idStroja = (BigInteger) jTable1.getValueAt(rowNumber, 0);
+
+                // najdenie stroja na zaklade PK (ID)
+                BStroj bStroj = entityManager.find(BStroj.class,idStroja);
+
+                // uprava stroja s vypisanymi udajmi
+
+                bStroj.setTypStroja(typStroja);
+                bStroj.setCisloHaly(cisloHaly);
+                bStroj.setZaradenie(zaradenie);
+
+                if (vyradenie != null) {
+                    bStroj.setVyradenie(vyradenie);
+                } else {
+                    bStroj.setVyradenie(null);
+                }
+
+                if (popis != null) {
+                    bStroj.setPopis(popis);
+                } else {
+                    bStroj.setPopis(null);
+                }
+
+                entityManager.persist(bStroj);
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
+
+                refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+            JOptionPane.getRootFrame().setAlwaysOnTop(false);
+        }
+
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonNovyStrojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovyStrojActionPerformed
         guiManager.zobrazTypStroja();
     }
-
-    private void jTextFieldTypStrojaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTypStrojaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldTypStrojaActionPerformed
-
-    private void jTextFieldVyradenieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldVyradenieActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldVyradenieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,7 +551,7 @@ public class StrojeGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextAreaPopis;
-    private javax.swing.JTextField jTextFieldTypStroja;
+    private javax.swing.JComboBox<String> jComboBoxTypStroja;
     private javax.swing.JTextField jTextFieldVyradenie;
     private javax.swing.JTextField jTextFieldZaradenie;
     // End of variables declaration//GEN-END:variables

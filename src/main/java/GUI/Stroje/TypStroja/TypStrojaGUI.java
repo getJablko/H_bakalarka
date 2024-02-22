@@ -37,8 +37,10 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                // vynulovanie policok
+                jTextFieldTypStroja.setText("");
+                jComboBox1.setSelectedItem(" ");
                 dispose();
-                //closeApplication();
             }
         });
         displayDataInTable();
@@ -216,6 +218,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         try {
             // Begin a transaction
             transaction.begin();
+            JOptionPane.getRootFrame().setAlwaysOnTop(true);
 
             // Retrieve data from the database
             //pouzitie JPQL - rozumie tomu framework hibernate
@@ -240,6 +243,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 transaction.rollback();
             }
         }
+        JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
     private void refreshTable() {
@@ -339,7 +343,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
 
             } catch (Exception e) {
                 e.getCause();
-                System.out.println(e.getMessage());
+                //System.out.println(e.getMessage());
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri upravovaní záznamu: " + e.getMessage() + " skúste to znovu!");
             } finally {
                 if (transaction.isActive()) {
@@ -347,10 +351,15 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 }
             }
             JOptionPane.getRootFrame().setAlwaysOnTop(false);
+
         }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
+        // vynulovanie policok
+        jTextFieldTypStroja.setText("");
+        jComboBox1.setSelectedItem(" ");
+
         this.dispose();
     }//GEN-LAST:event_jButtonExitActionPerformed
 

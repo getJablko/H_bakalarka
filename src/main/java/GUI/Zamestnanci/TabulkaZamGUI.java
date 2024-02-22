@@ -43,6 +43,13 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                // vynulovanie textovych policok
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jPasswordField1.setText("");
+                jComboBox1.setSelectedItem(" ");
+                jComboBox2.setSelectedItem(" ");
+                jComboBox3.setSelectedItem(" ");
                 guiManager.zviditelniHlavneMenu();
             }
         });
