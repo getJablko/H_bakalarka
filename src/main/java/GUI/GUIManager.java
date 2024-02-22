@@ -18,7 +18,7 @@ public class GUIManager {
         hlavneMenuGUI = new HlavneMenuGUI(this);
         zamestnanciGUI = new TabulkaZamGUI(this);
         strojeGUI = new StrojeGUI(this);
-        typStrojaGUI = new TypStrojaGUI(this);
+        typStrojaGUI = new TypStrojaGUI(this,strojeGUI);
     }
 
     public void zobrazLogin(){

@@ -50,6 +50,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 jComboBox1.setSelectedItem(" ");
                 jComboBox2.setSelectedItem(" ");
                 jComboBox3.setSelectedItem(" ");
+
                 guiManager.zviditelniHlavneMenu();
             }
         });

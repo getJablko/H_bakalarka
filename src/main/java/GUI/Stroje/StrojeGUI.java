@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Mario
  */
-public class StrojeGUI extends javax.swing.JFrame {
+public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosedCallback {
 
     private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -34,6 +34,7 @@ public class StrojeGUI extends javax.swing.JFrame {
     public StrojeGUI(GUIManager guiManager) {
         this.guiManager = guiManager;
         initComponents();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -366,6 +367,12 @@ public class StrojeGUI extends javax.swing.JFrame {
         jTextFieldZaradenie.setText("");
         jTextFieldVyradenie.setText("");
         jTextAreaPopis.setText("");
+    }
+
+    @Override
+    public void onBTypStrojaGUIClosed() {
+        // Refresh the table or perform any other action needed
+        refreshTable();
     }
 
     private void closeApplication() {

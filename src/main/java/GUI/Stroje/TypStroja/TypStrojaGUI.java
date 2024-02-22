@@ -5,6 +5,7 @@
 package GUI.Stroje.TypStroja;
 
 import GUI.GUIManager;
+import GUI.Stroje.StrojeGUI;
 import Tabulky.BTypStroja;
 
 import javax.persistence.*;
@@ -13,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -26,12 +26,15 @@ public class TypStrojaGUI extends javax.swing.JFrame {
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
     private EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
+    private StrojeGUI strojeGUI;
 
     /**
      * Creates new form TypStrojaGUI
      */
-    public TypStrojaGUI(GUIManager guiManager) {
+    public TypStrojaGUI(GUIManager guiManager, StrojeGUI strojeGUI) {
+
         this.guiManager = guiManager;
+        this.strojeGUI = strojeGUI;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -40,6 +43,9 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 // vynulovanie policok
                 jTextFieldTypStroja.setText("");
                 jComboBox1.setSelectedItem(" ");
+                if (strojeGUI != null) {
+                    strojeGUI.onBTypStrojaGUIClosed();
+                }
                 dispose();
             }
         });
@@ -341,6 +347,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
                 refreshTable();
 
+
             } catch (Exception e) {
                 e.getCause();
                 //System.out.println(e.getMessage());
@@ -359,6 +366,10 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         // vynulovanie policok
         jTextFieldTypStroja.setText("");
         jComboBox1.setSelectedItem(" ");
+
+        if (strojeGUI != null) {
+            strojeGUI.onBTypStrojaGUIClosed();
+        }
 
         this.dispose();
     }//GEN-LAST:event_jButtonExitActionPerformed
