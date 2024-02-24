@@ -12,6 +12,7 @@ import Tabulky.BZamestnanec;
 import javax.persistence.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -192,8 +193,27 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 254));
-        jButton4.setText("H");
+        //jButton4.setBackground(new java.awt.Color(255, 255, 254));
+        //jButton4.setText("H");
+
+        // Load the image from file
+        ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button.png");
+
+        // Resize the image
+        Image image = icon.getImage(); // transform it
+        Image newImg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        icon = new ImageIcon(newImg);  // transform it back
+        // Create a Color object with RGB values
+        Color backgroundColor = new Color(255, 204, 153);
+        // Remove borders from the button
+        jButton4.setBorder(null);
+
+        // Set the background color of the button
+        jButton4.setBackground(backgroundColor);
+
+        // Set the icon on the JButton
+        jButton4.setIcon(icon);
+
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4_HOME_ActionPerformed(evt);

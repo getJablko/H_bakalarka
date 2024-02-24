@@ -5,6 +5,7 @@ import GUI.GUIManager;
 import Sifrovanie.PasswordUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -147,15 +148,24 @@ public class LoginGUI extends javax.swing.JFrame {
         Right.setMinimumSize(new java.awt.Dimension(400, 500));
         Right.setPreferredSize(new java.awt.Dimension(400, 500));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\maintenance-icon-14.png")); // NOI18N
-        jLabel5.setMaximumSize(new java.awt.Dimension(300, 300));
+        // Load the image from file
+        ImageIcon originalIcon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\login_logo.png");
+
+        // Resize the image to the desired size
+        Image scaledImage = originalIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+
+        // Create a new ImageIcon with the scaled image
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        // Set the scaled icon on the JLabel
+        jLabel5.setIcon(scaledIcon);
 
         javax.swing.GroupLayout RightLayout = new javax.swing.GroupLayout(Right);
         Right.setLayout(RightLayout);
         RightLayout.setHorizontalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RightLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
         );

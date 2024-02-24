@@ -5,13 +5,17 @@
 package GUI.Porucha;
 
 import GUI.GUIManager;
+import Tabulky.BPorucha;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
@@ -34,11 +38,21 @@ public class PoruchaGUI extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                // TODO vynulovanie textovych policok
+                // vynulovanie textovych policok
+                jTextFieldOs_cislo_nahlasenia.setText("");
+                jComboBoxIdStroja.setSelectedItem(" ");
+                jComboBoxTypPoruchy.setSelectedItem(" ");
+                jComboBoxZavaznost.setSelectedItem(" ");
+                jComboBoxStrojVPrevadzke.setSelectedItem(" ");
+                jTextFieldPoruchaOd.setText("");
+                jTextFieldPoruchaDo.setText("");
+                jTextAreaPopis.setText("");
 
                 guiManager.zviditelniHlavneMenu();
             }
         });
+        displayDataInTable();
+        naplnComboBoxIdStrojov();
     }
 
     /**
@@ -89,8 +103,26 @@ public class PoruchaGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("PORUCHA");
 
-        jButtonHome.setBackground(new java.awt.Color(255, 255, 254));
-        jButtonHome.setText("H");
+        //jButtonHome.setBackground(new java.awt.Color(255, 255, 254));
+        //jButtonHome.setText("H");
+
+        // Load the image from file
+        ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button.png");
+
+        // Resize the image
+        Image image = icon.getImage(); // transform it
+        Image newImg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        icon = new ImageIcon(newImg);  // transform it back
+        // Create a Color object with RGB values
+        Color backgroundColor = new Color(255, 204, 153);
+        // Remove borders from the button
+        jButtonHome.setBorder(null);
+
+        // Set the background color of the button
+        jButtonHome.setBackground(backgroundColor);
+
+        // Set the icon on the JButton
+        jButtonHome.setIcon(icon);
         jButtonHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonHomeActionPerformed(evt);
@@ -98,16 +130,16 @@ public class PoruchaGUI extends javax.swing.JFrame {
         });
 
         jComboBoxIdStroja.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxIdStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        //jComboBoxIdStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBoxZavaznost.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1", "2", "3", "4" }));
 
         jComboBoxStrojVPrevadzke.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
+        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "0", "1" }));
 
         jComboBoxTypPoruchy.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "E", "M", "I", "H", "B" }));
+        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "E", "M", "I", "H", "B" }));
 
         jTextFieldPoruchaOd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -266,10 +298,7 @@ public class PoruchaGUI extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null}
+
                 },
                 new String [] {
                         "os. cislo nahlasenia", "ID stroja", "zavaznost", "stroj v prevadzke", "typ poruchy", "porucha od", "porucha do", "popis poruchy"
@@ -283,6 +312,12 @@ public class PoruchaGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClick_ActionPerformed(evt);
+            }
+        });
+
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -303,12 +338,194 @@ public class PoruchaGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
+    private void displayDataInTable() {
+        try {
+            transaction.begin();
+
+            // Retrieve data from the database
+            //pouzitie JPQL - rozumie tomu framework hibernate
+            TypedQuery<BPorucha> query = entityManager.createQuery("SELECT s FROM BPorucha s ", BPorucha.class);
+
+            List<BPorucha> results = query.getResultList();
+
+            // nahra udaje priamo do tabulky jTable1
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (BPorucha result : results) {
+                Object[] row = {
+                        result.getOsCisloNahlasenia(),  // os cislo nahlasenia
+                        result.getIdStroja(),           // id stroja
+                        result.getZavaznostD(),         // zavaznost poruchy
+                        result.getStrojVPrevadzke(),    // ci je stroj v prevadzke
+                        result.getTypPoruchyD(),        // typ poruchy
+                        result.getPoruchaOd(),          // porucha do
+                        result.getPoruchaDo(),          // porucha do
+                        result.getPopisPoruchy()        // popis
+                };
+                model.addRow(row);
+            }
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        // nacitam ju znova
+        displayDataInTable();
+
+        // vynulovanie textovych policok
+        jTextFieldOs_cislo_nahlasenia.setText("");
+        jComboBoxIdStroja.setSelectedItem(" ");
+        jComboBoxTypPoruchy.setSelectedItem(" ");
+        jComboBoxZavaznost.setSelectedItem(" ");
+        jComboBoxStrojVPrevadzke.setSelectedItem(" ");
+        jTextFieldPoruchaOd.setText("");
+        jTextFieldPoruchaDo.setText("");
+        jTextAreaPopis.setText("");
+    }
+
+    private void refreshTableActual() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+
+        // vynulovanie textovych policok
+        jTextFieldOs_cislo_nahlasenia.setText("");
+        jComboBoxIdStroja.setSelectedItem(" ");
+        jComboBoxTypPoruchy.setSelectedItem(" ");
+        jComboBoxZavaznost.setSelectedItem(" ");
+        jComboBoxStrojVPrevadzke.setSelectedItem(" ");
+        jTextFieldPoruchaOd.setText("");
+        jTextFieldPoruchaDo.setText("");
+        jTextAreaPopis.setText("");
+    }
+
+    private void closeApplication() {
+        // cleanup code:
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private void naplnComboBoxIdStrojov() {
+        try {
+            // Begin a transaction
+            transaction.begin();
+
+            // Retrieve data from the database
+            TypedQuery<BigInteger> query = entityManager.createQuery("SELECT t.id FROM BStroj t", BigInteger.class);
+            List<BigInteger> idcka = query.getResultList();
+
+            // Vytvorte model pre JComboBox
+            DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+            comboBoxModel.addElement(" ");
+            for (BigInteger results : idcka) {
+                comboBoxModel.addElement(results.toString());
+            }
+
+            // Nastavte model do JComboBox
+            jComboBoxIdStroja.setModel(comboBoxModel);
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní ID strojov: " + e.getMessage() + " skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        int rowNumber = jTable1.getSelectedRow();
+
+        String osCislo = (String) jTable1.getValueAt(rowNumber,0).toString();
+        jTextFieldOs_cislo_nahlasenia.setText(osCislo);
+
+        String idStroja = (String) jTable1.getValueAt(rowNumber, 1).toString();
+        jComboBoxIdStroja.setSelectedItem(idStroja);
+
+        String zavaznost = (String) jTable1.getValueAt(rowNumber,2).toString();
+        jComboBoxZavaznost.setSelectedItem(zavaznost);
+
+        String vPrevadzke = (String) jTable1.getValueAt(rowNumber,3).toString();
+        jComboBoxStrojVPrevadzke.setSelectedItem(vPrevadzke);
+
+        String typPoruchy = (String) jTable1.getValueAt(rowNumber,4);
+        jComboBoxTypPoruchy.setSelectedItem(typPoruchy);
+
+        String poruchaOd = (String) jTable1.getValueAt(rowNumber,5);
+        jTextFieldPoruchaOd.setText(poruchaOd);
+
+        if (jTable1.getValueAt(rowNumber, 6) != null) {
+            String poruchaDo = (String) jTable1.getValueAt(rowNumber, 6);
+            jTextFieldPoruchaDo.setText(poruchaDo);
+        } else {
+            jTextFieldPoruchaDo.setText("");
+        }
+
+        if (jTable1.getValueAt(rowNumber, 7) != null) {
+            String popis = (String) jTable1.getValueAt(rowNumber, 7);
+            jTextAreaPopis.setText(popis);
+        } else {
+            jTextAreaPopis.setText("");
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jCheckBoxAktualneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxAktualneActionPerformed
         // TODO add your handling code here:
+        if (jCheckBoxAktualne.isSelected()) {
+            try {
+                transaction.begin();
+                refreshTableActual();
+
+                // Retrieve data from the database
+                //pouzitie JPQL - rozumie tomu framework hibernate
+                TypedQuery<BPorucha> query = entityManager.createQuery("SELECT s FROM BPorucha s WHERE s.poruchaDo IS NULL ", BPorucha.class);
+
+                List<BPorucha> results = query.getResultList();
+
+                // nahra udaje priamo do tabulky jTable1
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                for (BPorucha result : results) {
+                    Object[] row = {
+                            result.getOsCisloNahlasenia(),  // os cislo nahlasenia
+                            result.getIdStroja(),           // id stroja
+                            result.getZavaznostD(),         // zavaznost poruchy
+                            result.getStrojVPrevadzke(),    // ci je stroj v prevadzke
+                            result.getTypPoruchyD(),        // typ poruchy
+                            result.getPoruchaOd(),          // porucha do
+                            result.getPoruchaDo(),          // porucha do
+                            result.getPopisPoruchy()        // popis
+                    };
+                    model.addRow(row);
+                }
+                transaction.commit();
+
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        } else {
+            refreshTable();
+        }
     }//GEN-LAST:event_jCheckBoxAktualneActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
@@ -316,7 +533,18 @@ public class PoruchaGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHomeActionPerformed
-        // TODO add your handling code here:
+        // vynulovanie textovych policok
+        jTextFieldOs_cislo_nahlasenia.setText("");
+        jComboBoxIdStroja.setSelectedItem(" ");
+        jComboBoxTypPoruchy.setSelectedItem(" ");
+        jComboBoxZavaznost.setSelectedItem(" ");
+        jComboBoxStrojVPrevadzke.setSelectedItem(" ");
+        jTextFieldPoruchaOd.setText("");
+        jTextFieldPoruchaDo.setText("");
+        jTextAreaPopis.setText("");
+
+        this.dispose();
+        guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
 

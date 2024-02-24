@@ -11,6 +11,7 @@ import Tabulky.BTypStroja;
 import javax.persistence.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -87,8 +88,27 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 153));
 
-        homeButton.setBackground(new java.awt.Color(255, 255, 254));
-        homeButton.setText("H");
+        //homeButton.setBackground(new java.awt.Color(255, 255, 254));
+        //homeButton.setText("H");
+
+        // Load the image from file
+        ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button.png");
+
+        // Resize the image
+        Image image = icon.getImage(); // transform it
+        Image newImg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        icon = new ImageIcon(newImg);  // transform it back
+        // Create a Color object with RGB values
+        Color backgroundColor = new Color(255, 204, 153);
+        // Remove borders from the button
+        homeButton.setBorder(null);
+
+        // Set the background color of the button
+        homeButton.setBackground(backgroundColor);
+
+        // Set the icon on the JButton
+        homeButton.setIcon(icon);
+
         homeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 homeButtonActionPerformed(evt);
@@ -347,6 +367,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
             transaction.commit();
         } catch (Exception e) {
             e.getCause();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní typov strojov: " + e.getMessage() + " skúste to znovu!");
             if (transaction.isActive()) {
                 transaction.rollback();
