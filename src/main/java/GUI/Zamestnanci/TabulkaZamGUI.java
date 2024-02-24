@@ -28,7 +28,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
 
-
     private GUIManager guiManager;
 
     /**

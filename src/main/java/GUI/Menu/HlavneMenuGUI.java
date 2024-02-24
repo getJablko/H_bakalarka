@@ -205,7 +205,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }
 
     private void jButton2_NAHLASENIE_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        guiManager.zobrazPoruchu();
 
     }
 

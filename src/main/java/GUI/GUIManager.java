@@ -2,6 +2,7 @@ package GUI;
 
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
+import GUI.Porucha.PoruchaGUI;
 import GUI.Stroje.StrojeGUI;
 import GUI.Stroje.TypStroja.TypStrojaGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
@@ -12,13 +13,15 @@ public class GUIManager {
     private TabulkaZamGUI zamestnanciGUI;
     private StrojeGUI strojeGUI;
     private TypStrojaGUI typStrojaGUI;
+    private PoruchaGUI poruchaGUI;
 
     public GUIManager(){
         login = new LoginGUI(this);
         hlavneMenuGUI = new HlavneMenuGUI(this);
         zamestnanciGUI = new TabulkaZamGUI(this);
         strojeGUI = new StrojeGUI(this);
-        typStrojaGUI = new TypStrojaGUI(this,strojeGUI);
+        typStrojaGUI = new TypStrojaGUI(strojeGUI);
+        poruchaGUI = new PoruchaGUI(this);
     }
 
     public void zobrazLogin(){
@@ -86,5 +89,23 @@ public class GUIManager {
             typStrojaGUI.setAlwaysOnTop(true);
             typStrojaGUI.setVisible(true);
         }
+    }
+
+    public void zobrazPoruchu(){
+        /*if(hlavneMenuGUI.isVisible()){
+            hlavneMenuGUI.setVisible(false);
+        }
+        if (poruchaGUI.isActive()) {
+            poruchaGUI.setVisible(true);
+        } else {
+            poruchaGUI.pack();
+            poruchaGUI.setLocationRelativeTo(null);
+            poruchaGUI.setVisible(true);
+        }
+
+         */
+        poruchaGUI.pack();
+        poruchaGUI.setLocationRelativeTo(null);
+        poruchaGUI.setVisible(true);
     }
 }

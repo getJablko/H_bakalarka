@@ -25,15 +25,13 @@ public class TypStrojaGUI extends javax.swing.JFrame {
     private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
     private EntityTransaction transaction = entityManager.getTransaction();
-    private GUIManager guiManager;
     private StrojeGUI strojeGUI;
 
     /**
      * Creates new form TypStrojaGUI
      */
-    public TypStrojaGUI(GUIManager guiManager, StrojeGUI strojeGUI) {
+    public TypStrojaGUI(StrojeGUI strojeGUI) {
 
-        this.guiManager = guiManager;
         this.strojeGUI = strojeGUI;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
