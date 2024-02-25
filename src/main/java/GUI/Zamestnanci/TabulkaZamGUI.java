@@ -457,6 +457,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 updateZam.setDostupnostZam(BigInteger.valueOf(Long.parseLong(dostupnost)));
                 updateZam.setTypZamD(typZam);
 
+                entityManager.persist(updateZam);
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
 

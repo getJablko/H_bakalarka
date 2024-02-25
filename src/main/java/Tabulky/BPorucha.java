@@ -6,8 +6,9 @@ import java.math.BigInteger;
 @Entity
 @javax.persistence.Table(name = "B_PORUCHA", schema = "STACHERA")
 public class BPorucha {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "b_porucha_generovanie_id")
+    @SequenceGenerator(name = "b_porucha_generovanie_id", sequenceName = "b_porucha_generovanie_id", allocationSize = 1)
     @javax.persistence.Column(name = "ID_PORUCHY", nullable = false, precision = 0)
     private BigInteger idPoruchy;
 

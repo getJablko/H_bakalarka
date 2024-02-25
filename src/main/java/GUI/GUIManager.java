@@ -92,7 +92,7 @@ public class GUIManager {
     }
 
     public void zobrazPoruchu(){
-        /*if(hlavneMenuGUI.isVisible()){
+        if(hlavneMenuGUI.isVisible()){
             hlavneMenuGUI.setVisible(false);
         }
         if (poruchaGUI.isActive()) {
@@ -102,10 +102,5 @@ public class GUIManager {
             poruchaGUI.setLocationRelativeTo(null);
             poruchaGUI.setVisible(true);
         }
-
-         */
-        poruchaGUI.pack();
-        poruchaGUI.setLocationRelativeTo(null);
-        poruchaGUI.setVisible(true);
     }
 }
