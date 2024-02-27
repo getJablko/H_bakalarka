@@ -7,9 +7,7 @@ package GUI.Porucha;
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Login.LoginListener;
-import Sifrovanie.PasswordUtils;
 import Tabulky.BPorucha;
-import Tabulky.BZamestnanec;
 
 import javax.persistence.*;
 import javax.swing.*;
@@ -22,7 +20,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
  * @author Mario
  */
 public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
@@ -36,7 +33,8 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
     private GUIManager guiManager;
     private LoginGUI loginGUI;
-    public PoruchaGUI(GUIManager guiManager,LoginGUI loginGUI) {
+
+    public PoruchaGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents2();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
@@ -46,15 +44,13 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             public void windowClosing(WindowEvent e) {
                 // vynulovanie textovych policok
                 vynulovaniePolicok();
-
                 guiManager.zviditelniHlavneMenu();
             }
         });
         displayDataInTable();
 
-            //naplnComboBoxIdStrojov();
+        //naplnComboBoxIdStrojov();
         loginGUI.setLoginListener(this);
-
     }
 
     /**
@@ -110,7 +106,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
         // Resize the image
         Image image = icon.getImage(); // transform it
-        Image newImg = image.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        Image newImg = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
         // Create a Color object with RGB values
         Color backgroundColor = new Color(255, 204, 153);
@@ -132,13 +128,13 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         //jComboBoxIdStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBoxZavaznost.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1", "2", "3", "4" }));
+        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "1", "2", "3", "4"}));
 
         jComboBoxStrojVPrevadzke.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "0", "1" }));
+        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "0", "1"}));
 
         jComboBoxTypPoruchy.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "E", "M", "I", "H", "B" }));
+        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "M", "I", "H", "B"}));
 
         jTextFieldPoruchaOd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -286,19 +282,19 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
 
                 },
-                new String [] {
+                new String[]{
                         "ID poruchy", "os. cislo nahlasenia", "ID stroja", "zavaznost", "stroj v prevadzke", "typ poruchy", "porucha od", "porucha do", "popis poruchy"
                 }
         ) {
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                     false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -389,6 +385,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     }
 
     @Override
+    // sluzi na naplnenie komboboxu po uspesnom logine (inak to hadzalo nullException)
     public void onLoginSuccess() {
         naplnComboBoxIdStrojov();
     }
@@ -403,11 +400,11 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             query = entityManager.createQuery("SELECT t.id FROM BStroj t WHERE t.cisloHaly LIKE :pracovisko", BigInteger.class);
             query.setParameter("pracovisko", pracovisko);
             idcka = query.getResultList();
-            System.out.println("tu som: " + pracovisko);
+            //System.out.println("tu som: " + pracovisko);
         } else {
             query = entityManager.createQuery("SELECT t.id FROM BStroj t", BigInteger.class);
             idcka = query.getResultList();
-            System.out.println("tu som2");
+            //System.out.println("tu som2");
         }
         try {
             // Begin a transaction
@@ -447,16 +444,16 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         String idStroja = (String) jTable1.getValueAt(rowNumber, 2).toString();
         jComboBoxIdStroja.setSelectedItem(idStroja);
 
-        String zavaznost = (String) jTable1.getValueAt(rowNumber,3).toString();
+        String zavaznost = (String) jTable1.getValueAt(rowNumber, 3).toString();
         jComboBoxZavaznost.setSelectedItem(zavaznost);
 
-        String vPrevadzke = (String) jTable1.getValueAt(rowNumber,4).toString();
+        String vPrevadzke = (String) jTable1.getValueAt(rowNumber, 4).toString();
         jComboBoxStrojVPrevadzke.setSelectedItem(vPrevadzke);
 
-        String typPoruchy = (String) jTable1.getValueAt(rowNumber,5);
+        String typPoruchy = (String) jTable1.getValueAt(rowNumber, 5);
         jComboBoxTypPoruchy.setSelectedItem(typPoruchy);
 
-        String poruchaOd = (String) jTable1.getValueAt(rowNumber,6);
+        String poruchaOd = (String) jTable1.getValueAt(rowNumber, 6);
         jTextFieldPoruchaOd.setText(poruchaOd);
 
         if (jTable1.getValueAt(rowNumber, 7) != null) {
@@ -522,7 +519,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         // nacitam si vypisane udaje
 
         int rowNumber = jTable1.getSelectedRow();
-        BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber,1)));
+        BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
 
         if (!loginGUI.getRolaZam().equals("M")) {
             if (!osCislo.equals(loginGUI.getOsCisloLogin())) {
@@ -531,7 +528,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 this.vynulovaniePolicok();
                 return;
             }
-                //System.out.println("tu som");
+            //System.out.println("tu som");
         }
         //System.out.println("tu som2");
         //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
@@ -563,7 +560,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 BigInteger id = (BigInteger) jTable1.getValueAt(rowNumber, 0);
 
                 // Načítanie záznamu z databázy na základe ID a uprava
-                BPorucha bPorucha = entityManager.find(BPorucha.class,id);
+                BPorucha bPorucha = entityManager.find(BPorucha.class, id);
 
                 bPorucha.setOsCisloNahlasenia(osCislo);
                 bPorucha.setIdStroja(idStrojaBigInt);
@@ -693,7 +690,6 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextAreaPopis;
-    private javax.swing.JTextField jTextFieldOs_cislo_nahlasenia;
     private javax.swing.JTextField jTextFieldPoruchaDo;
     private javax.swing.JTextField jTextFieldPoruchaOd;
     // End of variables declaration//GEN-END:variables

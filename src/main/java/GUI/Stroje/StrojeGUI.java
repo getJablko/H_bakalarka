@@ -19,7 +19,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- *
  * @author Mario
  */
 public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosedCallback {
@@ -96,7 +95,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
         // Resize the image
         Image image = icon.getImage(); // transform it
-        Image newImg = image.getScaledInstance(25, 25,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        Image newImg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
         // Create a Color object with RGB values
         Color backgroundColor = new Color(255, 204, 153);
@@ -153,7 +152,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         jTextFieldZaradenie.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jComboBoxCisloHaly.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxCisloHaly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "6400", "6100", "5900", "5700", "5400", "5200" }));
+        jComboBoxCisloHaly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "6400", "6100", "5900", "5700", "5400", "5200"}));
 
         jTextFieldVyradenie.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -256,26 +255,26 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         jTable1.setBackground(new java.awt.Color(255, 255, 254));
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
 
                 },
-                new String [] {
+                new String[]{
                         "ID_stroja", "typ_stroja", "priorita", "cislo_haly", "zaradenie", "vyradenie", "popis"
                 }
         ) {
-            Class[] types = new Class [] {
+            Class[] types = new Class[]{
                     java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                     false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -409,7 +408,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         String typStroja = (String) jTable1.getValueAt(rowNumber, 1);
         jComboBoxTypStroja.setSelectedItem(typStroja);
 
-        String cisloHaly = (String) jTable1.getValueAt(rowNumber,3);
+        String cisloHaly = (String) jTable1.getValueAt(rowNumber, 3);
         jComboBoxCisloHaly.setSelectedItem(cisloHaly);
 
         String zaradenie = (String) jTable1.getValueAt(rowNumber, 4);
@@ -515,7 +514,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                 BigInteger idStroja = (BigInteger) jTable1.getValueAt(rowNumber, 0);
 
                 // najdenie stroja na zaklade PK (ID)
-                BStroj bStroj = entityManager.find(BStroj.class,idStroja);
+                BStroj bStroj = entityManager.find(BStroj.class, idStroja);
 
                 // uprava stroja s vypisanymi udajmi
 

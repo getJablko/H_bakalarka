@@ -14,7 +14,6 @@ import java.awt.*;
 import java.math.BigInteger;
 
 /**
- *
  * @author Mario
  */
 
@@ -103,51 +102,53 @@ public class LoginGUI extends javax.swing.JFrame {
         jButtonZabudnute.setBorder(null);
 
         jButtonZabudnute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {jButtonZabudnuteActionPerformed(evt);}
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonZabudnuteActionPerformed(evt);
+            }
         });
 
         javax.swing.GroupLayout LeftLayout = new javax.swing.GroupLayout(Left);
         Left.setLayout(LeftLayout);
         LeftLayout.setHorizontalGroup(
-            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LeftLayout.createSequentialGroup()
-                .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(LeftLayout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(jLabel1))
-                    .addGroup(LeftLayout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jButtonPrihlasenie))
-                    .addGroup(LeftLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField1)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                            .addComponent(jLabel3)))
-                    .addGroup(LeftLayout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(jButtonZabudnute)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(LeftLayout.createSequentialGroup()
+                                .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(LeftLayout.createSequentialGroup()
+                                                .addGap(144, 144, 144)
+                                                .addComponent(jLabel1))
+                                        .addGroup(LeftLayout.createSequentialGroup()
+                                                .addGap(137, 137, 137)
+                                                .addComponent(jButtonPrihlasenie))
+                                        .addGroup(LeftLayout.createSequentialGroup()
+                                                .addGap(25, 25, 25)
+                                                .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jLabel2)
+                                                        .addComponent(jTextField1)
+                                                        .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                                                        .addComponent(jLabel3)))
+                                        .addGroup(LeftLayout.createSequentialGroup()
+                                                .addGap(115, 115, 115)
+                                                .addComponent(jButtonZabudnute)))
+                                .addContainerGap(25, Short.MAX_VALUE))
         );
         LeftLayout.setVerticalGroup(
-            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LeftLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel1)
-                .addGap(68, 68, 68)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addComponent(jButtonPrihlasenie)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                .addComponent(jButtonZabudnute)
-                .addGap(30, 30, 30))
+                LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(LeftLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel1)
+                                .addGap(68, 68, 68)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)
+                                .addComponent(jButtonPrihlasenie)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                                .addComponent(jButtonZabudnute)
+                                .addGap(30, 30, 30))
         );
 
         jPanel1.add(Left);
@@ -172,18 +173,18 @@ public class LoginGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout RightLayout = new javax.swing.GroupLayout(Right);
         Right.setLayout(RightLayout);
         RightLayout.setHorizontalGroup(
-            RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(RightLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(RightLayout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(42, Short.MAX_VALUE))
         );
         RightLayout.setVerticalGroup(
-            RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(RightLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(RightLayout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         jPanel1.add(Right);
@@ -192,12 +193,12 @@ public class LoginGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -235,35 +236,35 @@ public class LoginGUI extends javax.swing.JFrame {
             if (osobneCisloText.isEmpty()) {
                 throw new NumberFormatException();  // Throw exception for empty input
             }
-        int osobneCislo = Integer.parseInt(jTextField1.getText());
-        String zadaneHeslo = new String(jPasswordField1.getPassword());
+            int osobneCislo = Integer.parseInt(jTextField1.getText());
+            String zadaneHeslo = new String(jPasswordField1.getPassword());
 
-        if (osobneCislo <= 0 || zadaneHeslo.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
-        } else {
-
-            // Príklad výpisu hodnôt pre overenie
-            //System.out.println("Osobné číslo: " + osobneCislo);
-            //System.out.println("Heslo: " + zadaneHeslo);
-
-            PasswordUtils pu = new PasswordUtils();
-            String dobreHeslo = pu.vratHesloVseobecne(osobneCislo);
-
-            if (PasswordUtils.checkPassword(zadaneHeslo, dobreHeslo)) {
-
-                this.osCisloLogin = BigInteger.valueOf(osobneCislo);
-                BZamestnanec zam = entityManager.find(BZamestnanec.class, osCisloLogin);
-                this.rola = zam.getTypZamD();
-                this.cisloHaly = zam.getPracoviskoD();
-                this.onLoginSuccess();
-                guiManager.zobrazHlavneMenu();
-                //this.onLoginSuccess();
-
+            if (osobneCislo <= 0 || zadaneHeslo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
             } else {
-                // Nespravne prihlasovacie udaje
-                JOptionPane.showMessageDialog(this, "Zadali ste nesprávne prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+
+                // Príklad výpisu hodnôt pre overenie
+                //System.out.println("Osobné číslo: " + osobneCislo);
+                //System.out.println("Heslo: " + zadaneHeslo);
+
+                PasswordUtils pu = new PasswordUtils();
+                String dobreHeslo = pu.vratHesloVseobecne(osobneCislo);
+
+                if (PasswordUtils.checkPassword(zadaneHeslo, dobreHeslo)) {
+
+                    this.osCisloLogin = BigInteger.valueOf(osobneCislo);
+                    BZamestnanec zam = entityManager.find(BZamestnanec.class, osCisloLogin);
+                    this.rola = zam.getTypZamD();
+                    this.cisloHaly = zam.getPracoviskoD();
+                    this.onLoginSuccess();
+                    guiManager.zobrazHlavneMenu();
+                    //this.onLoginSuccess();
+
+                } else {
+                    // Nespravne prihlasovacie udaje
+                    JOptionPane.showMessageDialog(this, "Zadali ste nesprávne prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
         }

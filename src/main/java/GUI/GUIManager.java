@@ -15,23 +15,23 @@ public class GUIManager {
     private TypStrojaGUI typStrojaGUI;
     private PoruchaGUI poruchaGUI;
 
-    public GUIManager(){
+    public GUIManager() {
         login = new LoginGUI(this);
         hlavneMenuGUI = new HlavneMenuGUI(this);
         zamestnanciGUI = new TabulkaZamGUI(this);
         strojeGUI = new StrojeGUI(this);
         typStrojaGUI = new TypStrojaGUI(strojeGUI);
-        poruchaGUI = new PoruchaGUI(this,login);
+        poruchaGUI = new PoruchaGUI(this, login);
     }
 
-    public void zobrazLogin(){
+    public void zobrazLogin() {
         login.pack();
         login.setLocationRelativeTo(null);
         login.setVisible(true);
     }
 
-    public void zobrazHlavneMenu(){
-        if(login!=null) {
+    public void zobrazHlavneMenu() {
+        if (login != null) {
             login.dispose();
         }
 
@@ -40,25 +40,25 @@ public class GUIManager {
         hlavneMenuGUI.setVisible(true);
     }
 
-    public void zviditelniHlavneMenu(){
+    public void zviditelniHlavneMenu() {
 
-        if(zamestnanciGUI.isVisible()){
+        if (zamestnanciGUI.isVisible()) {
             zamestnanciGUI.dispose();
         } else if (strojeGUI.isVisible()) {
             strojeGUI.dispose();
         }
 
-        if(!hlavneMenuGUI.isVisible()){
+        if (!hlavneMenuGUI.isVisible()) {
             hlavneMenuGUI.setVisible(true);
         }
     }
 
-    public void zobrazTabulkuZam(){
-        if(hlavneMenuGUI.isVisible()){
+    public void zobrazTabulkuZam() {
+        if (hlavneMenuGUI.isVisible()) {
             hlavneMenuGUI.setVisible(false);
         }
 
-        if (zamestnanciGUI.isActive()){
+        if (zamestnanciGUI.isActive()) {
             zamestnanciGUI.setVisible(true);
         } else {
             zamestnanciGUI.pack();
@@ -67,8 +67,8 @@ public class GUIManager {
         }
     }
 
-    public void zobrazStoje(){
-        if(hlavneMenuGUI.isVisible()){
+    public void zobrazStoje() {
+        if (hlavneMenuGUI.isVisible()) {
             hlavneMenuGUI.setVisible(false);
         }
         if (strojeGUI.isActive()) {
@@ -80,7 +80,7 @@ public class GUIManager {
         }
     }
 
-    public void zobrazTypStroja(){
+    public void zobrazTypStroja() {
         if (typStrojaGUI.isActive()) {
             typStrojaGUI.setVisible(true);
         } else {
@@ -91,8 +91,8 @@ public class GUIManager {
         }
     }
 
-    public void zobrazPoruchu(){
-        if(hlavneMenuGUI.isVisible()){
+    public void zobrazPoruchu() {
+        if (hlavneMenuGUI.isVisible()) {
             hlavneMenuGUI.setVisible(false);
         }
         if (poruchaGUI.isActive()) {
