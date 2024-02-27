@@ -28,6 +28,8 @@ public class LoginGUI extends javax.swing.JFrame {
     private BigInteger osCisloLogin;
     private String rola;
     private GUIManager guiManager;
+    private String cisloHaly;
+    private LoginListener loginListener;
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -210,6 +212,21 @@ public class LoginGUI extends javax.swing.JFrame {
         return rola;
     }
 
+    public String getCisloHaly() {
+        return cisloHaly;
+    }
+
+    public void setLoginListener(LoginListener listener) {
+        this.loginListener = listener;
+    }
+
+    // Method called after successful login
+    private void onLoginSuccess() {
+        if (loginListener != null) {
+            loginListener.onLoginSuccess();
+        }
+    }
+
     private void jButtonPrihlasenieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrihlasenieActionPerformed
         // TODO add your handling code here:
         // Získajte hodnoty zo vstupných polí
@@ -237,7 +254,10 @@ public class LoginGUI extends javax.swing.JFrame {
                 this.osCisloLogin = BigInteger.valueOf(osobneCislo);
                 BZamestnanec zam = entityManager.find(BZamestnanec.class, osCisloLogin);
                 this.rola = zam.getTypZamD();
+                this.cisloHaly = zam.getPracoviskoD();
+                this.onLoginSuccess();
                 guiManager.zobrazHlavneMenu();
+                //this.onLoginSuccess();
 
             } else {
                 // Nespravne prihlasovacie udaje

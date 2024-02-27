@@ -6,6 +6,7 @@ package GUI.Porucha;
 
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
+import GUI.Login.LoginListener;
 import Sifrovanie.PasswordUtils;
 import Tabulky.BPorucha;
 import Tabulky.BZamestnanec;
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * @author Mario
  */
-public class PoruchaGUI extends javax.swing.JFrame {
+public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
     /**
      * Creates new form PoruchaGUI
@@ -50,7 +51,10 @@ public class PoruchaGUI extends javax.swing.JFrame {
             }
         });
         displayDataInTable();
-        naplnComboBoxIdStrojov();
+
+            //naplnComboBoxIdStrojov();
+        loginGUI.setLoginListener(this);
+
     }
 
     /**
@@ -384,15 +388,33 @@ public class PoruchaGUI extends javax.swing.JFrame {
         entityManagerFactory.close();
     }
 
+    @Override
+    public void onLoginSuccess() {
+        naplnComboBoxIdStrojov();
+    }
+
     private void naplnComboBoxIdStrojov() {
-        // TODO zobrazenie len strojov v danej hale v ktorej pracuje pracovnik
+        TypedQuery<BigInteger> query;
+        List<BigInteger> idcka;
+
+        if (!loginGUI.getRolaZam().equals("M")) {
+            String pracovisko = loginGUI.getCisloHaly();
+            pracovisko = pracovisko.substring(2);
+            query = entityManager.createQuery("SELECT t.id FROM BStroj t WHERE t.cisloHaly LIKE :pracovisko", BigInteger.class);
+            query.setParameter("pracovisko", pracovisko);
+            idcka = query.getResultList();
+            System.out.println("tu som: " + pracovisko);
+        } else {
+            query = entityManager.createQuery("SELECT t.id FROM BStroj t", BigInteger.class);
+            idcka = query.getResultList();
+            System.out.println("tu som2");
+        }
         try {
             // Begin a transaction
             transaction.begin();
-
             // Retrieve data from the database
-            TypedQuery<BigInteger> query = entityManager.createQuery("SELECT t.id FROM BStroj t", BigInteger.class);
-            List<BigInteger> idcka = query.getResultList();
+            //TypedQuery<BigInteger> query = entityManager.createQuery("SELECT t.id FROM BStroj t", BigInteger.class);
+            //List<BigInteger> idcka = query.getResultList();
 
             // Vytvorte model pre JComboBox
             DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
