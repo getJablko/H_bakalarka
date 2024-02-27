@@ -3,9 +3,15 @@ package GUI.Login;
 
 import GUI.GUIManager;
 import Sifrovanie.PasswordUtils;
+import Tabulky.BZamestnanec;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigInteger;
 
 /**
  *
@@ -19,7 +25,12 @@ public class LoginGUI extends javax.swing.JFrame {
      * Creates new form Login
      */
 
+    private BigInteger osCisloLogin;
+    private String rola;
     private GUIManager guiManager;
+
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     public LoginGUI(GUIManager guiManager) {
         initComponents();
@@ -74,11 +85,7 @@ public class LoginGUI extends javax.swing.JFrame {
         jLabel3.setText("Heslo");
 
         jPasswordField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
+
 
         jButtonPrihlasenie.setBackground(new java.awt.Color(255, 204, 153));
         jButtonPrihlasenie.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -194,10 +201,14 @@ public class LoginGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
 
+    public BigInteger getOsCisloLogin() {
+        return osCisloLogin;
+    }
+
+    public String getRolaZam() {
+        return rola;
+    }
 
     private void jButtonPrihlasenieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrihlasenieActionPerformed
         // TODO add your handling code here:
@@ -223,6 +234,9 @@ public class LoginGUI extends javax.swing.JFrame {
 
             if (PasswordUtils.checkPassword(zadaneHeslo, dobreHeslo)) {
 
+                this.osCisloLogin = BigInteger.valueOf(osobneCislo);
+                BZamestnanec zam = entityManager.find(BZamestnanec.class, osCisloLogin);
+                this.rola = zam.getTypZamD();
                 guiManager.zobrazHlavneMenu();
 
             } else {

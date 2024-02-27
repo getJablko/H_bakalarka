@@ -5,6 +5,7 @@
 package GUI.Porucha;
 
 import GUI.GUIManager;
+import GUI.Login.LoginGUI;
 import Sifrovanie.PasswordUtils;
 import Tabulky.BPorucha;
 import Tabulky.BZamestnanec;
@@ -33,9 +34,11 @@ public class PoruchaGUI extends javax.swing.JFrame {
     EntityTransaction transaction = entityManager.getTransaction();
 
     private GUIManager guiManager;
-    public PoruchaGUI(GUIManager guiManager) {
+    private LoginGUI loginGUI;
+    public PoruchaGUI(GUIManager guiManager,LoginGUI loginGUI) {
         initComponents2();
         this.guiManager = guiManager;
+        this.loginGUI = loginGUI;
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -494,11 +497,22 @@ public class PoruchaGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBoxAktualneActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO vyriešit aby mohol menit zaznam len ten kto ho vytvoril alebo nadriadeny
-
         // nacitam si vypisane udaje
-        //String osCislo = jTextFieldOs_cislo_nahlasenia.getText();
-        BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
+
+        int rowNumber = jTable1.getSelectedRow();
+        BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber,1)));
+
+        if (!loginGUI.getRolaZam().equals("M")) {
+            if (!osCislo.equals(loginGUI.getOsCisloLogin())) {
+                //System.out.println(loginGUI.getOsCisloLogin());
+                JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
+                this.vynulovaniePolicok();
+                return;
+            }
+                //System.out.println("tu som");
+        }
+        //System.out.println("tu som2");
+        //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
 
         String idStroja = (String) jComboBoxIdStroja.getSelectedItem();
         BigInteger idStrojaBigInt = new BigInteger(idStroja);
@@ -524,13 +538,12 @@ public class PoruchaGUI extends javax.swing.JFrame {
                 transaction.begin();
 
                 // pre vratenie ID
-                int rowNumber = jTable1.getSelectedRow();
                 BigInteger id = (BigInteger) jTable1.getValueAt(rowNumber, 0);
 
                 // Načítanie záznamu z databázy na základe ID a uprava
                 BPorucha bPorucha = entityManager.find(BPorucha.class,id);
 
-                bPorucha.setOsCisloNahlasenia(osCisloBigInt);
+                bPorucha.setOsCisloNahlasenia(osCislo);
                 bPorucha.setIdStroja(idStrojaBigInt);
                 bPorucha.setZavaznostD(zavaznost);
                 bPorucha.setStrojVPrevadzke(vPrevadzkeBigInt);
@@ -554,13 +567,13 @@ public class PoruchaGUI extends javax.swing.JFrame {
                 }
             }
         }
+
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-        // TODO vyriesit zápis os_cisla podla loginu
-        // nacitam si vypisane udaje
-        //String osCislo = jTextFieldOs_cislo_nahlasenia.getText();
-        BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
+
+        BigInteger osCisloBigInt = loginGUI.getOsCisloLogin();
+        //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
 
         String idStroja = (String) jComboBoxIdStroja.getSelectedItem();
         BigInteger idStrojaBigInt = new BigInteger(idStroja);
