@@ -8,6 +8,14 @@ public class BPolozkaObjednavkyPK implements Serializable {
     private BigInteger cisloObjednavky;
     private BigInteger cisloNd;
 
+    // Default constructor
+    public BPolozkaObjednavkyPK() {
+    }
+    public BPolozkaObjednavkyPK(BigInteger cisloObj, BigInteger cisloND) {
+        this.cisloObjednavky = cisloObj;
+        this.cisloNd = cisloND;
+    }
+
     // Constructors, getters, setters, equals, hashCode, etc.
 
     // Make sure to annotate these fields with @Id

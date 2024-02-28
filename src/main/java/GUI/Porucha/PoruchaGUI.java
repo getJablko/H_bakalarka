@@ -586,7 +586,6 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 }
             }
         }
-
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
