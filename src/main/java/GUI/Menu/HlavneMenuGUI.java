@@ -216,6 +216,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private void jButton6_OBJEDNAVKY_ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        guiManager.zobrazObjednavky();
 
     }
 

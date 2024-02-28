@@ -1,11 +1,14 @@
 package main;
 
 import GUI.GUIManager;
+import Sifrovanie.PasswordUtils;
+import Tabulky.BZamestnanec;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.math.BigInteger;
 
 public class Main {
 
@@ -101,15 +104,15 @@ public class Main {
             entityManager.persist(bUdrzbaPoruchy);
 
             BZamestnanec novyZamestnanec = new BZamestnanec();
-            novyZamestnanec.setPriezvisko("Doe2");
-            novyZamestnanec.setMeno("John2");
+            novyZamestnanec.setPriezvisko("Doe16");
+            novyZamestnanec.setMeno("John16");
             novyZamestnanec.setDostupnostZam(BigInteger.valueOf(0));
-            novyZamestnanec.setPassword(PasswordUtils.hashPassword("heslo2")); // Použite metódu na šifrovanie hesla
+            novyZamestnanec.setPassword(PasswordUtils.hashPassword("heslo")); // Použite metódu na šifrovanie hesla
             novyZamestnanec.setPracoviskoD("HS6400");
-            novyZamestnanec.setTypZamD("E");
+            novyZamestnanec.setTypZamD("X");
 
+            entityManager.persist(novyZamestnanec);
 */
-
 /*
             // Získanie existujúceho zamestnanca podľa os_cislo
             BZamestnanec existujuciZamestnanec = entityManager.find(BZamestnanec.class, BigInteger.valueOf(27));
@@ -148,8 +151,8 @@ public class Main {
 
 
             GUIManager guiManager = new GUIManager();
-            guiManager.zobrazLogin();
-            //guiManager.zobrazHlavneMenu();
+            //guiManager.zobrazLogin();
+            guiManager.zobrazHlavneMenu();
 
 
             transaction.commit();

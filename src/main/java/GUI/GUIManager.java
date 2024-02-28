@@ -2,6 +2,7 @@ package GUI;
 
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
+import GUI.Objednávky.ObjednavkyGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Stroje.StrojeGUI;
 import GUI.Stroje.TypStroja.TypStrojaGUI;
@@ -14,6 +15,7 @@ public class GUIManager {
     private StrojeGUI strojeGUI;
     private TypStrojaGUI typStrojaGUI;
     private PoruchaGUI poruchaGUI;
+    private ObjednavkyGUI objednavkyGUI;
 
     public GUIManager() {
         login = new LoginGUI(this);
@@ -22,6 +24,7 @@ public class GUIManager {
         strojeGUI = new StrojeGUI(this);
         typStrojaGUI = new TypStrojaGUI(strojeGUI);
         poruchaGUI = new PoruchaGUI(this, login);
+        objednavkyGUI = new ObjednavkyGUI(this);
     }
 
     public void zobrazLogin() {
@@ -101,6 +104,19 @@ public class GUIManager {
             poruchaGUI.pack();
             poruchaGUI.setLocationRelativeTo(null);
             poruchaGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazObjednavky() {
+        if (hlavneMenuGUI.isVisible()) {
+            hlavneMenuGUI.setVisible(false);
+        }
+        if (objednavkyGUI.isActive()) {
+            objednavkyGUI.setVisible(true);
+        } else {
+            objednavkyGUI.pack();
+            objednavkyGUI.setLocationRelativeTo(null);
+            objednavkyGUI.setVisible(true);
         }
     }
 }

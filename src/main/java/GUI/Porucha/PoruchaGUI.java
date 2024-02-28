@@ -106,7 +106,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
         // Resize the image
         Image image = icon.getImage(); // transform it
-        Image newImg = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        Image newImg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
         // Create a Color object with RGB values
         Color backgroundColor = new Color(255, 204, 153);
@@ -394,7 +394,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         TypedQuery<BigInteger> query;
         List<BigInteger> idcka;
 
-        if (!loginGUI.getRolaZam().equals("M")) {
+        if (!loginGUI.getRolaZam().equals("I")) {
             String pracovisko = loginGUI.getCisloHaly();
             pracovisko = pracovisko.substring(2);
             query = entityManager.createQuery("SELECT t.id FROM BStroj t WHERE t.cisloHaly LIKE :pracovisko", BigInteger.class);
@@ -521,7 +521,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         int rowNumber = jTable1.getSelectedRow();
         BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
 
-        if (!loginGUI.getRolaZam().equals("M")) {
+        if (!loginGUI.getRolaZam().equals("I")) {
             if (!osCislo.equals(loginGUI.getOsCisloLogin())) {
                 //System.out.println(loginGUI.getOsCisloLogin());
                 JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");

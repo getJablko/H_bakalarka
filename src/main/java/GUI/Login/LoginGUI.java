@@ -229,7 +229,6 @@ public class LoginGUI extends javax.swing.JFrame {
     }
 
     private void jButtonPrihlasenieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrihlasenieActionPerformed
-        // TODO add your handling code here:
         // Získajte hodnoty zo vstupných polí
         try {
             String osobneCisloText = jTextField1.getText().trim(); // Trim to remove leading/trailing whitespaces
@@ -273,7 +272,6 @@ public class LoginGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPrihlasenieActionPerformed
 
     private void jButtonZabudnuteActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         JOptionPane.showMessageDialog(this, "Kontaktujte svojho nadriadeného, pre resetovanie prihlasovacích údajov!", "Zabudnuté prihlasovacie údaje", JOptionPane.INFORMATION_MESSAGE);
     }
 

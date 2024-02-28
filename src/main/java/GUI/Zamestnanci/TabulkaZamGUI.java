@@ -196,7 +196,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         //jButton4.setText("H");
 
         // Load the image from file
-        ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button.png");
+        ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button2.png");
 
         // Resize the image
         Image image = icon.getImage(); // transform it
