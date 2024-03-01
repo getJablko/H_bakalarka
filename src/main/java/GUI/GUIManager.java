@@ -6,6 +6,7 @@ import GUI.Objednávky.ObjednavkyGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Stroje.StrojeGUI;
 import GUI.Stroje.TypStroja.TypStrojaGUI;
+import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
 
 public class GUIManager {
@@ -16,6 +17,7 @@ public class GUIManager {
     private TypStrojaGUI typStrojaGUI;
     private PoruchaGUI poruchaGUI;
     private ObjednavkyGUI objednavkyGUI;
+    private UdrzbaPoruchyGUI udrzbaPoruchyGUI;
 
     public GUIManager() {
         login = new LoginGUI(this);
@@ -25,6 +27,7 @@ public class GUIManager {
         typStrojaGUI = new TypStrojaGUI(strojeGUI);
         poruchaGUI = new PoruchaGUI(this, login);
         objednavkyGUI = new ObjednavkyGUI(this,login);
+        udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this);
     }
 
     public void zobrazLogin() {
@@ -117,6 +120,19 @@ public class GUIManager {
             objednavkyGUI.pack();
             objednavkyGUI.setLocationRelativeTo(null);
             objednavkyGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazUdrzbuPoruchy() {
+        if (udrzbaPoruchyGUI.isVisible()) {
+            udrzbaPoruchyGUI.setVisible(false);
+        }
+        if (udrzbaPoruchyGUI.isActive()) {
+            udrzbaPoruchyGUI.setVisible(true);
+        } else {
+            udrzbaPoruchyGUI.pack();
+            udrzbaPoruchyGUI.setLocationRelativeTo(null);
+            udrzbaPoruchyGUI.setVisible(true);
         }
     }
 }

@@ -202,22 +202,19 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        guiManager.zobrazUdrzbuPoruchy();
     }
 
     private void jButton2_NAHLASENIE_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
         guiManager.zobrazPoruchu();
-
     }
 
     private void jButton3_STROJE_ActionPerformed(java.awt.event.ActionEvent evt) {
         guiManager.zobrazStoje();
-
     }
 
     private void jButton6_OBJEDNAVKY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         guiManager.zobrazObjednavky();
-
     }
 
     private void jButton5_ZAMESTNANCI_ActionPerformed(java.awt.event.ActionEvent evt) {
