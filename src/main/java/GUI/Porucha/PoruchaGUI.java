@@ -47,7 +47,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 guiManager.zviditelniHlavneMenu();
             }
         });
-        displayDataInTable();
+        this.displayDataInTable();
 
         //naplnComboBoxIdStrojov();
         loginGUI.setLoginListener(this);
@@ -364,7 +364,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         model.setRowCount(0);
 
         // nacitam ju znova
-        displayDataInTable();
+        this.displayDataInTable();
 
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
@@ -477,7 +477,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         if (jCheckBoxAktualne.isSelected()) {
             try {
                 transaction.begin();
-                refreshTableActual();
+                this.refreshTableActual();
 
                 // Retrieve data from the database
                 //pouzitie JPQL - rozumie tomu framework hibernate
@@ -511,7 +511,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 }
             }
         } else {
-            refreshTable();
+            this.refreshTable();
         }
     }//GEN-LAST:event_jCheckBoxAktualneActionPerformed
 
@@ -521,7 +521,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         int rowNumber = jTable1.getSelectedRow();
         BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
 
-        if (!loginGUI.getRolaZam().equals("I")) {
+        if (loginGUI.getRolaZam().equals("I")) {
             if (!osCislo.equals(loginGUI.getOsCisloLogin())) {
                 //System.out.println(loginGUI.getOsCisloLogin());
                 JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
@@ -575,7 +575,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -631,7 +631,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Nová porucha bola vložená!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();

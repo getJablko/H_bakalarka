@@ -37,15 +37,14 @@ public class TypStrojaGUI extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 // vynulovanie policok
-                jTextFieldTypStroja.setText("");
-                jComboBox1.setSelectedItem(" ");
+                vynulovaniePolicok();
                 if (strojeGUI != null) {
                     strojeGUI.onBTypStrojaGUIClosed();
                 }
                 dispose();
             }
         });
-        displayDataInTable();
+        this.displayDataInTable();
     }
 
     /**
@@ -248,16 +247,20 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
+    private void vynulovaniePolicok() {
+        jTextFieldTypStroja.setText("");
+        jComboBox1.setSelectedItem(" ");
+    }
+
     private void refreshTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
         // nacitam ju znova
-        displayDataInTable();
+        this.displayDataInTable();
 
         // vynulovanie textovych policok
-        jTextFieldTypStroja.setText("");
-        jComboBox1.setSelectedItem(" ");
+        this.vynulovaniePolicok();
     }
 
     private void closeApplication() {
@@ -300,7 +303,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Nový typ stroja bol vložený!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -341,7 +344,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 entityManager.persist(bTypStroja);
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
-                refreshTable();
+                this.refreshTable();
 
 
             } catch (Exception e) {
@@ -360,8 +363,8 @@ public class TypStrojaGUI extends javax.swing.JFrame {
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
         // vynulovanie policok
-        jTextFieldTypStroja.setText("");
-        jComboBox1.setSelectedItem(" ");
+        this.vynulovaniePolicok();
+
 
         if (strojeGUI != null) {
             strojeGUI.onBTypStrojaGUIClosed();

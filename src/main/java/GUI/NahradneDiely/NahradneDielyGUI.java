@@ -5,7 +5,8 @@
 package GUI.NahradneDiely;
 
 import GUI.GUIManager;
-import Tabulky.BTypStroja;
+import GUI.Login.LoginGUI;
+import Tabulky.*;
 
 import javax.persistence.*;
 import javax.swing.*;
@@ -27,13 +28,15 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
+    private LoginGUI loginGUI;
 
     /**
      * Creates new form NahradneDielyGUI
      */
-    public NahradneDielyGUI(GUIManager guiManager) {
+    public NahradneDielyGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents();
         this.guiManager = guiManager;
+        this.loginGUI = loginGUI;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -44,7 +47,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
                 guiManager.zviditelniHlavneMenu();
             }
         });
-        displayDataInTable();
+        this.displayDataInTable();
         this.naplnComboBoxTypStroja();
     }
 
@@ -277,7 +280,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         model.setRowCount(0);
 
         // nacitam ju znova
-        displayDataInTable();
+        this.displayDataInTable();
 
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
@@ -370,17 +373,123 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
     private void jButtonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHomeActionPerformed
         // vynulovanie textovych policok
-        vynulovaniePolicok();
+        this.vynulovaniePolicok();
         this.dispose();
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-        // TODO add your handling code here:
+        // nacitam si vypisane udaje
+
+        int rowNumber = jTable1.getSelectedRow();
+
+        // restrikcie podla roly
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
+            System.out.println(loginGUI.getOsCisloLogin());
+            System.out.println(loginGUI.getRolaZam());
+            JOptionPane.showMessageDialog(null, "Nemôžete vkladat nový záznam!");
+            this.vynulovaniePolicok();
+            return;
+        }
+
+        String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
+        String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
+        BigInteger dostupneMnozstvo = new BigInteger(jTextFieldDostupneMnozstvo.getText());
+        String miestoUskladnenia = (String) jTextFieldMiestoUskladnenia.getText();
+
+        // overenie vypisania udajov
+        if (typStroja.equals(" ") || dostupnost.equals(" ") ||
+                dostupneMnozstvo.equals("")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // Načítanie záznamu z databázy na základe ID a uprava
+                BNahradnyDiel bNahradnyDiel = new BNahradnyDiel();
+
+                bNahradnyDiel.setMiestoUskladnenia(miestoUskladnenia);
+                bNahradnyDiel.setDostupneMnozstvo(dostupneMnozstvo);
+                bNahradnyDiel.setDostupnostNdD(dostupnost);
+                bNahradnyDiel.setTypStroja(typStroja);
+
+                entityManager.persist(bNahradnyDiel);
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Nový záznam bol vytvorený!");
+                this.refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                //e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        }
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO add your handling code here:
+        // nacitam si vypisane udaje
+
+        // ziskanie ID
+        int rowNumber = jTable1.getSelectedRow();
+        BigInteger cisloND = (BigInteger) jTable1.getValueAt(rowNumber, 0);
+
+        // restrikcie podla roly
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
+            //System.out.println(loginGUI.getOsCisloLogin());
+            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
+            this.vynulovaniePolicok();
+            return;
+        }
+
+        String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
+        String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
+        //BigInteger dostupneMnozstvo = new BigInteger(jTextFieldDostupneMnozstvo.getText());
+        String miestoUskladnenia = (String) jTextFieldMiestoUskladnenia.getText();
+        String dostupneMnozstvoText = jTextFieldDostupneMnozstvo.getText();
+
+        BigInteger dostupneMnozstvo = null; // Initialize as null
+
+        // Check if the input string for dostupneMnozstvo is not empty
+        if (!dostupneMnozstvoText.isEmpty()) {
+            dostupneMnozstvo = new BigInteger(dostupneMnozstvoText);
+        }
+
+        // overenie vypisania udajov
+        if (typStroja.equals(" ") || dostupnost.equals(" ") ||
+                dostupneMnozstvoText.equals("")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // Načítanie záznamu z databázy na základe ID a uprava
+                BNahradnyDiel bNahradnyDiel = entityManager.find(BNahradnyDiel.class,cisloND);
+
+                bNahradnyDiel.setMiestoUskladnenia(miestoUskladnenia);
+                bNahradnyDiel.setDostupneMnozstvo(dostupneMnozstvo);
+                bNahradnyDiel.setDostupnostNdD(dostupnost);
+                bNahradnyDiel.setTypStroja(typStroja);
+
+                entityManager.persist(bNahradnyDiel);
+
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
+                this.refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                //e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     /**

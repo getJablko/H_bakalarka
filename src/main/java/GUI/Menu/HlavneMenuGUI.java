@@ -222,31 +222,31 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.zobrazUdrzbuPoruchy();
+        this.guiManager.zobrazUdrzbuPoruchy();
     }
 
     private void jButton2_NAHLASENIE_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.zobrazPoruchu();
+        this.guiManager.zobrazPoruchu();
     }
 
     private void jButton3_STROJE_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.zobrazStoje();
+        this.guiManager.zobrazStoje();
     }
 
     private void jButton6_OBJEDNAVKY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.zobrazObjednavky();
+        this.guiManager.zobrazObjednavky();
     }
 
     private void jButton5_ZAMESTNANCI_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.zobrazTabulkuZam();
+        this.guiManager.zobrazTabulkuZam();
     }
 
     private void jButton_NAHRADNE_DIELY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.zobrazNahradneDiely();
+        this.guiManager.zobrazNahradneDiely();
     }
 
     private void jButton_LOGOUT_ActionPerformed(java.awt.event.ActionEvent evt) {
-        guiManager.odhlasenie();
+        this.guiManager.odhlasenie();
     }
 
     /**

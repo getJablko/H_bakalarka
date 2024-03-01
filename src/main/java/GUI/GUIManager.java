@@ -7,6 +7,7 @@ import GUI.Objednavky.ObjednavkyGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Stroje.StrojeGUI;
 import GUI.Stroje.TypStroja.TypStrojaGUI;
+import GUI.UdrzbaPoruchy.UdrzbaND.UdrzbaNahradnyDielGUI;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
 
@@ -24,35 +25,38 @@ public class GUIManager {
     private ObjednavkyGUI objednavkyGUI;
     private UdrzbaPoruchyGUI udrzbaPoruchyGUI;
     private NahradneDielyGUI nahradneDielyGUI;
+    private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
     private List<JFrame> oknaGUI = new ArrayList<>();
 
     public GUIManager() {
-        login = new LoginGUI(this);
-        hlavneMenuGUI = new HlavneMenuGUI(this);
-        zamestnanciGUI = new TabulkaZamGUI(this);
-        strojeGUI = new StrojeGUI(this);
-        typStrojaGUI = new TypStrojaGUI(strojeGUI);
-        poruchaGUI = new PoruchaGUI(this, login);
-        objednavkyGUI = new ObjednavkyGUI(this,login);
-        udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,login);
-        nahradneDielyGUI = new NahradneDielyGUI(this);
+        this.login = new LoginGUI(this);
+        this.hlavneMenuGUI = new HlavneMenuGUI(this);
+        this.zamestnanciGUI = new TabulkaZamGUI(this);
+        this.strojeGUI = new StrojeGUI(this);
+        this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
+        this.poruchaGUI = new PoruchaGUI(this, this.login);
+        this.objednavkyGUI = new ObjednavkyGUI(this,this.login);
+        this.udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,this.login);
+        this.nahradneDielyGUI = new NahradneDielyGUI(this,this.login);
+        this.udrzbaNahradnyDielGUI = new UdrzbaNahradnyDielGUI(this.udrzbaPoruchyGUI);
 
         // pridanie do arraylistu okien
-        oknaGUI.add(login);
-        oknaGUI.add(hlavneMenuGUI);
-        oknaGUI.add(zamestnanciGUI);
-        oknaGUI.add(strojeGUI);
-        oknaGUI.add(typStrojaGUI);
-        oknaGUI.add(poruchaGUI);
-        oknaGUI.add(objednavkyGUI);
-        oknaGUI.add(udrzbaPoruchyGUI);
-        oknaGUI.add(nahradneDielyGUI);
+        this.oknaGUI.add(login);
+        this.oknaGUI.add(hlavneMenuGUI);
+        this.oknaGUI.add(zamestnanciGUI);
+        this.oknaGUI.add(strojeGUI);
+        this.oknaGUI.add(typStrojaGUI);
+        this.oknaGUI.add(poruchaGUI);
+        this.oknaGUI.add(objednavkyGUI);
+        this.oknaGUI.add(udrzbaPoruchyGUI);
+        this.oknaGUI.add(nahradneDielyGUI);
+        this.oknaGUI.add(udrzbaNahradnyDielGUI);
     }
 
     public void zobrazLogin() {
-        login.pack();
-        login.setLocationRelativeTo(null);
-        login.setVisible(true);
+        this.login.pack();
+        this.login.setLocationRelativeTo(null);
+        this.login.setVisible(true);
     }
 
     public void disposeAll() {
@@ -62,120 +66,133 @@ public class GUIManager {
     }
 
     public void odhlasenie() {
-        disposeAll();
+        this.disposeAll();
         this.zobrazLogin();
     }
 
     public void zobrazHlavneMenu() {
-        if (login != null) {
-            login.dispose();
+        if (this.login != null) {
+            this.login.dispose();
         }
 
-        hlavneMenuGUI.pack();
-        hlavneMenuGUI.setLocationRelativeTo(null);
-        hlavneMenuGUI.setVisible(true);
+        this.hlavneMenuGUI.pack();
+        this.hlavneMenuGUI.setLocationRelativeTo(null);
+        this.hlavneMenuGUI.setVisible(true);
     }
 
     public void zviditelniHlavneMenu() {
 
-        if (zamestnanciGUI.isVisible()) {
-            zamestnanciGUI.dispose();
-        } else if (strojeGUI.isVisible()) {
-            strojeGUI.dispose();
+        if (this.zamestnanciGUI.isVisible()) {
+            this.zamestnanciGUI.dispose();
+        } else if (this.strojeGUI.isVisible()) {
+            this.strojeGUI.dispose();
         }
 
-        if (!hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(true);
+        if (!this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(true);
         }
     }
 
     public void zobrazTabulkuZam() {
-        if (hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(false);
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
         }
 
-        if (zamestnanciGUI.isActive()) {
-            zamestnanciGUI.setVisible(true);
+        if (this.zamestnanciGUI.isActive()) {
+            this.zamestnanciGUI.setVisible(true);
         } else {
-            zamestnanciGUI.pack();
-            zamestnanciGUI.setLocationRelativeTo(null);
-            zamestnanciGUI.setVisible(true);
+            this.zamestnanciGUI.pack();
+            this.zamestnanciGUI.setLocationRelativeTo(null);
+            this.zamestnanciGUI.setVisible(true);
         }
     }
 
     public void zobrazStoje() {
-        if (hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(false);
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
         }
-        if (strojeGUI.isActive()) {
-            strojeGUI.setVisible(true);
+        if (this.strojeGUI.isActive()) {
+            this.strojeGUI.setVisible(true);
         } else {
-            strojeGUI.pack();
-            strojeGUI.setLocationRelativeTo(null);
-            strojeGUI.setVisible(true);
+            this.strojeGUI.pack();
+            this.strojeGUI.setLocationRelativeTo(null);
+            this.strojeGUI.setVisible(true);
         }
     }
 
     public void zobrazTypStroja() {
-        if (typStrojaGUI.isActive()) {
-            typStrojaGUI.setVisible(true);
+        if (this.typStrojaGUI.isActive()) {
+            this.typStrojaGUI.setVisible(true);
         } else {
-            typStrojaGUI.pack();
-            typStrojaGUI.setLocationRelativeTo(null);
-            typStrojaGUI.setAlwaysOnTop(true);
-            typStrojaGUI.setVisible(true);
+            this.typStrojaGUI.pack();
+            this.typStrojaGUI.setLocationRelativeTo(null);
+            this.typStrojaGUI.setAlwaysOnTop(true);
+            this.typStrojaGUI.setVisible(true);
         }
     }
 
     public void zobrazPoruchu() {
-        if (hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(false);
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
         }
-        if (poruchaGUI.isActive()) {
-            poruchaGUI.setVisible(true);
+        if (this.poruchaGUI.isActive()) {
+            this.poruchaGUI.setVisible(true);
         } else {
-            poruchaGUI.pack();
-            poruchaGUI.setLocationRelativeTo(null);
-            poruchaGUI.setVisible(true);
+            this.poruchaGUI.pack();
+            this.poruchaGUI.setLocationRelativeTo(null);
+            this.poruchaGUI.setVisible(true);
         }
     }
 
     public void zobrazObjednavky() {
-        if (hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(false);
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
         }
-        if (objednavkyGUI.isActive()) {
-            objednavkyGUI.setVisible(true);
+        if (this.objednavkyGUI.isActive()) {
+            this.objednavkyGUI.setVisible(true);
         } else {
-            objednavkyGUI.pack();
-            objednavkyGUI.setLocationRelativeTo(null);
-            objednavkyGUI.setVisible(true);
+            this.objednavkyGUI.pack();
+            this.objednavkyGUI.setLocationRelativeTo(null);
+            this.objednavkyGUI.setVisible(true);
         }
     }
 
     public void zobrazUdrzbuPoruchy() {
-        if (hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(false);
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
         }
-        if (udrzbaPoruchyGUI.isActive()) {
-            udrzbaPoruchyGUI.setVisible(true);
+        if (this.udrzbaPoruchyGUI.isActive()) {
+            this.udrzbaPoruchyGUI.setVisible(true);
         } else {
-            udrzbaPoruchyGUI.pack();
-            udrzbaPoruchyGUI.setLocationRelativeTo(null);
-            udrzbaPoruchyGUI.setVisible(true);
+            this.udrzbaPoruchyGUI.pack();
+            this.udrzbaPoruchyGUI.setLocationRelativeTo(null);
+            this.udrzbaPoruchyGUI.setVisible(true);
         }
     }
 
     public void zobrazNahradneDiely() {
-        if (hlavneMenuGUI.isVisible()) {
-            hlavneMenuGUI.setVisible(false);
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
         }
-        if (nahradneDielyGUI.isActive()) {
-            nahradneDielyGUI.setVisible(true);
+        if (this.nahradneDielyGUI.isActive()) {
+            this.nahradneDielyGUI.setVisible(true);
         } else {
-            nahradneDielyGUI.pack();
-            nahradneDielyGUI.setLocationRelativeTo(null);
-            nahradneDielyGUI.setVisible(true);
+            this.nahradneDielyGUI.pack();
+            this.nahradneDielyGUI.setLocationRelativeTo(null);
+            this.nahradneDielyGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazUdrzbaNahradnyDiel() {
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
+        }
+        if (this.udrzbaNahradnyDielGUI.isActive()) {
+            this.udrzbaNahradnyDielGUI.setVisible(true);
+        } else {
+            this.udrzbaNahradnyDielGUI.pack();
+            this.udrzbaNahradnyDielGUI.setLocationRelativeTo(null);
+            this.udrzbaNahradnyDielGUI.setVisible(true);
         }
     }
 

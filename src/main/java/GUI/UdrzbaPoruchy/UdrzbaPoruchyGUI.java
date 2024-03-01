@@ -48,7 +48,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
                 guiManager.zviditelniHlavneMenu();
             }
         });
-        displayDataInTable();
+        this.displayDataInTable();
 
     }
 
@@ -293,7 +293,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         model.setRowCount(0);
 
         // nacitam ju znova
-        displayDataInTable();
+        this.displayDataInTable();
 
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
@@ -481,7 +481,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -496,6 +496,19 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
 
     private void jButtonPoziadavkaNDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPoziadavkaNDActionPerformed
         // TODO add your handling code here:
+        int actualRowNumber = 0;
+        actualRowNumber = jTable1.getSelectedRow();
+        if (actualRowNumber == 0) {
+            JOptionPane.showMessageDialog(null, "Vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
+            return;
+        }
+        if (loginGUI.getRolaZam().equals("I") || loginGUI.getRolaZam().equals("S")) {
+            JOptionPane.showMessageDialog(null, "Nemáte oprávnenie!");
+            this.vynulovaniePolicok();
+            return;
+        }
+        this.guiManager.zobrazUdrzbaNahradnyDiel();
     }//GEN-LAST:event_jButtonPoziadavkaNDActionPerformed
 
     /**

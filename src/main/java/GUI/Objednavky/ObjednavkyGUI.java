@@ -51,9 +51,9 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
                 guiManager.zviditelniHlavneMenu();
             }
         });
-        displayDataInTable();
-        naplnComboBoxCisloND();
-        naplnComboBoxCisloObj();
+        this.displayDataInTable();
+        this.naplnComboBoxCisloND();
+        this.naplnComboBoxCisloObj();
     }
 
     /**
@@ -326,7 +326,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         model.setRowCount(0);
 
         // nacitam ju znova
-        displayDataInTable();
+        this.displayDataInTable();
 
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
@@ -487,7 +487,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         BigInteger cisloND = new BigInteger(String.valueOf(jComboBoxCisloND.getSelectedItem()));
 
         // restrikcie podla roly
-        if (!loginGUI.getRolaZam().equals("S") || !loginGUI.getRolaZam().equals("A")) {
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
             //System.out.println(loginGUI.getOsCisloLogin());
             JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
             this.vynulovaniePolicok();
@@ -531,7 +531,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -547,7 +547,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
     private void jButtonNovaObjednavkaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // restrikcie podla roly
-        if (!loginGUI.getRolaZam().equals("S") || !loginGUI.getRolaZam().equals("A")) {
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
             //System.out.println(loginGUI.getOsCisloLogin());
             JOptionPane.showMessageDialog(null, "Nemáte oprávnenie na túto akciu!");
             this.vynulovaniePolicok();
@@ -598,9 +598,9 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         BigInteger cisloND = new BigInteger(String.valueOf(jComboBoxCisloND.getSelectedItem()));
 
         // restrikcie podla roly
-        if (!loginGUI.getRolaZam().equals("S") || !loginGUI.getRolaZam().equals("A")) {
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
             //System.out.println(loginGUI.getOsCisloLogin());
-            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
+            JOptionPane.showMessageDialog(null, "Nemôžete vkladať nový záznam!");
             this.vynulovaniePolicok();
             return;
         }
@@ -629,8 +629,8 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
                 entityManager.persist(bPolozkaObjednavky);
                 transaction.commit();
-                JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
-                refreshTable();
+                JOptionPane.showMessageDialog(null, "Nový záznam bol vložený!");
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();

@@ -43,19 +43,14 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 // vynulovanie textovych policok
-                jTextField1.setText("");
-                jTextField2.setText("");
-                jPasswordField1.setText("");
-                jComboBox1.setSelectedItem(" ");
-                jComboBox2.setSelectedItem(" ");
-                jComboBox3.setSelectedItem(" ");
+                vynulovaniePolicok();
 
                 guiManager.zviditelniHlavneMenu();
             }
         });
 
         // na zaciatku zobrazi hodnoty z tabulky
-        displayDataInTable();
+        this.displayDataInTable();
     }
 
     /**
@@ -364,8 +359,13 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         model.setRowCount(0);
 
         // nacitam ju znova
-        displayDataInTable();
+        this.displayDataInTable();
 
+        // vynulovanie textovych policok
+        this.vynulovaniePolicok();
+    }
+
+    private void vynulovaniePolicok() {
         // vynulovanie textovych policok
         jTextField1.setText("");
         jTextField2.setText("");
@@ -412,7 +412,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Nový zamestnanec bol vlozeny!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -460,7 +460,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -478,13 +478,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     }
 
     private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // vynulovanie textovych policok
-        jTextField1.setText("");
-        jTextField2.setText("");
-        jPasswordField1.setText("");
-        jComboBox1.setSelectedItem(" ");
-        jComboBox2.setSelectedItem(" ");
-        jComboBox3.setSelectedItem(" ");
+        this.vynulovaniePolicok();
 
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButton4ActionPerformed

@@ -32,25 +32,21 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
      * Creates new form Stroje
      */
     public StrojeGUI(GUIManager guiManager) {
-        this.guiManager = guiManager;
         initComponents();
+        this.guiManager = guiManager;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 // vynulovanie policok
-                jComboBoxTypStroja.setSelectedItem(" ");
-                jComboBoxCisloHaly.setSelectedItem(" ");
-                jTextFieldZaradenie.setText("");
-                jTextFieldVyradenie.setText("");
-                jTextAreaPopis.setText("");
+                vynulovaniePolicok();
 
                 guiManager.zviditelniHlavneMenu();
             }
         });
-        displayDataInTable();
-        naplnComboBoxTypyStrojov();
+        this.displayDataInTable();
+        this.naplnComboBoxTypyStrojov();
     }
 
     /**
@@ -382,23 +378,28 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         displayDataInTable();
 
         // vynulovanie textovych policok
-        jComboBoxTypStroja.setSelectedItem(" ");
-        jComboBoxCisloHaly.setSelectedItem(" ");
-        jTextFieldZaradenie.setText("");
-        jTextFieldVyradenie.setText("");
-        jTextAreaPopis.setText("");
+        this.vynulovaniePolicok();
     }
 
     @Override
     public void onBTypStrojaGUIClosed() {
         // Refresh the table or perform any other action needed
-        refreshTable();
+        this.refreshTable();
     }
 
     private void closeApplication() {
         // cleanup code:
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private void vynulovaniePolicok() {
+        // vynulovanie textovych policok
+        jComboBoxTypStroja.setSelectedItem(" ");
+        jComboBoxCisloHaly.setSelectedItem(" ");
+        jTextFieldZaradenie.setText("");
+        jTextFieldVyradenie.setText("");
+        jTextAreaPopis.setText("");
     }
 
     private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -432,11 +433,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // vynulovanie policok
-        jComboBoxTypStroja.setSelectedItem(" ");
-        jComboBoxCisloHaly.setSelectedItem(" ");
-        jTextFieldZaradenie.setText("");
-        jTextFieldVyradenie.setText("");
-        jTextAreaPopis.setText("");
+        this.vynulovaniePolicok();
 
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_homeButtonActionPerformed
@@ -479,7 +476,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Nový stroj bol vložený!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -538,7 +535,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
 
-                refreshTable();
+                this.refreshTable();
 
             } catch (Exception e) {
                 e.getCause();
@@ -554,7 +551,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonNovyStrojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovyStrojActionPerformed
-        guiManager.zobrazTypStroja();
+        this.guiManager.zobrazTypStroja();
     }
 
     /**

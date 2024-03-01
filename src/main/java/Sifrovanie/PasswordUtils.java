@@ -77,7 +77,6 @@ public class PasswordUtils extends Component {
         entityManager.close();
         entityManagerFactory.close();
     }
-
         //System.out.println(string);
         return string;
     }
