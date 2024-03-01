@@ -27,7 +27,7 @@ public class GUIManager {
         typStrojaGUI = new TypStrojaGUI(strojeGUI);
         poruchaGUI = new PoruchaGUI(this, login);
         objednavkyGUI = new ObjednavkyGUI(this,login);
-        udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this);
+        udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,login);
     }
 
     public void zobrazLogin() {
@@ -124,8 +124,8 @@ public class GUIManager {
     }
 
     public void zobrazUdrzbuPoruchy() {
-        if (udrzbaPoruchyGUI.isVisible()) {
-            udrzbaPoruchyGUI.setVisible(false);
+        if (hlavneMenuGUI.isVisible()) {
+            hlavneMenuGUI.setVisible(false);
         }
         if (udrzbaPoruchyGUI.isActive()) {
             udrzbaPoruchyGUI.setVisible(true);

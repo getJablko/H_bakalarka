@@ -22,13 +22,13 @@ public class BUdrzbaPoruchy {
 
     @Basic
     @javax.persistence.Column(name = "DOBA_OPRAVY", nullable = true, precision = 0)
-    private double dobaOpravy;
+    private Double dobaOpravy;
 
     public double getDobaOpravy() {
         return dobaOpravy;
     }
 
-    public void setDobaOpravy(double dobaOpravy) {
+    public void setDobaOpravy(Double dobaOpravy) {
         this.dobaOpravy = dobaOpravy;
     }
 

@@ -8,6 +8,14 @@ public class BUdrzbaPoruchyPK implements Serializable {
     private BigInteger idPoruchy;
     private BigInteger osCisloOpravy;
 
+    public BUdrzbaPoruchyPK() {
+
+    }
+    public BUdrzbaPoruchyPK(BigInteger idPoruchy, BigInteger osCisloOpravy) {
+        this.idPoruchy = idPoruchy;
+        this.osCisloOpravy = osCisloOpravy;
+    }
+
     // Constructors, getters, setters, equals, hashCode, etc.
 
     // Annotate these fields with @Id

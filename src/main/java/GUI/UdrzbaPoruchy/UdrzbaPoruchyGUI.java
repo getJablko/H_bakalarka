@@ -5,16 +5,20 @@
 package GUI.UdrzbaPoruchy;
 
 import GUI.GUIManager;
+import GUI.Login.LoginGUI;
+import Tabulky.BPorucha;
+import Tabulky.BUdrzbaPoruchy;
+import Tabulky.BUdrzbaPoruchyPK;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @author Mario
@@ -25,13 +29,15 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
+    private LoginGUI loginGUI;
 
     /**
      * Creates new form UdrzbaPoruchyGUI
      */
-    public UdrzbaPoruchyGUI(GUIManager guiManager) {
+    public UdrzbaPoruchyGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents();
         this.guiManager = guiManager;
+        this.loginGUI = loginGUI;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -73,6 +79,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1110, 700));
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 153));
 
@@ -249,6 +256,11 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
                 return canEdit[columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClick_ActionPerformed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -287,16 +299,90 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         this.vynulovaniePolicok();
     }
 
-    private void displayDataInTable() {
+    private void refreshTableActual() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
 
+        // vynulovanie textovych policok
+        this.vynulovaniePolicok();
+    }
+
+    private void displayDataInTable() {
+        try {
+            transaction.begin();
+
+            // Retrieve data from the database using JPQL with a join
+            TypedQuery<Object[]> query = entityManager.createQuery(
+                    "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy " +
+                            "FROM BUdrzbaPoruchy u ", Object[].class);
+
+            List<Object[]> results = query.getResultList();
+
+            // Populate data into the table model
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (Object[] result : results) {
+                Object[] row = {
+                        result[0],  // idPoruchy
+                        result[1],  // osCisloOpravy
+                        result[2],  // prebratie
+                        result[3],  // doobaOpravy
+                        result[4],  // popisUdrzby
+                        result[5]   // pricinyPoruchy
+                };
+                model.addRow(row);
+            }
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní údajov: " + e.getMessage() + " Skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
     }
 
     private void vynulovaniePolicok() {
-
+        jTextFieldDobaOpravy.setText("");
+        jTextFieldPopisUdrzby.setText("");
+        jTextFieldPrebratiePoruchy.setText("");
+        jTextFieldPricinaPoruchy.setText("");
+        // nastavenie defaultnej hodnoty
+        //jCheckBoxZobrazOpravene.setSelected(false);
     }
 
+    private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        int rowNumber = jTable1.getSelectedRow();
+
+        String prebratiePoruchy = (String) jTable1.getValueAt(rowNumber, 2);
+        jTextFieldPrebratiePoruchy.setText(prebratiePoruchy);
+
+
+        if (jTable1.getValueAt(rowNumber, 3) != null) {
+            Double dobaOpravy = (Double) jTable1.getValueAt(rowNumber, 3);
+            jTextFieldDobaOpravy.setText(dobaOpravy.toString());
+        } else {
+            jTextFieldDobaOpravy.setText("");
+        }
+
+        if (jTable1.getValueAt(rowNumber, 4) != null) {
+            String popisUdrzby = (String) jTable1.getValueAt(rowNumber, 4);
+            jTextFieldPopisUdrzby.setText(popisUdrzby);
+        } else {
+            jTextFieldPopisUdrzby.setText("");
+        }
+
+        if (jTable1.getValueAt(rowNumber, 5) != null) {
+            String pricinaPoruchy = (String) jTable1.getValueAt(rowNumber, 5);
+            jTextFieldPricinaPoruchy.setText(pricinaPoruchy);
+        } else {
+            jTextFieldPricinaPoruchy.setText("");
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void jButtonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHomeActionPerformed
-        // TODO add your handling code here:
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
 
@@ -305,11 +391,107 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
     private void jCheckBoxZobrazLenAktualneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxZobrazOpraveneActionPerformed
-        // TODO add your handling code here:
+        if (jCheckBoxZobrazOpravene.isSelected()) {
+            try {
+                transaction.begin();
+                refreshTableActual();
+
+                // Retrieve data from the database using JPQL with a join
+                TypedQuery<Object[]> query = entityManager.createQuery(
+                        "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy " +
+                                "FROM BUdrzbaPoruchy u " + "WHERE u.dobaOpravy IS NULL", Object[].class);
+
+                List<Object[]> results = query.getResultList();
+
+                // Populate data into the table model
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                for (Object[] result : results) {
+                    Object[] row = {
+                            result[0],  // idPoruchy
+                            result[1],  // osCisloOpravy
+                            result[2],  // prebratie
+                            result[3],  // doobaOpravy
+                            result[4],  // popisUdrzby
+                            result[5]   // pricinyPoruchy
+                    };
+                    model.addRow(row);
+                }
+                transaction.commit();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní údajov: " + e.getMessage() + " Skúste to znovu!");
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        } else {
+            this.refreshTable();
+        }
     }//GEN-LAST:event_jCheckBoxZobrazOpraveneActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO add your handling code here:
+        // TODO treba dalsi stlpec pre ostatnych angazovanych pracovnikov?
+
+        // nacitam si vypisane udaje
+        int rowNumber = jTable1.getSelectedRow();
+        BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
+        BigInteger osCisloOpravy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
+
+        if (loginGUI.getRolaZam().equals("I") || loginGUI.getRolaZam().equals("S")) {
+            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
+            this.vynulovaniePolicok();
+            return;
+            //System.out.println("tu som");
+        }
+
+        String prebratiePoruchy = jTextFieldPrebratiePoruchy.getText();
+        // pretipovanie
+
+        String dobaOpravy = jTextFieldDobaOpravy.getText();
+        double dobaOpravyDouble = 0;
+        if (!dobaOpravy.isEmpty()) {
+            dobaOpravyDouble = Double.parseDouble(dobaOpravy);
+        }
+        String popisUdrzby = jTextFieldPopisUdrzby.getText();
+        String pricinaPoruchy = jTextFieldPricinaPoruchy.getText();
+
+        // overenie vypisania udajov
+        if (prebratiePoruchy.equals("")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        } else {
+            try {
+                transaction.begin();
+
+                // Načítanie záznamu z databázy na základe ID a uprava
+                BUdrzbaPoruchyPK primaryKey = new BUdrzbaPoruchyPK(idPoruchy,osCisloOpravy);
+                BUdrzbaPoruchy bUdrzbaPoruchy = entityManager.find(BUdrzbaPoruchy.class,primaryKey);
+
+                bUdrzbaPoruchy.setPricinaPoruchy(pricinaPoruchy);
+                bUdrzbaPoruchy.setPrebratiePoruchy(prebratiePoruchy);
+                bUdrzbaPoruchy.setPopisUdrzby(popisUdrzby);
+                if (!dobaOpravy.isEmpty()) {
+                    bUdrzbaPoruchy.setDobaOpravy(dobaOpravyDouble);
+                } else {
+                    // Assuming dobaOpravy is nullable
+                    bUdrzbaPoruchy.setDobaOpravy(null);
+                }
+
+                entityManager.persist(bUdrzbaPoruchy);
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
+
+                refreshTable();
+
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonPoziadavkaNDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPoziadavkaNDActionPerformed
