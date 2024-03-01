@@ -2,12 +2,17 @@ package GUI;
 
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
-import GUI.Objednávky.ObjednavkyGUI;
+import GUI.NahradneDiely.NahradneDielyGUI;
+import GUI.Objednavky.ObjednavkyGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Stroje.StrojeGUI;
 import GUI.Stroje.TypStroja.TypStrojaGUI;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUIManager {
     private LoginGUI login;
@@ -18,6 +23,8 @@ public class GUIManager {
     private PoruchaGUI poruchaGUI;
     private ObjednavkyGUI objednavkyGUI;
     private UdrzbaPoruchyGUI udrzbaPoruchyGUI;
+    private NahradneDielyGUI nahradneDielyGUI;
+    private List<JFrame> oknaGUI = new ArrayList<>();
 
     public GUIManager() {
         login = new LoginGUI(this);
@@ -28,12 +35,35 @@ public class GUIManager {
         poruchaGUI = new PoruchaGUI(this, login);
         objednavkyGUI = new ObjednavkyGUI(this,login);
         udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,login);
+        nahradneDielyGUI = new NahradneDielyGUI(this);
+
+        // pridanie do arraylistu okien
+        oknaGUI.add(login);
+        oknaGUI.add(hlavneMenuGUI);
+        oknaGUI.add(zamestnanciGUI);
+        oknaGUI.add(strojeGUI);
+        oknaGUI.add(typStrojaGUI);
+        oknaGUI.add(poruchaGUI);
+        oknaGUI.add(objednavkyGUI);
+        oknaGUI.add(udrzbaPoruchyGUI);
+        oknaGUI.add(nahradneDielyGUI);
     }
 
     public void zobrazLogin() {
         login.pack();
         login.setLocationRelativeTo(null);
         login.setVisible(true);
+    }
+
+    public void disposeAll() {
+        for (javax.swing.JFrame window : oknaGUI) {
+            window.dispose();
+        }
+    }
+
+    public void odhlasenie() {
+        disposeAll();
+        this.zobrazLogin();
     }
 
     public void zobrazHlavneMenu() {
@@ -135,4 +165,18 @@ public class GUIManager {
             udrzbaPoruchyGUI.setVisible(true);
         }
     }
+
+    public void zobrazNahradneDiely() {
+        if (hlavneMenuGUI.isVisible()) {
+            hlavneMenuGUI.setVisible(false);
+        }
+        if (nahradneDielyGUI.isActive()) {
+            nahradneDielyGUI.setVisible(true);
+        } else {
+            nahradneDielyGUI.pack();
+            nahradneDielyGUI.setLocationRelativeTo(null);
+            nahradneDielyGUI.setVisible(true);
+        }
+    }
+
 }

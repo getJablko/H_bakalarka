@@ -2,14 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI.Objednávky;
+package GUI.Objednavky;
 
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import Tabulky.BObjednavka;
 import Tabulky.BPolozkaObjednavky;
 import Tabulky.BPolozkaObjednavkyPK;
-import Tabulky.BPorucha;
 
 import javax.persistence.*;
 import javax.swing.*;
@@ -22,7 +21,6 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Mario

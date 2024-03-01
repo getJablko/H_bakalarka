@@ -253,12 +253,12 @@ public class LoginGUI extends javax.swing.JFrame {
 
                     this.osCisloLogin = BigInteger.valueOf(osobneCislo);
                     BZamestnanec zam = entityManager.find(BZamestnanec.class, osCisloLogin);
+                    jTextField1.setText("");
+                    jPasswordField1.setText("");
                     this.rola = zam.getTypZamD();
                     this.cisloHaly = zam.getPracoviskoD();
                     this.onLoginSuccess();
                     guiManager.zobrazHlavneMenu();
-                    //this.onLoginSuccess();
-
                 } else {
                     // Nespravne prihlasovacie udaje
                     JOptionPane.showMessageDialog(this, "Zadali ste nesprávne prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
