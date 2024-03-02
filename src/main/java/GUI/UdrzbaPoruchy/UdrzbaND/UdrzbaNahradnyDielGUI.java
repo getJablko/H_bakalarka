@@ -6,6 +6,7 @@ package GUI.UdrzbaPoruchy.UdrzbaND;
 
 import GUI.UdrzbaPoruchy.PoziadavkaListener;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
+import Tabulky.BNahradnyDiel;
 import Tabulky.BUdrzbaPoruchyNahradnyDiel;
 import Tabulky.BUdrzbaPoruchyNahradnyDielPK;
 
@@ -37,7 +38,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         initComponents();
         this.udrzbaPoruchyGUI = udrzbaPoruchyGUI;
 
-
+        setAlwaysOnTop(true); // Set the JFrame to always stay on top
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -236,7 +237,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         this.id = this.udrzbaPoruchyGUI.getIdPoruchy();
         this.oCislo = this.udrzbaPoruchyGUI.getOsCisloNahlasenia();
         this.refreshTable();
-        naplnComboBoxCisloDielu();
+        this.naplnComboBoxCisloDielu();
     }
 
     private void displayDataInTable() {
@@ -267,12 +268,14 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             transaction.commit();
 
         } catch (Exception e) {
+            JOptionPane.getRootFrame().setAlwaysOnTop(true);
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní údajov: " + e.getMessage() + " Skúste to znovu!");
             if (transaction.isActive()) {
                 transaction.rollback();
             }
         }
+        JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
     private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -323,69 +326,90 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             // Commit the transaction
             transaction.commit();
         } catch (Exception e) {
+            JOptionPane.getRootFrame().setAlwaysOnTop(true);
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní ID strojov: " + e.getMessage() + " skúste to znovu!");
             if (transaction.isActive()) {
                 transaction.rollback();
             }
         }
+        JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        // nacitam si vypisane udaje
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
+
+        int rowCount = jTable1.getRowCount();
+        if (rowCount == 0) {
+            JOptionPane.showMessageDialog(null, "Neexistuje žiadna požiadavka, nemôžete vykonať túto akciu!");
+            this.vynulovaniePolicok();
+            return;
+        }
+
         int rowNumber = jTable1.getSelectedRow();
-        BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
-        BigInteger osCisloOpravy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
-        BigInteger cisloND = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 2)));
-
-        String poziadavka = jTextAreaPoziadavka.getText();
-        String cisloDielu = (String) jComboBoxCisloDielu.getSelectedItem();
-
-
-        // overenie vypisania udajov
-        if (cisloDielu.equals(" ")) {
-            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+        if (rowNumber == -1) {
+            JOptionPane.showMessageDialog(null, "Prosím vyberte riadok v tabuľke!");
+            return;
         } else {
-            BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
-            try {
-                transaction.begin();
+            BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
+            BigInteger osCisloOpravy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
+            BigInteger cisloND = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 2)));
 
-                // Načítanie záznamu z databázy na základe ID a uprava
-                BUdrzbaPoruchyNahradnyDielPK primaryKey = new BUdrzbaPoruchyNahradnyDielPK(idPoruchy,osCisloOpravy,cisloND);
-                BUdrzbaPoruchyNahradnyDiel bUdrzbaPoruchyNahradnyDiel = entityManager.find(BUdrzbaPoruchyNahradnyDiel.class,primaryKey);
+            String poziadavka = jTextAreaPoziadavka.getText();
+            String cisloDielu = (String) jComboBoxCisloDielu.getSelectedItem();
 
-                bUdrzbaPoruchyNahradnyDiel.setCisloNd(cisloDieluBigInteger);
-                bUdrzbaPoruchyNahradnyDiel.setPozadavkaNd(poziadavka);
+            // overenie vypisania udajov
+            if (cisloDielu.equals(" ")) {
+                JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+            } else {
+                BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
+                try {
+                    transaction.begin();
 
-                entityManager.persist(bUdrzbaPoruchyNahradnyDiel);
-                transaction.commit();
-                JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
+                    // Načítanie záznamu z databázy na základe ID a úprava
+                    BUdrzbaPoruchyNahradnyDielPK primaryKey = new BUdrzbaPoruchyNahradnyDielPK(idPoruchy, osCisloOpravy, cisloND);
+                    BUdrzbaPoruchyNahradnyDiel bUdrzbaPoruchyNahradnyDiel = entityManager.find(BUdrzbaPoruchyNahradnyDiel.class, primaryKey);
 
-                this.refreshTable();
+                    bUdrzbaPoruchyNahradnyDiel.setCisloNd(cisloDieluBigInteger);
+                    bUdrzbaPoruchyNahradnyDiel.setPozadavkaNd(poziadavka);
 
-            } catch (Exception e) {
-                e.getCause();
-                JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
-            } finally {
-                if (transaction.isActive()) {
-                    transaction.rollback();
+                    entityManager.persist(bUdrzbaPoruchyNahradnyDiel);
+                    transaction.commit();
+                    JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
+
+                    this.refreshTable();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " Skúste to znovu!");
+                } finally {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
                 }
             }
         }
+        JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        // nacitam si vypisane udaje
-        int rowNumber = jTable1.getSelectedRow();
-        BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
-        BigInteger osCisloOpravy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
-        BigInteger cisloND = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 2)));
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
 
+        int rowCount = jTable1.getRowCount();
+        if (rowCount == 0) {
+            BNahradnyDiel bNahradnyDiel = new BNahradnyDiel();
+            JOptionPane.showMessageDialog(null,"Bol vytvorený a priradený nový náhradný diel s číslom: " + bNahradnyDiel.getCisloNd() + " !");
+            DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+            comboBoxModel.addElement(bNahradnyDiel.getCisloNd().toString());
+            // Nastavte model do JComboBox
+            jComboBoxCisloDielu.setModel(comboBoxModel);
+            jComboBoxCisloDielu.setSelectedItem(bNahradnyDiel.getCisloNd().toString());
+        }
+
+        // nacitam si vypisane udaje
         String poziadavka = jTextAreaPoziadavka.getText();
         String cisloDielu = (String) jComboBoxCisloDielu.getSelectedItem();
-
 
         // overenie vypisania udajov
         if (cisloDielu.equals(" ")) {
@@ -418,6 +442,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                 }
             }
         }
+        JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {
