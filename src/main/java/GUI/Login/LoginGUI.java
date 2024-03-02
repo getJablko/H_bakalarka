@@ -11,6 +11,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.math.BigInteger;
 
 /**
@@ -96,6 +98,17 @@ public class LoginGUI extends javax.swing.JFrame {
                 jButtonPrihlasenieActionPerformed(evt);
             }
         });
+        // Add key binding for Enter key
+        KeyStroke enterKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        Action enterAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Call the action performed for the button
+                jButtonPrihlasenie.doClick();
+            }
+        };
+        jButtonPrihlasenie.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(enterKeyStroke, "enterAction");
+        jButtonPrihlasenie.getActionMap().put("enterAction", enterAction);
 
         jButtonZabudnute.setBackground(new java.awt.Color(255, 255, 254));
         jButtonZabudnute.setText("Zabudnuté prihlasovacie údaje?");

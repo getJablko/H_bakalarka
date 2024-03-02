@@ -20,6 +20,12 @@ public class BUdrzbaPoruchyNahradnyDielPK implements Serializable {
     @Id
 
     private BigInteger cisloNd;
+    public BUdrzbaPoruchyNahradnyDielPK() {}
+    public BUdrzbaPoruchyNahradnyDielPK(BigInteger idPoruchy, BigInteger osCisloOpravy, BigInteger cisloND) {
+        this.idPoruchy = idPoruchy;
+        this.osCisloOpravy = osCisloOpravy;
+        this.cisloNd = cisloND;
+    }
 
     public BigInteger getIdPoruchy() {
         return idPoruchy;

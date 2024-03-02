@@ -30,6 +30,9 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
     private LoginGUI loginGUI;
+    private BigInteger osCisloNahlasenia;
+    private BigInteger IdPoruchy;
+    private PoziadavkaListener poziadavkaListener;
 
     /**
      * Creates new form UdrzbaPoruchyGUI
@@ -49,7 +52,6 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
             }
         });
         this.displayDataInTable();
-
     }
 
     /**
@@ -287,6 +289,22 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         entityManager.close();
         entityManagerFactory.close();
     }
+    public BigInteger getOsCisloNahlasenia() {
+        return osCisloNahlasenia;
+    }
+
+    public BigInteger getIdPoruchy() {
+        return IdPoruchy;
+    }
+    public void setPoziadavkaListener(PoziadavkaListener poziadavkaListener) {
+        this.poziadavkaListener = poziadavkaListener;
+    }
+
+    public void onNovaPoziadavka() {
+        if (poziadavkaListener != null) {
+            poziadavkaListener.onNovaPoziadavka();
+        }
+    }
 
     private void refreshTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -379,6 +397,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         } else {
             jTextFieldPricinaPoruchy.setText("");
         }
+        this.onNovaPoziadavka();
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -496,9 +515,9 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
 
     private void jButtonPoziadavkaNDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPoziadavkaNDActionPerformed
         // TODO add your handling code here:
-        int actualRowNumber = 0;
+        int actualRowNumber = -1;
         actualRowNumber = jTable1.getSelectedRow();
-        if (actualRowNumber == 0) {
+        if (actualRowNumber < 0) {
             JOptionPane.showMessageDialog(null, "Vyberte riadok v tabuľke!");
             this.vynulovaniePolicok();
             return;
@@ -508,7 +527,14 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
             this.vynulovaniePolicok();
             return;
         }
+        // naplnenie kompozitneho PK pre UdrzbaNahradnyDielGUI
+        this.IdPoruchy = (BigInteger) jTable1.getValueAt(actualRowNumber,0);
+        this.osCisloNahlasenia = (BigInteger) jTable1.getValueAt(actualRowNumber,1);
+        this.vynulovaniePolicok();
+        this.onNovaPoziadavka();
         this.guiManager.zobrazUdrzbaNahradnyDiel();
+        // vynuluje selected row
+        jTable1.clearSelection();
     }//GEN-LAST:event_jButtonPoziadavkaNDActionPerformed
 
     /**
