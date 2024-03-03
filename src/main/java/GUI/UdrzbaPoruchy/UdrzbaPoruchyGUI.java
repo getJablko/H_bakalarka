@@ -32,6 +32,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     private LoginGUI loginGUI;
     private BigInteger osCisloNahlasenia;
     private BigInteger IdPoruchy;
+    private String typStrojaA;
     private PoziadavkaListener poziadavkaListener;
 
     /**
@@ -289,6 +290,11 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         entityManager.close();
         entityManagerFactory.close();
     }
+
+    public String getTypStrojaA() {
+        return typStrojaA;
+    }
+
     public BigInteger getOsCisloNahlasenia() {
         return osCisloNahlasenia;
     }
@@ -296,6 +302,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     public BigInteger getIdPoruchy() {
         return IdPoruchy;
     }
+
     public void setPoziadavkaListener(PoziadavkaListener poziadavkaListener) {
         this.poziadavkaListener = poziadavkaListener;
     }
@@ -483,8 +490,8 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
                 transaction.begin();
 
                 // Načítanie záznamu z databázy na základe ID a uprava
-                BUdrzbaPoruchyPK primaryKey = new BUdrzbaPoruchyPK(idPoruchy,osCisloOpravy);
-                BUdrzbaPoruchy bUdrzbaPoruchy = entityManager.find(BUdrzbaPoruchy.class,primaryKey);
+                BUdrzbaPoruchyPK primaryKey = new BUdrzbaPoruchyPK(idPoruchy, osCisloOpravy);
+                BUdrzbaPoruchy bUdrzbaPoruchy = entityManager.find(BUdrzbaPoruchy.class, primaryKey);
 
                 bUdrzbaPoruchy.setPricinaPoruchy(pricinaPoruchy);
                 bUdrzbaPoruchy.setPrebratiePoruchy(prebratiePoruchy);
@@ -528,8 +535,22 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
             return;
         }
         // naplnenie kompozitneho PK pre UdrzbaNahradnyDielGUI
-        this.IdPoruchy = (BigInteger) jTable1.getValueAt(actualRowNumber,0);
-        this.osCisloNahlasenia = (BigInteger) jTable1.getValueAt(actualRowNumber,1);
+        this.IdPoruchy = (BigInteger) jTable1.getValueAt(actualRowNumber, 0);
+        this.osCisloNahlasenia = (BigInteger) jTable1.getValueAt(actualRowNumber, 1);
+
+        // vratenie typu stroja
+        TypedQuery<String> query = entityManager.createQuery(
+                "SELECT DISTINCT nd.typStroja " +
+                        "FROM BUdrzbaPoruchy u " +
+                        "JOIN BPorucha p ON u.idPoruchy = p.idPoruchy " +
+                        "JOIN BStroj str on p.idStroja = str.idStroja " +
+                        "JOIN BTypStroja ts on str.typStroja = ts.typStroja  " +
+                        "JOIN BNahradnyDiel nd ON ts.typStroja = nd.typStroja " +
+                        "WHERE u.idPoruchy = :id AND u.osCisloOpravy = :oCislo", String.class);
+        query.setParameter("id", this.IdPoruchy);
+        query.setParameter("oCislo", this.osCisloNahlasenia);
+        this.typStrojaA = query.getSingleResult();
+
         this.vynulovaniePolicok();
         this.onNovaPoziadavka();
         this.guiManager.zobrazUdrzbaNahradnyDiel();
