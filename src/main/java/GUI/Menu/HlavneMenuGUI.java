@@ -2,6 +2,11 @@
 package GUI.Menu;
 
 import GUI.GUIManager;
+import GUI.Menu.Graphs.GraphBarChart;
+import GUI.Menu.Graphs.GraphPieChart;
+
+import java.awt.*;
+
 
 /**
  * @author Mario
@@ -17,6 +22,8 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     public HlavneMenuGUI(GUIManager guiManager) {
         initComponents2();
         this.guiManager = guiManager;
+        this.displayGraph1();
+        this.displayGraph2();
     }
 
     /**
@@ -44,6 +51,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         setTitle("HlavneMenuGUI");
         setResizable(false);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 254));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel1.setLayout(null);
 
@@ -190,7 +198,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 300, 520);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 254));
         jPanel3.setPreferredSize(new java.awt.Dimension(500, 500));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -220,6 +228,22 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
+
+    private void displayGraph1() {
+        GraphPieChart graph = new GraphPieChart();
+        graph.setPreferredSize(new Dimension(450, 225));
+        graph.setBackground(new java.awt.Color(255, 255, 254));
+        jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
+        jPanel3.add(graph);
+    }
+
+    private void displayGraph2() {
+        GraphBarChart graph = new GraphBarChart();
+        graph.setPreferredSize(new Dimension(450, 225));
+        graph.setBackground(new java.awt.Color(255, 255, 254));
+        jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
+        jPanel3.add(graph);
+    }
 
     private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
         this.guiManager.zobrazUdrzbuPoruchy();

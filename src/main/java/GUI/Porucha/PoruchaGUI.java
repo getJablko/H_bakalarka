@@ -674,7 +674,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonPrebratieActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
         int actualRowNumber = -1;
         actualRowNumber = jTable1.getSelectedRow();
         if (actualRowNumber < 0) {
