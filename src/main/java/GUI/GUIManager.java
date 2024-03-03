@@ -36,7 +36,7 @@ public class GUIManager {
         this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
         this.poruchaGUI = new PoruchaGUI(this, this.login);
         this.objednavkyGUI = new ObjednavkyGUI(this,this.login);
-        this.udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,this.login);
+        this.udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,this.login,this.poruchaGUI);
         this.nahradneDielyGUI = new NahradneDielyGUI(this,this.login);
         this.udrzbaNahradnyDielGUI = new UdrzbaNahradnyDielGUI(this.udrzbaPoruchyGUI);
 

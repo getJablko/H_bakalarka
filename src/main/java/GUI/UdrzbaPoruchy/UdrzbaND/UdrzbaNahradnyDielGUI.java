@@ -562,7 +562,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
     }
 
     private void jButtonNovyDielActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
         try {
             transaction.begin();
@@ -592,17 +592,16 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
     }
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
 
         int pocetMoznosti = jComboBoxCisloDielu.getItemCount();
-        System.out.println("pocet:" + pocetMoznosti);
-        //System.out.println(pocetMoznosti);
+        //System.out.println("pocet:" + pocetMoznosti);
+
         if (pocetMoznosti == 1) {
             JOptionPane.showMessageDialog(null, "Prosím vytvorte nový náhradný diel!");
             return;
         }
-
 
         // nacitam si vypisane udaje
         String poziadavka = jTextAreaPoziadavka.getText();

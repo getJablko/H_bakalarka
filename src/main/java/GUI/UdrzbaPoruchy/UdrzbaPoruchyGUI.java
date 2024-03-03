@@ -6,6 +6,8 @@ package GUI.UdrzbaPoruchy;
 
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
+import GUI.Porucha.PoruchaGUI;
+import GUI.Porucha.PrebratiePoruchyListener;
 import Tabulky.BPorucha;
 import Tabulky.BUdrzbaPoruchy;
 import Tabulky.BUdrzbaPoruchyPK;
@@ -23,7 +25,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
+public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePoruchyListener {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -34,14 +36,16 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     private BigInteger IdPoruchy;
     private String typStrojaA;
     private PoziadavkaListener poziadavkaListener;
+    private PoruchaGUI poruchaGUI;
 
     /**
      * Creates new form UdrzbaPoruchyGUI
      */
-    public UdrzbaPoruchyGUI(GUIManager guiManager, LoginGUI loginGUI) {
+    public UdrzbaPoruchyGUI(GUIManager guiManager, LoginGUI loginGUI, PoruchaGUI poruchaGUI) {
         initComponents();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
+        this.poruchaGUI = poruchaGUI;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -53,6 +57,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
             }
         });
         this.displayDataInTable();
+        this.poruchaGUI.setPrebratieListener(this);
     }
 
     /**
@@ -332,6 +337,11 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
         this.vynulovaniePolicok();
     }
 
+    @Override
+    public void onPrebratieSuccess() {
+        this.refreshTable();
+    }
+
     private void displayDataInTable() {
         try {
             transaction.begin();
@@ -580,5 +590,6 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPopisUdrzby;
     private javax.swing.JTextField jTextFieldPrebratiePoruchy;
     private javax.swing.JTextField jTextFieldPricinaPoruchy;
+
     // End of variables declaration//GEN-END:variables
 }
