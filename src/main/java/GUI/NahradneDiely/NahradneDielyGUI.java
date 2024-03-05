@@ -86,30 +86,29 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         //jButtonHome.setBackground(new java.awt.Color(255, 255, 254));
         //jButtonHome.setText("H");
 
-        // Resize the image
         ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button2.png");
 
         // Resize the image
         Image image = icon.getImage(); // transform it
         Image newImg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
-        // Create a Color object with RGB values
+        // nastavenie farby
         Color backgroundColor = new Color(255, 204, 153);
-        // Set the background color of the button
         jButtonHome.setBackground(backgroundColor);
-        // Set the icon on the JButton
+        // nastavenie icony
         jButtonHome.setIcon(icon);
+
+        // upravy tlačitka
         jButtonHome.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
             @Override
             protected void paintButtonPressed(Graphics g, AbstractButton b) {
                 // Do nothing to disable the default button pressed painting
             }
         });
-
         // Set the focus painted property to false
         jButtonHome.setFocusPainted(false);
 
-        // Remove borders from the button
+        // odstranenie "borderov"
         jButtonHome.setBorder(null);
         jButtonHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,7 +296,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
             List<Object[]> results = query.getResultList();
 
-            // Populate data into the table model
+            // nacitanie dat
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             for (Object[] result : results) {
                 Object[] row = {
@@ -322,10 +321,9 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
     private void naplnComboBoxTypStroja() {
         try {
-            // Begin a transaction
             transaction.begin();
 
-            // Retrieve data from the database
+            // zskanie dat
             TypedQuery<BTypStroja> query = entityManager.createQuery("SELECT t FROM BTypStroja t", BTypStroja.class);
             List<BTypStroja> typyStrojov = query.getResultList();
 
@@ -340,7 +338,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
             // Nastavte model do JComboBox
             jComboBoxTypStroja.setModel(comboBoxModel);
 
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();
@@ -451,9 +449,9 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         String miestoUskladnenia = (String) jTextFieldMiestoUskladnenia.getText();
         String dostupneMnozstvoText = jTextFieldDostupneMnozstvo.getText();
 
-        BigInteger dostupneMnozstvo = null; // Initialize as null
+        BigInteger dostupneMnozstvo = null;
 
-        // Check if the input string for dostupneMnozstvo is not empty
+        // overenie ci dostupneMnozstvo nie je prazdne
         if (!dostupneMnozstvoText.isEmpty()) {
             dostupneMnozstvo = new BigInteger(dostupneMnozstvoText);
         }

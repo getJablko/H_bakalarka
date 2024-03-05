@@ -217,11 +217,10 @@ public class TypStrojaGUI extends javax.swing.JFrame {
 
     private void displayDataInTable() {
         try {
-            // Begin a transaction
             transaction.begin();
             JOptionPane.getRootFrame().setAlwaysOnTop(true);
 
-            // Retrieve data from the database
+            // ziskanie dat
             //pouzitie JPQL - rozumie tomu framework hibernate
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT t.typStroja, t.prioritaD FROM BTypStroja t", Object[].class);
@@ -235,7 +234,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 };
                 model.addRow(row);
             }
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();

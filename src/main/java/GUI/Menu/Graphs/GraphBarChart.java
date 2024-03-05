@@ -23,39 +23,38 @@ public class GraphBarChart extends JPanel {
     EntityTransaction transaction = entityManager.getTransaction();
 
     public GraphBarChart() {
-        // Inside your Graph class
+        // vytvorenie datasetu
         DefaultCategoryDataset dataset = (DefaultCategoryDataset) createDataset();
 
-        // Create a chart
+        // vytvorenie grafu
         JFreeChart chart = ChartFactory.createBarChart(
                 "Poruchy typov strojov",
                 "Typ stroja",
                 "Počet porúch",
                 dataset
         );
-        // Get the title of the chart
+        // nastavenie nazvu
         TextTitle title = chart.getTitle();
 
-        // Set a custom font with a specific size for the title
+        //nastavenie textu/fontov
         title.setFont(new Font("Arial", Font.BOLD, 18)); // Set font size to 18
-        // Set background color
+        // farba pozadia
         chart.setBackgroundPaint(new Color(255, 255, 254));
 
-        // Customize the plot (if needed)
+        // kod na upravu grafu
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(new Color(220,220,220));
 
-        // Get the domain axis (X-axis)
+        // uprava nazvov osi
         CategoryAxis domainAxis = plot.getDomainAxis();
         domainAxis.setLabelFont(new Font("Arial", Font.PLAIN, 12)); // Set font size to 12
 
-        // Get the range axis (Y-axis)
         ValueAxis rangeAxis = plot.getRangeAxis();
         rangeAxis.setLabelFont(new Font("Arial", Font.PLAIN, 10)); // Set font size to 12
 
-        // Customize the renderer (for changing column colors)
+        // uprava renderu grafu - farby
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
-        // Change color of series
+        // Czmena farieb
         renderer.setSeriesPaint(0, new Color(135,206,250));
         renderer.setSeriesPaint(1, new Color(233,150,122));
         renderer.setSeriesPaint(2, new Color(64,224,208));
@@ -64,16 +63,16 @@ public class GraphBarChart extends JPanel {
         renderer.setSeriesPaint(5, new Color(188,143,143));
 
         for (int i = 0; i <= 5; i++) {
-            renderer.setMaximumBarWidth(0.1); // Adjust the value as needed
-            renderer.setDrawBarOutline(true); // Enable drawing bar outlines
-            renderer.setSeriesOutlineStroke(i, new BasicStroke(0.75f)); // Set the stroke for the bar outline
-            renderer.setSeriesOutlinePaint(i, Color.BLACK); // Set the color for the bar outline
+            renderer.setMaximumBarWidth(0.1); // sirka
+            renderer.setDrawBarOutline(true); // outline
+            renderer.setSeriesOutlineStroke(i, new BasicStroke(0.75f)); // nastavenie sirky
+            renderer.setSeriesOutlinePaint(i, Color.BLACK); // farba
         }
 
 
-        // Display the chart in a ChartPanel
+        // zobrazenie grafu v ChartPanel
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(450, 225)); // Set preferred size
+        chartPanel.setPreferredSize(new Dimension(450, 225)); // preferred size
         add(chartPanel);
     }
 
@@ -81,7 +80,7 @@ public class GraphBarChart extends JPanel {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         try {
             transaction.begin();
-            // Retrieve data from the database using JPQL with a join
+            // ziskane data z databazy - JPQL
             TypedQuery<Object[]> query1 = entityManager.createQuery(
                     "SELECT t.typStroja , COUNT(p.idStroja) " +
                             "FROM BStroj t " +

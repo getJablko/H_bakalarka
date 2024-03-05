@@ -413,7 +413,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         try {
             transaction.begin();
 
-            // Retrieve data from the database using JPQL with a join
+            // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd " +
                             "FROM BUdrzbaPoruchyNahradnyDiel up " +
@@ -423,7 +423,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             query.setParameter("oCislo", oCislo);
             List<Object[]> results = query.getResultList();
 
-            // Populate data into the table model
+            // nacitanie udajov
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             for (Object[] result : results) {
                 Object[] row = {
@@ -481,7 +481,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         query.setParameter("oCislo", oCislo);
         idcka = query.getResultList();
         try {
-            // Begin a transaction
+
             transaction.begin();
             // Vytvorte model pre JComboBox
             DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
@@ -492,7 +492,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             // Nastavte model do JComboBox
             jComboBoxCisloDielu.setModel(comboBoxModel);
 
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             JOptionPane.getRootFrame().setAlwaysOnTop(true);

@@ -97,18 +97,15 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         //jButtonHome.setBackground(new java.awt.Color(255, 255, 254));
         //jButtonHome.setText("H");
 
-        // Resize the image
         ImageIcon icon = new ImageIcon("C:\\Users\\Mario\\Desktop\\bakalarka\\hibernate_bakalarka\\H_bakalarka\\icons\\home_button2.png");
 
         // Resize the image
         Image image = icon.getImage(); // transform it
         Image newImg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
-        // Create a Color object with RGB values
+        // nastavenie farieb
         Color backgroundColor = new Color(255, 204, 153);
-        // Set the background color of the button
         jButtonHome.setBackground(backgroundColor);
-        // Set the icon on the JButton
         jButtonHome.setIcon(icon);
         jButtonHome.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
             @Override
@@ -117,10 +114,8 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             }
         });
 
-        // Set the focus painted property to false
+        // dalsie nastavenia
         jButtonHome.setFocusPainted(false);
-
-        // Remove borders from the button
         jButtonHome.setBorder(null);
         jButtonHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -348,7 +343,6 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         idcka = query.getResultList();
 
         try {
-            // Begin a transaction
             transaction.begin();
 
             // Vytvorte model pre JComboBox
@@ -361,7 +355,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             // Nastavte model do JComboBox
             jComboBoxCisloND.setModel(comboBoxModel);
 
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();
@@ -380,7 +374,6 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         idcka = query.getResultList();
 
         try {
-            // Begin a transaction
             transaction.begin();
 
             // Vytvorte model pre JComboBox
@@ -393,7 +386,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             // Nastavte model do JComboBox
             jComboBoxCisloObj.setModel(comboBoxModel);
 
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();
@@ -408,7 +401,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         try {
             transaction.begin();
 
-            // Retrieve data from the database using JPQL with a join
+            // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT p.cisloObjednavky, p.cisloNd, p.mnozstvo, p.cena, o.datumObjednavky, o.datumDorucenia " +
                             "FROM BPolozkaObjednavky p " +
@@ -416,7 +409,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
             List<Object[]> results = query.getResultList();
 
-            // Populate data into the table model
+            // nacitanie dat
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             for (Object[] result : results) {
                 Object[] row = {
@@ -650,7 +643,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
                 transaction.begin();
                 this.refreshTableActual();
 
-                // Retrieve data from the database using JPQL with a join
+                // ziskanie dat - JPQL
                 TypedQuery<Object[]> query = entityManager.createQuery(
                         "SELECT p.cisloObjednavky, p.cisloNd, p.mnozstvo, p.cena, o.datumObjednavky, o.datumDorucenia " +
                                 "FROM BPolozkaObjednavky p " +
@@ -659,7 +652,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
                 List<Object[]> results = query.getResultList();
 
-                // Populate data into the table model
+                // nacitanie dat
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 for (Object[] result : results) {
                     Object[] row = {

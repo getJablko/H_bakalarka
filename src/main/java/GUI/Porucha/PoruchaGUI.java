@@ -114,15 +114,12 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         Image image = icon.getImage(); // transform it
         Image newImg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
-        // Create a Color object with RGB values
+        // nastavenia farieb
         Color backgroundColor = new Color(255, 204, 153);
-        // Remove borders from the button
         jButtonHome.setBorder(null);
-
-        // Set the background color of the button
         jButtonHome.setBackground(backgroundColor);
 
-        // Set the icon on the JButton
+        // Set icon
         jButtonHome.setIcon(icon);
         jButtonHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -344,7 +341,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         try {
             transaction.begin();
 
-            // Retrieve data from the database
+            //ziskanie dat
             //pouzitie JPQL - rozumie tomu framework hibernate
             TypedQuery<BPorucha> query = entityManager.createQuery("SELECT s FROM BPorucha s ", BPorucha.class);
 
@@ -436,9 +433,9 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             //System.out.println("tu som2");
         }
         try {
-            // Begin a transaction
+
             transaction.begin();
-            // Retrieve data from the database
+
             //TypedQuery<BigInteger> query = entityManager.createQuery("SELECT t.id FROM BStroj t", BigInteger.class);
             //List<BigInteger> idcka = query.getResultList();
 
@@ -452,7 +449,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             // Nastavte model do JComboBox
             jComboBoxIdStroja.setModel(comboBoxModel);
 
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();
@@ -508,7 +505,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 transaction.begin();
                 this.refreshTableActual();
 
-                // Retrieve data from the database
+                //ziskanie dat
                 //pouzitie JPQL - rozumie tomu framework hibernate
                 TypedQuery<BPorucha> query = entityManager.createQuery("SELECT s FROM BPorucha s WHERE s.poruchaDo IS NULL ", BPorucha.class);
 

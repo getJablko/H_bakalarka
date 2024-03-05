@@ -323,7 +323,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             // Begin a transaction
             transaction.begin();
 
-            // Retrieve data from the database
+            // ziskanie dat
             // nejedna sa o typicky SQL statement (nepouzivam SELECT * FROM BZamestnanec), toto je pouzitie JPQL - rozumie tomu framework hibernate
             TypedQuery<BZamestnanec> query = entityManager.createQuery("SELECT b FROM BZamestnanec b", BZamestnanec.class);
             // List zamestnancov - preto lebo ma vela metod,dynamicku velkost,dobre sa pracuje s insert/delete
@@ -343,7 +343,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 };
                 model.addRow(row);
             }
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();

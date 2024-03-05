@@ -93,17 +93,13 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         Image image = icon.getImage(); // transform it
         Image newImg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         icon = new ImageIcon(newImg);  // transform it back
-        // Create a Color object with RGB values
+        // zmena farieb
         Color backgroundColor = new Color(255, 204, 153);
-        // Remove borders from the button
         homeButton.setBorder(null);
-
-        // Set the background color of the button
         homeButton.setBackground(backgroundColor);
 
-        // Set the icon on the JButton
+        // Set the icon
         homeButton.setIcon(icon);
-
         homeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 homeButtonActionPerformed(evt);
@@ -304,7 +300,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         try {
             transaction.begin();
 
-            // Retrieve data from the database
+            // ziskanie dat
             //pouzitie JPQL - rozumie tomu framework hibernate
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT s.idStroja, s.typStroja, s.cisloHaly, s.zaradenie, s.vyradenie, s.popis, t.prioritaD " +
@@ -340,10 +336,9 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
     private void naplnComboBoxTypyStrojov() {
         try {
-            // Begin a transaction
             transaction.begin();
 
-            // Retrieve data from the database
+            //ziskanie dat
             TypedQuery<BTypStroja> query = entityManager.createQuery("SELECT t FROM BTypStroja t", BTypStroja.class);
             List<BTypStroja> typyStrojov = query.getResultList();
 
@@ -358,7 +353,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
             // Nastavte model do JComboBox
             jComboBoxTypStroja.setModel(comboBoxModel);
 
-            // Commit the transaction
+            // Commit
             transaction.commit();
         } catch (Exception e) {
             e.getCause();
@@ -383,7 +378,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
     @Override
     public void onBTypStrojaGUIClosed() {
-        // Refresh the table or perform any other action needed
+        // Refresh table
         this.refreshTable();
     }
 

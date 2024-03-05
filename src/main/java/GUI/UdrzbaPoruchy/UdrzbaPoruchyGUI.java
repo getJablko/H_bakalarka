@@ -8,7 +8,6 @@ import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Porucha.PrebratiePoruchyListener;
-import Tabulky.BPorucha;
 import Tabulky.BUdrzbaPoruchy;
 import Tabulky.BUdrzbaPoruchyPK;
 
@@ -346,14 +345,14 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         try {
             transaction.begin();
 
-            // Retrieve data from the database using JPQL with a join
+            // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy " +
                             "FROM BUdrzbaPoruchy u ", Object[].class);
 
             List<Object[]> results = query.getResultList();
 
-            // Populate data into the table model
+            // nacitanie udajov
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             for (Object[] result : results) {
                 Object[] row = {
@@ -432,14 +431,14 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                 transaction.begin();
                 refreshTableActual();
 
-                // Retrieve data from the database using JPQL with a join
+                // ziskanie dat
                 TypedQuery<Object[]> query = entityManager.createQuery(
                         "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy " +
                                 "FROM BUdrzbaPoruchy u " + "WHERE u.dobaOpravy IS NULL", Object[].class);
 
                 List<Object[]> results = query.getResultList();
 
-                // Populate data into the table model
+                // nacitanie udajov
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 for (Object[] result : results) {
                     Object[] row = {
@@ -482,7 +481,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         }
 
         String prebratiePoruchy = jTextFieldPrebratiePoruchy.getText();
-        // pretipovanie
+        // pretypovanie
 
         String dobaOpravy = jTextFieldDobaOpravy.getText();
         double dobaOpravyDouble = 0;
@@ -509,7 +508,6 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                 if (!dobaOpravy.isEmpty()) {
                     bUdrzbaPoruchy.setDobaOpravy(dobaOpravyDouble);
                 } else {
-                    // Assuming dobaOpravy is nullable
                     bUdrzbaPoruchy.setDobaOpravy(null);
                 }
 
