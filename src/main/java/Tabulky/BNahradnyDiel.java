@@ -69,6 +69,18 @@ public class BNahradnyDiel {
         this.typStroja = typStroja;
     }
 
+    @Basic
+    @Column(name = "NAZOVND", nullable = false, length = 50) // Updated to not nullable
+    private String nazovND;
+
+    public String getNazovND() {
+        return nazovND;
+    }
+
+    public void setNazovND(String nazovND) {
+        this.nazovND = nazovND;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,7 +96,7 @@ public class BNahradnyDiel {
         if (dostupneMnozstvo != null ? !dostupneMnozstvo.equals(that.dostupneMnozstvo) : that.dostupneMnozstvo != null)
             return false;
         if (typStroja != null ? !typStroja.equals(that.typStroja) : that.typStroja != null) return false;
-
+        if (nazovND != null ? !nazovND.equals(that.nazovND) : that.nazovND != null) return false;
         return true;
     }
 
@@ -95,6 +107,7 @@ public class BNahradnyDiel {
         result = 31 * result + (miestoUskladnenia != null ? miestoUskladnenia.hashCode() : 0);
         result = 31 * result + (dostupneMnozstvo != null ? dostupneMnozstvo.hashCode() : 0);
         result = 31 * result + (typStroja != null ? typStroja.hashCode() : 0);
+        result = 31 * result + (nazovND != null ? nazovND.hashCode() : 0);
         return result;
     }
 }

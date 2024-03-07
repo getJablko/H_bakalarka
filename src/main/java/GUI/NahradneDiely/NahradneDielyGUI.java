@@ -34,7 +34,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
      * Creates new form NahradneDielyGUI
      */
     public NahradneDielyGUI(GUIManager guiManager, LoginGUI loginGUI) {
-        initComponents();
+        initComponents3();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
 
@@ -58,7 +58,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents3() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -73,6 +73,9 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         jButtonInsert = new javax.swing.JButton();
         jButtonUpdate = new javax.swing.JButton();
         jComboBoxDostupnostDielu = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jTextFieldNazovND = new javax.swing.JTextField();
+        jButtonPoziadavkyND = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -117,7 +120,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         });
 
         jComboBoxTypStroja.setBackground(new java.awt.Color(255, 255, 254));
-        //jComboBoxTypStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        //jComboBoxTypStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("typ stroja*:");
 
@@ -152,39 +155,63 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         jComboBoxDostupnostDielu.setBackground(new java.awt.Color(255, 255, 254));
         jComboBoxDostupnostDielu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "S ", "O ", "N ", "NO"}));
 
+        jLabel6.setText("názov ND*:");
+
+        jTextFieldNazovND.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        jButtonPoziadavkyND.setBackground(new java.awt.Color(255, 255, 254));
+        jButtonPoziadavkyND.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonPoziadavkyND.setText("POŽIADAVKY ND");
+        jButtonPoziadavkyND.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPoziadavkyNDActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addComponent(jButtonInsert)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(jButtonUpdate))
-                                                        .addComponent(jLabel5)
-                                                        .addComponent(jLabel2))
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel4)
-                                                        .addComponent(jLabel3))
-                                                .addGap(16, 16, 16)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextFieldMiestoUskladnenia, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldDostupneMnozstvo, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jComboBoxDostupnostDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jComboBoxTypStroja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addContainerGap(12, Short.MAX_VALUE))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jButtonHome, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(61, 61, 61)
                                 .addComponent(jLabel1)
                                 .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jTextFieldMiestoUskladnenia, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(jLabel4)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jTextFieldDostupneMnozstvo, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel3)
+                                                        .addComponent(jLabel2)
+                                                        .addComponent(jLabel6))
+                                                .addGap(31, 31, 31)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jTextFieldNazovND)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jComboBoxDostupnostDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jComboBoxTypStroja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(jButtonPoziadavkyND, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addComponent(jButtonInsert)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jButtonUpdate)))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,6 +233,10 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
                                         .addComponent(jComboBoxDostupnostDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(30, 30, 30)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jTextFieldNazovND, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jTextFieldDostupneMnozstvo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel4))
                                 .addGap(30, 30, 30)
@@ -216,23 +247,25 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addComponent(jButtonPoziadavkyND, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
+                new Object [][] {
 
                 },
-                new String[]{
-                        "číslo náhradného dielu", "typ stroja", "dostupnosť dielu", "dostupné množstvo", "miesto uskladnenia"
+                new String [] {
+                        "číslo náhradného dielu", "názov ND", "typ stroja", "dostupnosť dielu", "dostupné množstvo", "miesto uskladnenia"
                 }
         ) {
-            boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -249,7 +282,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,14 +291,14 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-
+    }// </editor-fold>
 
     private void vynulovaniePolicok() {
         jTextFieldDostupneMnozstvo.setText("");
         jTextFieldMiestoUskladnenia.setText("");
         jComboBoxTypStroja.setSelectedItem(" ");
         jComboBoxDostupnostDielu.setSelectedItem(" ");
+        jTextFieldNazovND.setText("");
     }
 
     private void closeApplication() {
@@ -291,7 +324,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
             // Retrieve data from the database using JPQL with a join
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT b.cisloNd, b.typStroja, b.dostupnostNdD, b.dostupneMnozstvo, b.miestoUskladnenia " +
+                    "SELECT b.cisloNd, b.typStroja, b.dostupnostNdD, b.dostupneMnozstvo, b.miestoUskladnenia, b.nazovND " +
                             "FROM BNahradnyDiel b ", Object[].class);
 
             List<Object[]> results = query.getResultList();
@@ -301,6 +334,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
             for (Object[] result : results) {
                 Object[] row = {
                         result[0],  // cisloND
+                        result[5],  // nazovND
                         result[1],  // typStroja
                         result[2],  // dostupnostND
                         result[3],  // dostupneMnozstvo
@@ -354,15 +388,17 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
         int rowNumber = jTable1.getSelectedRow();
 
-        String typStroja = (String) jTable1.getValueAt(rowNumber, 1);
+        String nazovND = (String) jTable1.getValueAt(rowNumber,1);
+        jTextFieldNazovND.setText(nazovND);
+        String typStroja = (String) jTable1.getValueAt(rowNumber, 2);
         jComboBoxTypStroja.setSelectedItem(typStroja);
-        String dostupnost = (String) jTable1.getValueAt(rowNumber, 2);
+        String dostupnost = (String) jTable1.getValueAt(rowNumber, 3);
         jComboBoxDostupnostDielu.setSelectedItem(dostupnost);
-        BigInteger dostupneMnozstvo = (BigInteger) jTable1.getValueAt(rowNumber, 3);
+        BigInteger dostupneMnozstvo = (BigInteger) jTable1.getValueAt(rowNumber, 4);
         jTextFieldDostupneMnozstvo.setText(dostupneMnozstvo.toString());
 
-        if (jTable1.getValueAt(rowNumber, 4) != null) {
-            String miestoUskladnenia = (String) jTable1.getValueAt(rowNumber, 4);
+        if (jTable1.getValueAt(rowNumber, 5) != null) {
+            String miestoUskladnenia = (String) jTable1.getValueAt(rowNumber, 5);
             jTextFieldMiestoUskladnenia.setText(miestoUskladnenia);
         } else {
             jTextFieldMiestoUskladnenia.setText("");
@@ -389,7 +425,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
             this.vynulovaniePolicok();
             return;
         }
-
+        String nazovND = (String) jTextFieldNazovND.getText();
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
         BigInteger dostupneMnozstvo = new BigInteger(jTextFieldDostupneMnozstvo.getText());
@@ -397,7 +433,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
         // overenie vypisania udajov
         if (typStroja.equals(" ") || dostupnost.equals(" ") ||
-                dostupneMnozstvo.equals("")) {
+                dostupneMnozstvo.equals("") || nazovND.equals("")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
             try {
@@ -406,6 +442,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
                 // Načítanie záznamu z databázy na základe ID a uprava
                 BNahradnyDiel bNahradnyDiel = new BNahradnyDiel();
 
+                bNahradnyDiel.setNazovND(nazovND);
                 bNahradnyDiel.setMiestoUskladnenia(miestoUskladnenia);
                 bNahradnyDiel.setDostupneMnozstvo(dostupneMnozstvo);
                 bNahradnyDiel.setDostupnostNdD(dostupnost);
@@ -443,6 +480,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
             return;
         }
 
+        String nazovND = (String) jTextFieldNazovND.getText();
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
         //BigInteger dostupneMnozstvo = new BigInteger(jTextFieldDostupneMnozstvo.getText());
@@ -458,7 +496,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
         // overenie vypisania udajov
         if (typStroja.equals(" ") || dostupnost.equals(" ") ||
-                dostupneMnozstvoText.equals("")) {
+                dostupneMnozstvoText.equals("") || nazovND.equals("")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
             try {
@@ -467,6 +505,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
                 // Načítanie záznamu z databázy na základe ID a uprava
                 BNahradnyDiel bNahradnyDiel = entityManager.find(BNahradnyDiel.class,cisloND);
 
+                bNahradnyDiel.setNazovND(nazovND);
                 bNahradnyDiel.setMiestoUskladnenia(miestoUskladnenia);
                 bNahradnyDiel.setDostupneMnozstvo(dostupneMnozstvo);
                 bNahradnyDiel.setDostupnostNdD(dostupnost);
@@ -490,6 +529,11 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
+    private void jButtonPoziadavkyNDActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        this.guiManager.zobrazUdrzbaNahradnyDiel();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -498,6 +542,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonHome;
     private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonUpdate;
+    private javax.swing.JButton jButtonPoziadavkyND;
     private javax.swing.JComboBox<String> jComboBoxDostupnostDielu;
     private javax.swing.JComboBox<String> jComboBoxTypStroja;
     private javax.swing.JLabel jLabel1;
@@ -505,10 +550,12 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldDostupneMnozstvo;
     private javax.swing.JTextField jTextFieldMiestoUskladnenia;
+    private javax.swing.JTextField jTextFieldNazovND;
     // End of variables declaration//GEN-END:variables
 }
