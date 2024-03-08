@@ -36,7 +36,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
      * Creates new form UdrzbaNahradnyDielGUI
      */
     public UdrzbaNahradnyDielGUI(UdrzbaPoruchyGUI udrzbaPoruchyGUI) {
-        initComponents2();
+        initComponents();
         this.udrzbaPoruchyGUI = udrzbaPoruchyGUI;
 
         setAlwaysOnTop(true); // Set the JFrame to always stay on top
@@ -73,6 +73,9 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         jButtonInsert = new javax.swing.JButton();
         jButtonUpdate = new javax.swing.JButton();
         jButtonExit = new javax.swing.JButton();
+        jButtonNovyDiel = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldNazovND = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -84,7 +87,12 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         jLabel1.setText("POŽIADAVKA NA DIEL");
 
         jComboBoxCisloDielu.setBackground(new java.awt.Color(255, 255, 254));
-        //jComboBoxCisloDielu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        //jComboBoxCisloDielu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCisloDielu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCisloDieluActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("číslo dielu*:");
 
@@ -122,6 +130,19 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             }
         });
 
+        jButtonNovyDiel.setBackground(new java.awt.Color(255, 255, 254));
+        jButtonNovyDiel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonNovyDiel.setText("NOVÝ DIEL");
+        jButtonNovyDiel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNovyDielActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("názov ND*:");
+
+        jTextFieldNazovND.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -134,41 +155,52 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                                 .addGap(20, 20, 20)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(jLabel2)
-                                                        .addComponent(jLabel3))
+                                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addContainerGap())
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jScrollPane2)
+                                                        .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldNazovND)))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jButtonInsert)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jButtonUpdate)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jButtonExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(16, 16, 16))))
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jButtonInsert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButtonNovyDiel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGap(30, 30, 30)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jButtonExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addComponent(jLabel1)
-                                .addGap(45, 45, 45)
+                                .addGap(48, 48, 48)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jTextFieldNazovND, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(30, 30, 30)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel3)
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                .addGap(50, 50, 50)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButtonNovyDiel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(191, 191, 191))
+                                .addGap(98, 98, 98))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -176,11 +208,11 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
                 },
                 new String[]{
-                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND"
+                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false
+                    false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -206,9 +238,10 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
         );
-
+        // Set the text field to be non-editable
+        jTextFieldNazovND.setEditable(false);
         pack();
     }// </editor-fold>
 
@@ -342,11 +375,11 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
                 },
                 new String[]{
-                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND"
+                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false
+                    false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -392,6 +425,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
     private void vynulovaniePolicok() {
         jTextAreaPoziadavka.setText("");
         jComboBoxCisloDielu.setSelectedItem(" ");
+        jTextFieldNazovND.setText("");
     }
 
     private void closeApplication() {
@@ -415,8 +449,9 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
             // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd " +
+                    "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd, nd.nazovND " +
                             "FROM BUdrzbaPoruchyNahradnyDiel up " +
+                            "JOIN BNahradnyDiel nd on up.cisloNd = nd.cisloNd " +
                             "JOIN BUdrzbaPoruchy u ON u.idPoruchy = up.idPoruchy AND u.osCisloOpravy = up.osCisloOpravy " +
                             "WHERE u.idPoruchy = :id AND u.osCisloOpravy = :oCislo", Object[].class);
             query.setParameter("id", id);
@@ -431,6 +466,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                         result[1],  // osCisloOpravy
                         result[2],  // cisloND
                         result[3],  // poziadavka
+                        result[4],  // nazovND
                 };
                 model.addRow(row);
             }
@@ -455,6 +491,9 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         String cisloDielu = cisloDieluBigInt.toString();
         jComboBoxCisloDielu.setSelectedItem(cisloDielu);
 
+        String nazov = (String) jTable1.getValueAt(rowNumber, 4);
+        jTextFieldNazovND.setText(nazov);
+
         if (jTable1.getValueAt(rowNumber, 3) != null) {
             String poziadavka = (String) jTable1.getValueAt(rowNumber, 3);
             jTextAreaPoziadavka.setText(poziadavka);
@@ -470,15 +509,19 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
         query = entityManager.createQuery(
                 "SELECT DISTINCT nd.cisloNd " +
+                        "FROM BNahradnyDiel nd" ,
+                        /*
                         "FROM BUdrzbaPoruchy u " +
                         "JOIN BPorucha p ON u.idPoruchy = p.idPoruchy " +
                         "JOIN BStroj str on p.idStroja = str.idStroja " +
                         "JOIN BTypStroja ts on str.typStroja = ts.typStroja  " +
                         "JOIN BNahradnyDiel nd ON ts.typStroja = nd.typStroja " +
                         "WHERE u.idPoruchy = :id AND u.osCisloOpravy = :oCislo",
+
+                         */
                 BigInteger.class);
-        query.setParameter("id", id);
-        query.setParameter("oCislo", oCislo);
+        //query.setParameter("id", id);
+        //query.setParameter("oCislo", oCislo);
         idcka = query.getResultList();
         try {
 
@@ -520,15 +563,17 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             JOptionPane.showMessageDialog(null, "Prosím vyberte riadok v tabuľke!");
             return;
         } else {
+            String nazov = (String) jTable1.getValueAt(rowNumber, 4);
             BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
             BigInteger osCisloOpravy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
             BigInteger cisloND = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 2)));
 
             String poziadavka = jTextAreaPoziadavka.getText();
             String cisloDielu = (String) jComboBoxCisloDielu.getSelectedItem();
+            String nazovND = (String) jTextFieldNazovND.getText();
 
             // overenie vypisania udajov
-            if (cisloDielu.equals(" ")) {
+            if (cisloDielu.equals(" ") || nazovND.equals("")) {
                 JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
             } else {
                 BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
@@ -566,10 +611,13 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
         try {
             transaction.begin();
+            // Show input dialog with a text field
+            String userInput = JOptionPane.showInputDialog(null, "zvoľte názov ND:");
             BNahradnyDiel bNahradnyDiel = new BNahradnyDiel();
             bNahradnyDiel.setTypStroja(this.typStrojaA);
             bNahradnyDiel.setDostupnostNdD("NO");
             bNahradnyDiel.setDostupneMnozstvo(BigInteger.valueOf(0));
+            bNahradnyDiel.setNazovND(userInput);
 
             entityManager.persist(bNahradnyDiel);
             JOptionPane.showMessageDialog(null, "Bol vytvorený a priradený nový náhradný diel s číslom: " + bNahradnyDiel.getCisloNd() + " !");
@@ -591,6 +639,15 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
+    private void jComboBoxCisloDieluActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        if (jComboBoxCisloDielu.getSelectedItem() != " ") {
+            BigInteger ND = new BigInteger(String.valueOf(jComboBoxCisloDielu.getSelectedItem()));
+            BNahradnyDiel bNahradnyDiel = entityManager.find(BNahradnyDiel.class, ND);
+            jTextFieldNazovND.setText(bNahradnyDiel.getNazovND());
+        }
+    }
+
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {
 
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
@@ -606,9 +663,10 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         // nacitam si vypisane udaje
         String poziadavka = jTextAreaPoziadavka.getText();
         String cisloDielu = (String) jComboBoxCisloDielu.getSelectedItem();
+        String nazov = (String) jTextFieldNazovND.getText();
 
         // overenie vypisania udajov
-        if (cisloDielu.equals(" ")) {
+        if (cisloDielu.equals(" ") || nazov.equals("")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
             BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
@@ -659,10 +717,12 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextAreaPoziadavka;
+    private javax.swing.JTextField jTextFieldNazovND;
     // End of variables declaration
 }
