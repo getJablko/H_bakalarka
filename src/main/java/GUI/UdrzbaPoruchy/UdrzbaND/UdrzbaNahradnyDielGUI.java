@@ -640,7 +640,6 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
     }
 
     private void jComboBoxCisloDieluActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         if (jComboBoxCisloDielu.getSelectedItem() != " ") {
             BigInteger ND = new BigInteger(String.valueOf(jComboBoxCisloDielu.getSelectedItem()));
             BNahradnyDiel bNahradnyDiel = entityManager.find(BNahradnyDiel.class, ND);
