@@ -367,7 +367,6 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame  {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO add your handling code here:
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
 
         int actualRowNumber = -1;
@@ -421,7 +420,6 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame  {
         this.vynulovaniePolicok();
         this.dispose();
         this.guiManager.zobrazNahradneDiely();
-        // TODO
         // refresh tables
         nahradneDielyGUI.onPoziadavkaUpdate();
         udrzbaNahradnyDielGUI.onPoziadavkaUpdate();
