@@ -4,6 +4,7 @@
  */
 package GUI.UdrzbaPoruchy.UdrzbaND;
 
+import GUI.NahradneDiely.Poziadavka2Listener;
 import GUI.UdrzbaPoruchy.PoziadavkaListener;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import Tabulky.BNahradnyDiel;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements PoziadavkaListener {
+public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements PoziadavkaListener, Poziadavka2Listener {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -208,11 +209,11 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
                 },
                 new String[]{
-                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND"
+                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND", "dostupné množstvo ND"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
+                    false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -242,172 +243,6 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         );
         // Set the text field to be non-editable
         jTextFieldNazovND.setEditable(false);
-        pack();
-    }// </editor-fold>
-
-    private void initComponents2() {
-
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBoxCisloDielu = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextAreaPoziadavka = new javax.swing.JTextArea();
-        jButtonInsert = new javax.swing.JButton();
-        jButtonUpdate = new javax.swing.JButton();
-        jButtonExit = new javax.swing.JButton();
-        jButtonNovyDiel = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 204, 153));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("POŽIADAVKA NA DIEL");
-
-        jComboBoxCisloDielu.setBackground(new java.awt.Color(255, 255, 254));
-        //jComboBoxCisloDielu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel2.setText("číslo dielu*:");
-
-        jLabel3.setText("požiadavka:");
-
-        jTextAreaPoziadavka.setColumns(20);
-        jTextAreaPoziadavka.setRows(5);
-        jTextAreaPoziadavka.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        jScrollPane2.setViewportView(jTextAreaPoziadavka);
-
-        jButtonInsert.setBackground(new java.awt.Color(255, 255, 254));
-        jButtonInsert.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonInsert.setText("INSERT");
-        jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonInsertActionPerformed(evt);
-            }
-        });
-
-        jButtonUpdate.setBackground(new java.awt.Color(255, 255, 254));
-        jButtonUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonUpdate.setText("UPDATE");
-        jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUpdateActionPerformed(evt);
-            }
-        });
-
-        jButtonExit.setBackground(new java.awt.Color(255, 255, 254));
-        jButtonExit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonExit.setText("EXIT");
-        jButtonExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonExitActionPerformed(evt);
-            }
-        });
-
-        jButtonNovyDiel.setBackground(new java.awt.Color(255, 255, 254));
-        jButtonNovyDiel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonNovyDiel.setText("NOVÝ DIEL");
-        jButtonNovyDiel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNovyDielActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addComponent(jLabel1)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel2)
-                                                        .addComponent(jLabel3))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jButtonInsert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jButtonNovyDiel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addGap(30, 30, 30)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jButtonExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
-                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel1)
-                                .addGap(45, 45, 45)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2))
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButtonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButtonNovyDiel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(150, 150, 150))
-        );
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-
-                },
-                new String[]{
-                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND"
-                }
-        ) {
-            boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-        });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableMouseClick_ActionPerformed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-
         pack();
     }// </editor-fold>
 
@@ -449,7 +284,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
             // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd, nd.nazovND " +
+                    "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd, nd.nazovND, nd.dostupneMnozstvo " +
                             "FROM BUdrzbaPoruchyNahradnyDiel up " +
                             "JOIN BNahradnyDiel nd on up.cisloNd = nd.cisloNd " +
                             "JOIN BUdrzbaPoruchy u ON u.idPoruchy = up.idPoruchy AND u.osCisloOpravy = up.osCisloOpravy " +
@@ -467,6 +302,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                         result[2],  // cisloND
                         result[3],  // poziadavka
                         result[4],  // nazovND
+                        result[5],  //dostupneMnozstvo
                 };
                 model.addRow(row);
             }
@@ -702,6 +538,11 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         this.dispose();
     }
 
+    @Override
+    public void onPoziadavkaUpdate() {
+        this.refreshTable();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -723,5 +564,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextAreaPoziadavka;
     private javax.swing.JTextField jTextFieldNazovND;
+
+
     // End of variables declaration
 }

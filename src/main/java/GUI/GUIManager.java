@@ -3,6 +3,7 @@ package GUI;
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
+import GUI.NahradneDiely.PoziadavkyGUI.ZobrazeniePoziadaviekNdGUI;
 import GUI.Objednavky.ObjednavkyGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Stroje.StrojeGUI;
@@ -26,6 +27,7 @@ public class GUIManager {
     private UdrzbaPoruchyGUI udrzbaPoruchyGUI;
     private NahradneDielyGUI nahradneDielyGUI;
     private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
+    private ZobrazeniePoziadaviekNdGUI zobrazeniePoziadaviekNdGUI;
     private List<JFrame> oknaGUI = new ArrayList<>();
 
     public GUIManager() {
@@ -39,6 +41,7 @@ public class GUIManager {
         this.udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,this.login,this.poruchaGUI);
         this.nahradneDielyGUI = new NahradneDielyGUI(this,this.login);
         this.udrzbaNahradnyDielGUI = new UdrzbaNahradnyDielGUI(this.udrzbaPoruchyGUI);
+        this.zobrazeniePoziadaviekNdGUI = new ZobrazeniePoziadaviekNdGUI(this,this.login,this.nahradneDielyGUI,this.udrzbaNahradnyDielGUI);
 
         // pridanie do arraylistu okien
         this.oknaGUI.add(login);
@@ -51,6 +54,7 @@ public class GUIManager {
         this.oknaGUI.add(udrzbaPoruchyGUI);
         this.oknaGUI.add(nahradneDielyGUI);
         this.oknaGUI.add(udrzbaNahradnyDielGUI);
+        this.oknaGUI.add(zobrazeniePoziadaviekNdGUI);
     }
 
     public void zobrazLogin() {
@@ -193,6 +197,19 @@ public class GUIManager {
             this.udrzbaNahradnyDielGUI.pack();
             this.udrzbaNahradnyDielGUI.setLocationRelativeTo(null);
             this.udrzbaNahradnyDielGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazeniePoziadaviek() {
+        if (this.hlavneMenuGUI.isVisible()) {
+            this.hlavneMenuGUI.setVisible(false);
+        }
+        if (this.zobrazeniePoziadaviekNdGUI.isActive()) {
+            this.zobrazeniePoziadaviekNdGUI.setVisible(true);
+        } else {
+            this.zobrazeniePoziadaviekNdGUI.pack();
+            this.zobrazeniePoziadaviekNdGUI.setLocationRelativeTo(null);
+            this.zobrazeniePoziadaviekNdGUI.setVisible(true);
         }
     }
 

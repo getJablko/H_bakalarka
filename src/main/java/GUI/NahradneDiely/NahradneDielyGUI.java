@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class NahradneDielyGUI extends javax.swing.JFrame {
+public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2Listener {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -531,7 +531,12 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
 
     private void jButtonPoziadavkyNDActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        this.guiManager.zobrazUdrzbaNahradnyDiel();
+        this.guiManager.zobrazeniePoziadaviek();
+    }
+
+    @Override
+    public void onPoziadavkaUpdate() {
+        this.refreshTable();
     }
 
     /**
@@ -557,5 +562,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldDostupneMnozstvo;
     private javax.swing.JTextField jTextFieldMiestoUskladnenia;
     private javax.swing.JTextField jTextFieldNazovND;
+
+
     // End of variables declaration//GEN-END:variables
 }
