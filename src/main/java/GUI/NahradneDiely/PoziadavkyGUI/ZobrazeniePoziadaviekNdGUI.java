@@ -8,6 +8,7 @@ import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
 import GUI.NahradneDiely.Poziadavka2Listener;
+import GUI.Objednavky.DorucenieObjednavkyListener;
 import GUI.Porucha.PrebratiePoruchyListener;
 import GUI.UdrzbaPoruchy.UdrzbaND.UdrzbaNahradnyDielGUI;
 import Tabulky.BNahradnyDiel;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame  {
+public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements DorucenieObjednavkyListener {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -425,6 +426,11 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame  {
         udrzbaNahradnyDielGUI.onPoziadavkaUpdate();
     }//GEN-LAST:event_jButtonExitActionPerformed
 
+    @Override
+    public void onDorucenieSuccess() {
+        System.out.println("2");
+        this.refreshTable();
+    }
 
     /**
      * @param args the command line arguments

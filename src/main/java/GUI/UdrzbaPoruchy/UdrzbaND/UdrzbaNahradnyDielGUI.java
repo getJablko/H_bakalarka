@@ -5,6 +5,7 @@
 package GUI.UdrzbaPoruchy.UdrzbaND;
 
 import GUI.NahradneDiely.Poziadavka2Listener;
+import GUI.Objednavky.DorucenieObjednavkyListener;
 import GUI.UdrzbaPoruchy.PoziadavkaListener;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import Tabulky.BNahradnyDiel;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements PoziadavkaListener, Poziadavka2Listener {
+public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements PoziadavkaListener, Poziadavka2Listener, DorucenieObjednavkyListener {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -540,6 +541,11 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
     @Override
     public void onPoziadavkaUpdate() {
+        this.refreshTable();
+    }
+    @Override
+    public void onDorucenieSuccess() {
+        System.out.println("3");
         this.refreshTable();
     }
 

@@ -6,6 +6,8 @@ package GUI.NahradneDiely;
 
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
+import GUI.Objednavky.DorucenieObjednavkyListener;
+import GUI.Porucha.PrebratiePoruchyListener;
 import Tabulky.*;
 
 import javax.persistence.*;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2Listener {
+public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2Listener, DorucenieObjednavkyListener {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -536,6 +538,12 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
 
     @Override
     public void onPoziadavkaUpdate() {
+        this.refreshTable();
+    }
+
+    @Override
+    public void onDorucenieSuccess() {
+        System.out.println("1");
         this.refreshTable();
     }
 
