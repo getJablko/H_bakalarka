@@ -11,6 +11,7 @@ import GUI.Stroje.TypStroja.TypStrojaGUI;
 import GUI.UdrzbaPoruchy.UdrzbaND.UdrzbaNahradnyDielGUI;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
+import Sifrovanie.DateFormat;
 
 import javax.swing.*;
 import java.util.ArrayList;

@@ -5,6 +5,7 @@
 package GUI.Stroje;
 
 import GUI.GUIManager;
+import Sifrovanie.DateFormat;
 import Tabulky.BStroj;
 import Tabulky.BTypStroja;
 
@@ -27,6 +28,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
     private EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
+    private DateFormat dateFormat;
 
     /**
      * Creates new form Stroje
@@ -34,6 +36,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     public StrojeGUI(GUIManager guiManager) {
         initComponents();
         this.guiManager = guiManager;
+        this.dateFormat = new DateFormat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -449,6 +452,16 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
             try {
                 transaction.begin();
 
+                if (!dateFormat.overenie(zaradenie)) {
+                    this.vynulovaniePolicok();
+                    return;
+                }
+                if (!vyradenie.isEmpty()) {
+                    if (!dateFormat.overenie(vyradenie)) {
+                        this.vynulovaniePolicok();
+                        return;
+                    }
+                }
                 // vytvorenie noveho stroja s vypisanymi udajmi
                 BStroj bStroj = new BStroj();
                 bStroj.setTypStroja(typStroja);
@@ -501,6 +514,16 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
             try {
                 transaction.begin();
 
+                if (!dateFormat.overenie(zaradenie)) {
+                    this.vynulovaniePolicok();
+                    return;
+                }
+                if (!vyradenie.isEmpty()) {
+                    if (!dateFormat.overenie(vyradenie)) {
+                        this.vynulovaniePolicok();
+                        return;
+                    }
+                }
                 // ziskanie ID
                 int rowNumber = jTable1.getSelectedRow();
                 BigInteger idStroja = (BigInteger) jTable1.getValueAt(rowNumber, 0);

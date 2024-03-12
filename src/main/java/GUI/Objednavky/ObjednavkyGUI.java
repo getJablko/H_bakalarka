@@ -10,6 +10,7 @@ import GUI.Login.LoginListener;
 import GUI.NahradneDiely.NahradneDielyGUI;
 import GUI.NahradneDiely.PoziadavkyGUI.ZobrazeniePoziadaviekNdGUI;
 import GUI.UdrzbaPoruchy.UdrzbaND.UdrzbaNahradnyDielGUI;
+import Sifrovanie.DateFormat;
 import Tabulky.*;
 
 import javax.persistence.*;
@@ -41,6 +42,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
     private NahradneDielyGUI nahradneDielyGUI;
     private ZobrazeniePoziadaviekNdGUI zobrazeniePoziadaviekNdGUI;
     private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
+    private DateFormat dateFormat;
 
 
     /**
@@ -53,6 +55,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         this.nahradneDielyGUI = nahradneDielyGUI;
         this.zobrazeniePoziadaviekNdGUI = zobrazeniePoziadaviekNdGUI;
         this.udrzbaNahradnyDielGUI = udrzbaNahradnyDielGUI;
+        this.dateFormat = new DateFormat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -620,6 +623,16 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
             try {
+                if (!dateFormat.overenie(datumObj)){
+                    this.vynulovaniePolicok();
+                    return;
+                }
+                if (!datumDor.isEmpty()) {
+                    if (!dateFormat.overenie(datumDor)){
+                        this.vynulovaniePolicok();
+                        return;
+                    }
+                }
                 transaction.begin();
 
                 // Načítanie záznamu z databázy na základe ID a uprava
@@ -725,6 +738,16 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
             try {
+                if (!dateFormat.overenie(datumObj)){
+                    this.vynulovaniePolicok();
+                    return;
+                }
+                if (!datumDor.isEmpty()) {
+                    if (!dateFormat.overenie(datumDor)){
+                        this.vynulovaniePolicok();
+                        return;
+                    }
+                }
                 transaction.begin();
 
                 // Načítanie záznamu z databázy na základe ID a uprava

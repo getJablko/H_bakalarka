@@ -8,6 +8,7 @@ import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Porucha.PrebratiePoruchyListener;
+import Sifrovanie.DateFormat;
 import Tabulky.BUdrzbaPoruchy;
 import Tabulky.BUdrzbaPoruchyPK;
 
@@ -36,6 +37,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
     private String typStrojaA;
     private PoziadavkaListener poziadavkaListener;
     private PoruchaGUI poruchaGUI;
+    private DateFormat dateFormat;
 
     /**
      * Creates new form UdrzbaPoruchyGUI
@@ -45,6 +47,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
         this.poruchaGUI = poruchaGUI;
+        this.dateFormat = new DateFormat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -58,6 +61,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         this.displayDataInTable();
         this.poruchaGUI.setPrebratieListener(this);
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -466,8 +470,6 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
     }//GEN-LAST:event_jCheckBoxZobrazOpraveneActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO treba dalsi stlpec pre ostatnych angazovanych pracovnikov?
-
         // nacitam si vypisane udaje
         int rowNumber = jTable1.getSelectedRow();
         BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
@@ -503,6 +505,10 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                 BUdrzbaPoruchy bUdrzbaPoruchy = entityManager.find(BUdrzbaPoruchy.class, primaryKey);
 
                 bUdrzbaPoruchy.setPricinaPoruchy(pricinaPoruchy);
+                if (!dateFormat.overenie(prebratiePoruchy)){
+                    this.vynulovaniePolicok();
+                    return;
+                }
                 bUdrzbaPoruchy.setPrebratiePoruchy(prebratiePoruchy);
                 bUdrzbaPoruchy.setPopisUdrzby(popisUdrzby);
                 if (!dobaOpravy.isEmpty()) {

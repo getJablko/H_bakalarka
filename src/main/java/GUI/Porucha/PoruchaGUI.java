@@ -7,6 +7,7 @@ package GUI.Porucha;
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Login.LoginListener;
+import Sifrovanie.DateFormat;
 import Tabulky.BPorucha;
 import Tabulky.BUdrzbaPoruchy;
 
@@ -39,11 +40,13 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     private String rolaA;
     private BigInteger osCisloOpravyA;
     private PrebratiePoruchyListener prebratieListener;
+    private DateFormat dateFormat;
 
     public PoruchaGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents3();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
+        this.dateFormat = new DateFormat();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -131,13 +134,13 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         //jComboBoxIdStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBoxZavaznost.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"1", "2", "3", "4"}));
+        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ","1", "2", "3", "4"}));
 
         jComboBoxStrojVPrevadzke.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"0", "1"}));
+        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ","0", "1"}));
 
         jComboBoxTypPoruchy.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"E", "M", "I", "H", "B"}));
+        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ","E", "M", "I", "H", "B"}));
 
         jTextFieldPoruchaOd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -406,6 +409,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         this.osCisloOpravyA = this.loginGUI.getOsCisloLogin();
         naplnComboBoxIdStrojov();
     }
+
     public void setPrebratieListener(PrebratiePoruchyListener listener) {
         this.prebratieListener = listener;
     }
@@ -420,7 +424,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         TypedQuery<BigInteger> query;
         List<BigInteger> idcka;
 
-        if (!loginGUI.getRolaZam().equals("I")) {
+        if (loginGUI.getRolaZam().equals("I")) {
             String pracovisko = loginGUI.getCisloHaly();
             pracovisko = pracovisko.substring(2);
             query = entityManager.createQuery("SELECT t.id FROM BStroj t WHERE t.cisloHaly LIKE :pracovisko", BigInteger.class);
@@ -593,6 +597,16 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 bPorucha.setZavaznostD(zavaznost);
                 bPorucha.setStrojVPrevadzke(vPrevadzkeBigInt);
                 bPorucha.setTypPoruchyD(typPoruchy);
+                if (!dateFormat.overenie(poruchaOd)) {
+                    this.vynulovaniePolicok();
+                    return;
+                }
+                if (!poruchaDo.isEmpty()) {
+                    if (!dateFormat.overenie(poruchaDo)) {
+                        this.vynulovaniePolicok();
+                        return;
+                    }
+                }
                 bPorucha.setPoruchaOd(poruchaOd);
                 bPorucha.setPoruchaDo(poruchaDo);
                 bPorucha.setPopisPoruchy(popis);
@@ -642,6 +656,16 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             try {
                 transaction.begin();
 
+                if (!dateFormat.overenie(poruchaOd)) {
+                    this.vynulovaniePolicok();
+                    return;
+                }
+                if (!poruchaDo.isEmpty()) {
+                    if (!dateFormat.overenie(poruchaDo)) {
+                        this.vynulovaniePolicok();
+                        return;
+                    }
+                }
                 // vytvorenie noveho zamestnanca s vypisanymi udajmi
                 BPorucha bPorucha = new BPorucha();
                 bPorucha.setOsCisloNahlasenia(osCisloBigInt);
@@ -689,12 +713,12 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             transaction.begin();
 
             if (jTable1.getValueAt(actualRowNumber, 7) != null) {
-                JOptionPane.showMessageDialog(null,"Táto porucha už nie je aktuálna!");
+                JOptionPane.showMessageDialog(null, "Táto porucha už nie je aktuálna!");
                 return;
             }
             // vytvorenie novej entity s vypisanymi udajmi
             BUdrzbaPoruchy bUdrzbaPoruchy = new BUdrzbaPoruchy();
-            bUdrzbaPoruchy.setIdPoruchy((BigInteger) jTable1.getValueAt(actualRowNumber,0));
+            bUdrzbaPoruchy.setIdPoruchy((BigInteger) jTable1.getValueAt(actualRowNumber, 0));
             bUdrzbaPoruchy.setOsCisloOpravy(this.osCisloOpravyA);
 
             // aktualny datum
