@@ -23,6 +23,30 @@ public class BUdrzbaPoruchyNahradnyDiel {
     @Column(name = "POZADAVKA_ND", nullable = true, length = 50)
     private String pozadavkaNd;
 
+    @Basic
+    @Column(name = "POZADOVANE_MNOZSTVO", nullable = false, precision = 0)
+    private BigInteger pozadovaneMnozstvo;
+
+    @Basic
+    @Column(name = "PRIPRAVENE", nullable = false, precision = 0)
+    private BigInteger pripravene;
+
+    public BigInteger getPozadovaneMnozstvo() {
+        return this.pozadovaneMnozstvo;
+    }
+
+    public BigInteger getPripravene() {
+        return this.pripravene;
+    }
+
+    public void setPozadovaneMnozstvo(BigInteger pozadovaneMnozstvo) {
+        this.pozadovaneMnozstvo = pozadovaneMnozstvo;
+    }
+
+    public void setPripravene(BigInteger pripravene) {
+        this.pripravene = pripravene;
+    }
+
     public BigInteger getIdPoruchy() {
         return idPoruchy;
     }
@@ -67,7 +91,9 @@ public class BUdrzbaPoruchyNahradnyDiel {
             return false;
         if (cisloNd != null ? !cisloNd.equals(that.cisloNd) : that.cisloNd != null) return false;
         if (pozadavkaNd != null ? !pozadavkaNd.equals(that.pozadavkaNd) : that.pozadavkaNd != null) return false;
-
+        if (pozadovaneMnozstvo != null ? !pozadovaneMnozstvo.equals(that.pozadovaneMnozstvo) : that.pozadovaneMnozstvo != null)
+            return false;
+        if (pripravene != null ? !pripravene.equals(that.pripravene) : that.pripravene != null) return false;
         return true;
     }
 
@@ -77,6 +103,8 @@ public class BUdrzbaPoruchyNahradnyDiel {
         result = 31 * result + (osCisloOpravy != null ? osCisloOpravy.hashCode() : 0);
         result = 31 * result + (cisloNd != null ? cisloNd.hashCode() : 0);
         result = 31 * result + (pozadavkaNd != null ? pozadavkaNd.hashCode() : 0);
+        result = 31 * result + (pozadovaneMnozstvo != null ? pozadovaneMnozstvo.hashCode() : 0);
+        result = 31 * result + (pripravene != null ? pripravene.hashCode() : 0);
         return result;
     }
 }

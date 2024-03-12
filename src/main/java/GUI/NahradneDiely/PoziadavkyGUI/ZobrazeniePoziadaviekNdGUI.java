@@ -12,6 +12,8 @@ import GUI.Objednavky.DorucenieObjednavkyListener;
 import GUI.Porucha.PrebratiePoruchyListener;
 import GUI.UdrzbaPoruchy.UdrzbaND.UdrzbaNahradnyDielGUI;
 import Tabulky.BNahradnyDiel;
+import Tabulky.BUdrzbaPoruchyNahradnyDiel;
+import Tabulky.BUdrzbaPoruchyNahradnyDielPK;
 
 import javax.persistence.*;
 import javax.swing.*;
@@ -32,7 +34,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
     EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
     private LoginGUI loginGUI;
-
+    private VybaveniePoziadavkyListener listener;
     private NahradneDielyGUI nahradneDielyGUI;
     private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
     private Poziadavka2Listener poziadavkaUpdate;
@@ -62,6 +64,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
         this.displayDataInTable();
         this.naplnComboBoxCisloDielu();
+        this.setListener(this.udrzbaNahradnyDielGUI);
     }
 
     /**
@@ -86,6 +89,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
         jTextFieldNazovND = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldDostupneMnozstvo = new javax.swing.JTextField();
+        jButtonVybavene = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -136,6 +140,15 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
         jTextFieldDostupneMnozstvo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
+        jButtonVybavene.setBackground(new java.awt.Color(255, 255, 254));
+        jButtonVybavene.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonVybavene.setText("OZNAČIŤ ZA VBAVENÉ");
+        jButtonVybavene.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVybaveneActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,16 +156,6 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addComponent(jButtonUpdate)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addGap(39, 39, 39)
-                                                                .addComponent(jLabel1)))
-                                                .addGap(0, 61, Short.MAX_VALUE))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -165,7 +168,19 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
                                                         .addComponent(jTextFieldDostupneMnozstvo)
                                                         .addComponent(jTextFieldNazovND, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
-                                                        .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGap(39, 39, 39)
+                                                                .addComponent(jLabel1))
+                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                .addComponent(jButtonVybavene, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                        .addComponent(jButtonUpdate)
+                                                                        .addGap(18, 18, 18)
+                                                                        .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addGap(0, 61, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,7 +192,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jComboBoxCisloDielu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel4)
                                         .addComponent(jTextFieldNazovND, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -193,23 +208,25 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(106, 106, 106))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonVybavene, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(65, 65, 65))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
+                new Object [][] {
 
                 },
-                new String[]{
+                new String [] {
                         "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND", "dostupné množstvo ND"
                 }
         ) {
-            boolean[] canEdit = new boolean[]{
+            boolean[] canEdit = new boolean [] {
                     false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -239,7 +256,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
         jComboBoxCisloDielu.setEnabled(false);
         jComboBoxCisloDielu.setEditable(false);
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>
 
     private void vynulovaniePolicok() {
         jTextFieldDostupneMnozstvo.setText("");
@@ -265,6 +282,10 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
         this.vynulovaniePolicok();
     }
 
+    public void setListener(VybaveniePoziadavkyListener listener) {
+        this.listener = listener;
+    }
+
     private void displayDataInTable() {
         try {
             transaction.begin();
@@ -274,7 +295,8 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
                     "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd, nd.nazovND, nd.dostupneMnozstvo " +
                             "FROM BUdrzbaPoruchyNahradnyDiel up " +
                             "JOIN BNahradnyDiel nd on up.cisloNd = nd.cisloNd " +
-                            "JOIN BUdrzbaPoruchy u ON u.idPoruchy = up.idPoruchy AND u.osCisloOpravy = up.osCisloOpravy ", Object[].class);
+                            "JOIN BUdrzbaPoruchy u ON u.idPoruchy = up.idPoruchy AND u.osCisloOpravy = up.osCisloOpravy " +
+                            "WHERE up.pripravene = 0 " , Object[].class);
 
             List<Object[]> results = query.getResultList();
 
@@ -367,6 +389,46 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButtonVybaveneActionPerformed(java.awt.event.ActionEvent evt) {
+        JOptionPane.getRootFrame().setAlwaysOnTop(true);
+
+        int actualRowNumber = -1;
+        actualRowNumber = jTable1.getSelectedRow();
+        if (actualRowNumber < 0) {
+            JOptionPane.showMessageDialog(null, "Vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
+            return;
+        }
+        try {
+            transaction.begin();
+            BigInteger IdPoruchy =new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,0)));
+            BigInteger osCislo =new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,1)));
+            BigInteger cisloNd =new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,2)));
+
+            // Načítanie záznamu z databázy na základe ID a uprava
+            BUdrzbaPoruchyNahradnyDielPK PK = new BUdrzbaPoruchyNahradnyDielPK(IdPoruchy,osCislo,cisloNd);
+            BUdrzbaPoruchyNahradnyDiel bUdrzbaPoruchyNahradnyDiel = entityManager.find(BUdrzbaPoruchyNahradnyDiel.class,PK);
+
+            bUdrzbaPoruchyNahradnyDiel.setPripravene(BigInteger.valueOf(1));
+
+            transaction.commit();
+            JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
+            this.refreshTable();
+            listener.onVybaveniePoziadavky();
+        } catch (Exception e) {
+            e.getCause();
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+        // vynuluje selected row
+        jTable1.clearSelection();
+        JOptionPane.getRootFrame().setAlwaysOnTop(false);
+    }
+
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
 
@@ -428,7 +490,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
     @Override
     public void onDorucenieSuccess() {
-        System.out.println("2");
+        //System.out.println("2");
         this.refreshTable();
     }
 
@@ -452,6 +514,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
     private javax.swing.JTextArea jTextAreaPoziadavka;
     private javax.swing.JTextField jTextFieldDostupneMnozstvo;
     private javax.swing.JTextField jTextFieldNazovND;
+    private javax.swing.JButton jButtonVybavene;
 
     // End of variables declaration//GEN-END:variables
 }

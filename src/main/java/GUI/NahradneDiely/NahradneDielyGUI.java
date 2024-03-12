@@ -543,7 +543,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
 
     @Override
     public void onDorucenieSuccess() {
-        System.out.println("1");
+        //System.out.println("1");
         this.refreshTable();
     }
 
