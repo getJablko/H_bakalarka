@@ -168,8 +168,6 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
         jLabel5.setText("vyradenie:");
 
-
-
         jLabel6.setText("popis:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
