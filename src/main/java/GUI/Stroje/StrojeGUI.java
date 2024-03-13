@@ -151,7 +151,6 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
         jTextFieldVyradenie.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         jTextAreaPopis.setBackground(new java.awt.Color(255, 255, 254));
