@@ -156,7 +156,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jLabel6.setText("typ_zam_d*:");
 
         jComboBox3.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "V", "M", "S", "I"}));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "V", "M", "S", "I","A"}));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 254));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

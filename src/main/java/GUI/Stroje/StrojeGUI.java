@@ -147,7 +147,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         jTextFieldZaradenie.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jComboBoxCisloHaly.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxCisloHaly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "6400", "6100", "5900", "5700", "5400", "5200"}));
+        jComboBoxCisloHaly.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200"}));
 
         jTextFieldVyradenie.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
