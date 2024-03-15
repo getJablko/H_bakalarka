@@ -13,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -326,6 +328,28 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         if (typStroja.equals("") || priorita.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
+
+            // overenie cislaDielu
+            int rowCount = jTable1.getRowCount();
+            List<String> typyStrojov = new ArrayList<>();
+            for (int i = 0; i< rowCount; i++) {
+                typyStrojov.add((String) jTable1.getValueAt(i,0));
+            }
+            boolean zhoda = false;
+            for (int i = 0; i< rowCount; i++) {
+                if (typyStrojov.contains(typStroja)){
+                    zhoda = true;
+                    break;
+                }
+            }
+            System.out.println(typyStrojov);
+            if (zhoda == false) {
+                JOptionPane.showMessageDialog(null, "Nenašie sa  daný typ stroja, prosím vyberte záznam z tabuľky!");
+                this.vynulovaniePolicok();
+                return;
+            }
+
+
             try {
                 transaction.begin();
 

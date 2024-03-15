@@ -380,8 +380,9 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
     @Override
     public void onBTypStrojaGUIClosed() {
-        // Refresh table
+        System.out.println("onBTypStrojaClose - StrojeGUI");
         this.refreshTable();
+        this.naplnComboBoxTypyStrojov();
     }
 
     private void closeApplication() {
@@ -524,7 +525,13 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                     }
                 }
                 // ziskanie ID
-                int rowNumber = jTable1.getSelectedRow();
+                int rowNumber = -1;
+                rowNumber = jTable1.getSelectedRow();
+                if (rowNumber == -1) {
+                    JOptionPane.showMessageDialog(null, "Vyberte záznam z tabuľky!");
+                    this.vynulovaniePolicok();
+                    return;
+                }
                 BigInteger idStroja = (BigInteger) jTable1.getValueAt(rowNumber, 0);
 
                 // najdenie stroja na zaklade PK (ID)
@@ -556,7 +563,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
             } catch (Exception e) {
                 e.getCause();
-                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri upravovaní záznamu: " + e.getMessage() + " skúste to znovu!");
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();

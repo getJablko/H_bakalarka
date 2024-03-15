@@ -490,7 +490,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
     @Override
     public void onDorucenieSuccess() {
-        //System.out.println("2");
+        System.out.println("onDorucenieSuccess - ZobrazeniePoziadaviekGUI");
         this.refreshTable();
     }
 

@@ -342,6 +342,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
 
     @Override
     public void onPrebratieSuccess() {
+        System.out.println("on prebratie success - Udrzba poruchy");
         this.refreshTable();
     }
 
@@ -535,7 +536,6 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonPoziadavkaNDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPoziadavkaNDActionPerformed
-        // TODO add your handling code here:
         int actualRowNumber = -1;
         actualRowNumber = jTable1.getSelectedRow();
         if (actualRowNumber < 0) {

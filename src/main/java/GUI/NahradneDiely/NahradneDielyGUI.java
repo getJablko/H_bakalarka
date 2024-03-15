@@ -532,18 +532,18 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonPoziadavkyNDActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         this.guiManager.zobrazeniePoziadaviek();
     }
 
     @Override
     public void onPoziadavkaUpdate() {
+        System.out.println("onPoziadavkaUpdate - NdGUI");
         this.refreshTable();
     }
 
     @Override
     public void onDorucenieSuccess() {
-        //System.out.println("1");
+        System.out.println("onDorucenieSuccess - NdGUI");
         this.refreshTable();
     }
 

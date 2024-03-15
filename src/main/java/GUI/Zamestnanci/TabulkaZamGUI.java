@@ -474,7 +474,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     }
 
     public void jButton2_DELETE_ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO delete button - je ho treba??
+        // nie je potreba
     }
 
     private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

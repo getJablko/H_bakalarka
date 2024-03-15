@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -447,11 +448,35 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             String nazovND = (String) jTextFieldNazovND.getText();
             String pozMnoz = jTextFieldPozMnoz.getText();
 
+            // overenie cislaDielu
+            List<BigInteger> cislaND = new ArrayList<>();
+            for (int i = 0; i< rowCount; i++) {
+                cislaND.add((BigInteger) jTable1.getValueAt(i,2));
+            }
+
+            if (cisloDielu.equals(" ")) {
+                JOptionPane.showMessageDialog(null, "Nenašlo sa číslo ND, prosím vyberte záznam z tabuľky!");
+                return;
+            }
+            BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
+            boolean zhoda = false;
+            for (int i = 0; i< rowCount; i++) {
+                if (cislaND.contains(cisloDieluBigInteger)){
+                    zhoda = true;
+                    break;
+                }
+            }
+            System.out.println(cislaND);
+            if (zhoda == false) {
+                JOptionPane.showMessageDialog(null, "Nenašiel sa záznam s daným číslom ND!");
+                this.vynulovaniePolicok();
+                return;
+            }
+
             // overenie vypisania udajov
             if (cisloDielu.equals(" ") || nazovND.equals("") || pozMnoz.equals("")) {
                 JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
             } else {
-                BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
                 try {
                     transaction.begin();
 
@@ -557,6 +582,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                 bUdrzbaPoruchyNahradnyDiel.setCisloNd(cisloDieluBigInteger);
                 bUdrzbaPoruchyNahradnyDiel.setPozadavkaNd(poziadavka);
                 bUdrzbaPoruchyNahradnyDiel.setPozadovaneMnozstvo(new BigInteger(pozMnoz));
+                bUdrzbaPoruchyNahradnyDiel.setPripravene(BigInteger.valueOf(0));
 
                 entityManager.persist(bUdrzbaPoruchyNahradnyDiel);
                 transaction.commit();
@@ -582,16 +608,19 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
     @Override
     public void onPoziadavkaUpdate() {
+        System.out.println("on poziadavka update - udrzba ND");
+
         this.refreshTable();
     }
     @Override
     public void onDorucenieSuccess() {
+        System.out.println("on dorucenie success - udrzba ND");
         this.refreshTable();
     }
 
     @Override
     public void onVybaveniePoziadavky() {
-        //System.out.println("IDE TO! :3");
+        System.out.println("on vybaveniePoziadavky - udrzba ND :3");
         this.refreshTable();
     }
 

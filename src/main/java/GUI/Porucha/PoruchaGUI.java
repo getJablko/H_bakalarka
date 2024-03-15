@@ -405,6 +405,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     @Override
     // sluzi na naplnenie komboboxu po uspesnom logine (inak to hadzalo nullException)
     public void onLoginSuccess() {
+        System.out.println("onLoginSuccess - PoruchaGUI");
         this.rolaA = this.loginGUI.getRolaZam();
         this.osCisloOpravyA = this.loginGUI.getOsCisloLogin();
         naplnComboBoxIdStrojov();
