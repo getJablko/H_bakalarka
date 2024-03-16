@@ -565,10 +565,18 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
 
         String idStroja = (String) jComboBoxIdStroja.getSelectedItem();
+        if  (idStroja.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+            return;
+        }
         BigInteger idStrojaBigInt = new BigInteger(idStroja);
 
         String zavaznost = (String) jComboBoxZavaznost.getSelectedItem();
         String vPrevadzke = (String) jComboBoxStrojVPrevadzke.getSelectedItem();
+        if  (vPrevadzke.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+            return;
+        }
         BigInteger vPrevadzkeBigInt = new BigInteger(vPrevadzke);
 
         String typPoruchy = (String) jComboBoxTypPoruchy.getSelectedItem();
@@ -630,15 +638,22 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-        // TODO - zabezpecit chybove vypisy - ked su povinne policka null
         BigInteger osCisloBigInt = loginGUI.getOsCisloLogin();
         //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
 
         String idStroja = (String) jComboBoxIdStroja.getSelectedItem();
+        if  (idStroja.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+            return;
+        }
         BigInteger idStrojaBigInt = new BigInteger(idStroja);
 
         String zavaznost = (String) jComboBoxZavaznost.getSelectedItem();
         String vPrevadzke = (String) jComboBoxStrojVPrevadzke.getSelectedItem();
+        if  (vPrevadzke.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+            return;
+        }
         BigInteger vPrevadzkeBigInt = new BigInteger(vPrevadzke);
 
         String typPoruchy = (String) jComboBoxTypPoruchy.getSelectedItem();
@@ -652,11 +667,9 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         if (/*osCislo.equals("") || */idStroja.equals(" ") || zavaznost.equals(" ") ||
                 vPrevadzke.equals(" ") || typPoruchy.equals(" ") || poruchaOd.equals("")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
-
         } else {
             try {
                 transaction.begin();
-
                 if (!dateFormat.overenie(poruchaOd)) {
                     this.vynulovaniePolicok();
                     return;
@@ -683,7 +696,6 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 JOptionPane.showMessageDialog(null, "Nová porucha bola vložená!");
 
                 this.refreshTable();
-
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
@@ -704,15 +716,25 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             this.vynulovaniePolicok();
             return;
         }
-
         if (this.rolaA.equals("I") || this.rolaA.equals("S")) {
             JOptionPane.showMessageDialog(null, "Na tento úkon nemáte oprávnenie!");
             return;
         }
 
+        TypedQuery<Object[]> query = entityManager.createQuery(
+                "SELECT DISTINCT p.idPoruchy " +
+                        "FROM BUdrzbaPoruchy up" +
+                        " JOIN BPorucha p ON p.idPoruchy = up.idPoruchy", Object[].class);
+        List<Object[]> results = query.getResultList();
+        BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,0)));
+
+        if (results.contains(idPoruchy)) {
+            JOptionPane.showMessageDialog(null, "Táto porucha už je prebratá!");
+            return;
+        }
+
         try {
             transaction.begin();
-
             if (jTable1.getValueAt(actualRowNumber, 7) != null) {
                 JOptionPane.showMessageDialog(null, "Táto porucha už nie je aktuálna!");
                 return;
@@ -730,14 +752,12 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             // nastavenie GUI
             bUdrzbaPoruchy.setPrebratiePoruchy(dateF);
 
-
             entityManager.persist(bUdrzbaPoruchy);
             transaction.commit();
             JOptionPane.showMessageDialog(null, "Porucha bola prebratá!");
             this.onPrebratieSuccess();
 
             this.refreshTable();
-
         } catch (
                 Exception e) {
             e.getCause();
