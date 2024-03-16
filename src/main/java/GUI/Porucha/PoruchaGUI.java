@@ -549,7 +549,13 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // nacitam si vypisane udaje
 
-        int rowNumber = jTable1.getSelectedRow();
+        int rowNumber = -1;
+        rowNumber = jTable1.getSelectedRow();
+        if (rowNumber < 0) {
+            JOptionPane.showMessageDialog(null, "Vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
+            return;
+        }
         BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
 
         if (loginGUI.getRolaZam().equals("I")) {
@@ -635,6 +641,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                 }
             }
         }
+        jTable1.clearSelection();
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed

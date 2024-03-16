@@ -7,8 +7,8 @@ package GUI.NahradneDiely;
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Objednavky.DorucenieObjednavkyListener;
-import GUI.Porucha.PrebratiePoruchyListener;
-import Tabulky.*;
+import Tabulky.BNahradnyDiel;
+import Tabulky.BTypStroja;
 
 import javax.persistence.*;
 import javax.swing.*;
@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -430,7 +429,12 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
         String nazovND = (String) jTextFieldNazovND.getText();
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
-        BigInteger dostupneMnozstvo = new BigInteger(jTextFieldDostupneMnozstvo.getText());
+        String stringDostupneMnozstvo = jTextFieldDostupneMnozstvo.getText();
+        if (stringDostupneMnozstvo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger dostupneMnozstvo = new BigInteger(stringDostupneMnozstvo);
         String miestoUskladnenia = (String) jTextFieldMiestoUskladnenia.getText();
 
         // overenie vypisania udajov

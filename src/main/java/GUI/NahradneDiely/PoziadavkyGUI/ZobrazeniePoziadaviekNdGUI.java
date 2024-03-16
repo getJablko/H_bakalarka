@@ -9,7 +9,6 @@ import GUI.Login.LoginGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
 import GUI.NahradneDiely.Poziadavka2Listener;
 import GUI.Objednavky.DorucenieObjednavkyListener;
-import GUI.Porucha.PrebratiePoruchyListener;
 import GUI.UdrzbaPoruchy.UdrzbaND.UdrzbaNahradnyDielGUI;
 import Tabulky.BNahradnyDiel;
 import Tabulky.BUdrzbaPoruchyNahradnyDiel;
@@ -218,11 +217,11 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
                 },
                 new String [] {
-                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND", "dostupné množstvo ND"
+                        "ID poruchy", "os číslo opravy", "číslo ND", "požiadavka ND", "názov ND", "dostupné množstvo ND", "požadované množstvo"
                 }
         ) {
             boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false
+                    false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -292,7 +291,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
             // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd, nd.nazovND, nd.dostupneMnozstvo " +
+                    "SELECT DISTINCT up.idPoruchy, up.osCisloOpravy, up.cisloNd, up.pozadavkaNd, nd.nazovND, nd.dostupneMnozstvo,up.pozadovaneMnozstvo " +
                             "FROM BUdrzbaPoruchyNahradnyDiel up " +
                             "JOIN BNahradnyDiel nd on up.cisloNd = nd.cisloNd " +
                             "JOIN BUdrzbaPoruchy u ON u.idPoruchy = up.idPoruchy AND u.osCisloOpravy = up.osCisloOpravy " +
@@ -310,6 +309,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
                         result[3],  // poziadavka
                         result[4],  // nazovND
                         result[5],  // dostupneMnozstvo
+                        result[6],  // pozadovaneMnozstvo
                 };
                 model.addRow(row);
             }
@@ -448,12 +448,12 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
             return;
         }
         String dostupneMnozstvoText = jTextFieldDostupneMnozstvo.getText();
-        BigInteger dostupneMnozstvo = null;
-
-        // overenie ci dostupneMnozstvo nie je prazdne
-        if (!dostupneMnozstvoText.isEmpty()) {
-            dostupneMnozstvo = new BigInteger(dostupneMnozstvoText);
+        if (dostupneMnozstvoText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vyplnte prosim všetky povinné políčka!");
+            return;
         }
+
+        BigInteger dostupneMnozstvo = new BigInteger(dostupneMnozstvoText);
         try {
             transaction.begin();
 
