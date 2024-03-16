@@ -591,12 +591,27 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // nacitam si vypisane udaje
-
-        int rowNumber = jTable1.getSelectedRow();
+        int rowNumber = -1;
+        rowNumber = jTable1.getSelectedRow();
+        if (rowNumber < 0) {
+            JOptionPane.showMessageDialog(null, "Vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
+            return;
+        }
         BigInteger cisloObjOriginal = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
         BigInteger cisloNDOriginal = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
-        BigInteger cisloObj = new BigInteger(String.valueOf(jComboBoxCisloObj.getSelectedItem()));
-        BigInteger cisloND = new BigInteger(String.valueOf(jComboBoxCisloND.getSelectedItem()));
+        String stringCisloObj = (String) jComboBoxCisloObj.getSelectedItem();
+        if (stringCisloObj.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger cisloObj = new BigInteger(stringCisloObj);
+        String stringCisloND = (String) jComboBoxCisloND.getSelectedItem();
+        if (stringCisloND.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger cisloND = new BigInteger(stringCisloND);
 
         // restrikcie podla roly
         if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
@@ -612,59 +627,67 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             return;
         }
 
-        Double cena = Double.valueOf(String.valueOf(jTextFieldCena.getText()));
-        BigInteger mnozstvo = new BigInteger(String.valueOf(jTextFieldMnozstvo.getText()));
+        String stringCena = jTextFieldCena.getText();
+        if (stringCena.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        Double cena = Double.valueOf(stringCena);
+        String stringMnozstvo = jTextFieldMnozstvo.getText();
+        if (stringMnozstvo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger mnozstvo = new BigInteger(stringMnozstvo);
         String datumObj = jTextFieldDatumObj.getText();
+        if (datumObj.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
         String datumDor = jTextFieldDatumDoruc.getText();
-
-        // overenie vypisania udajov
-        if (cisloND.equals(" ") || cisloObj.equals(" ") ||
-                mnozstvo.equals("") || cena.equals("") || datumObj.equals("")) {
-            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
-        } else {
-            try {
-                if (!dateFormat.overenie(datumObj)){
+        try {
+            if (!dateFormat.overenie(datumObj)) {
+                this.vynulovaniePolicok();
+                return;
+            }
+            if (!datumDor.isEmpty()) {
+                if (!dateFormat.overenie(datumDor)) {
                     this.vynulovaniePolicok();
                     return;
                 }
-                if (!datumDor.isEmpty()) {
-                    if (!dateFormat.overenie(datumDor)){
-                        this.vynulovaniePolicok();
-                        return;
-                    }
-                }
-                transaction.begin();
+            }
+            transaction.begin();
 
-                // Načítanie záznamu z databázy na základe ID a uprava
-                BPolozkaObjednavkyPK primaryKey = new BPolozkaObjednavkyPK(cisloObj, cisloND);
-                BPolozkaObjednavky bPolozkaObjednavky = entityManager.find(BPolozkaObjednavky.class, primaryKey);
-                BObjednavka bObjednavka = entityManager.find(BObjednavka.class, cisloObj);
+            // Načítanie záznamu z databázy na základe ID a uprava
+            BPolozkaObjednavkyPK primaryKey = new BPolozkaObjednavkyPK(cisloObj, cisloND);
+            BPolozkaObjednavky bPolozkaObjednavky = entityManager.find(BPolozkaObjednavky.class, primaryKey);
+            BObjednavka bObjednavka = entityManager.find(BObjednavka.class, cisloObj);
 
-                bObjednavka.setDatumObjednavky(datumObj);
-                //bObjednavka.setDatumDorucenia("2023-12-12");
-                bObjednavka.setDatumDorucenia(datumDor);
-                System.out.println(jTextFieldDatumDoruc.getText());
+            bObjednavka.setDatumObjednavky(datumObj);
+            //bObjednavka.setDatumDorucenia("2023-12-12");
+            bObjednavka.setDatumDorucenia(datumDor);
+            System.out.println(jTextFieldDatumDoruc.getText());
 
-                bPolozkaObjednavky.setMnozstvo(mnozstvo);
-                bPolozkaObjednavky.setCena(cena);
+            bPolozkaObjednavky.setMnozstvo(mnozstvo);
+            bPolozkaObjednavky.setCena(cena);
 
-                entityManager.persist(bObjednavka);
-                entityManager.persist(bPolozkaObjednavky);
+            entityManager.persist(bObjednavka);
+            entityManager.persist(bPolozkaObjednavky);
 
-                transaction.commit();
-                JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
-                this.refreshTable();
+            transaction.commit();
+            JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
+            this.refreshTable();
 
-            } catch (Exception e) {
-                e.getCause();
-                //e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
-            } finally {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
+        } catch (Exception e) {
+            e.getCause();
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
         }
+        jTable1.clearSelection();
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonNovaObjednavkaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -714,10 +737,18 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         // nacitam si vypisane udaje
 
         int rowNumber = jTable1.getSelectedRow();
-        //BigInteger cisloObjOriginal = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
-        //BigInteger cisloNDOriginal = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
-        BigInteger cisloObj = new BigInteger(String.valueOf(jComboBoxCisloObj.getSelectedItem()));
-        BigInteger cisloND = new BigInteger(String.valueOf(jComboBoxCisloND.getSelectedItem()));
+        String stringCisloObj = (String) jComboBoxCisloObj.getSelectedItem();
+        if (stringCisloObj.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger cisloObj = new BigInteger(stringCisloObj);
+        String stringCisloND = (String) jComboBoxCisloND.getSelectedItem();
+        if (stringCisloND.equals(" ")) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger cisloND = new BigInteger(stringCisloND);
 
         // restrikcie podla roly
         if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
@@ -727,51 +758,56 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             return;
         }
 
-        Double cena = Double.valueOf(String.valueOf(jTextFieldCena.getText()));
-        BigInteger mnozstvo = new BigInteger(String.valueOf(jTextFieldMnozstvo.getText()));
+        String stringCena = jTextFieldCena.getText();
+        if (stringCena.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        Double cena = Double.valueOf(stringCena);
+        String stringMnozstvo = jTextFieldMnozstvo.getText();
+        if (stringMnozstvo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
+        BigInteger mnozstvo = new BigInteger(stringMnozstvo);
         String datumObj = jTextFieldDatumObj.getText();
+        if (datumObj.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prosím, zadajte všetky povinné políčka!");
+            return;
+        }
         String datumDor = jTextFieldDatumDoruc.getText();
-
-        // overenie vypisania udajov
-        if (cisloND.equals(" ") || cisloObj.equals(" ") ||
-                mnozstvo.equals("") || cena.equals("") || datumObj.equals("")) {
-            JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
-        } else {
-            try {
-                if (!dateFormat.overenie(datumObj)){
-                    this.vynulovaniePolicok();
+        try {
+            if (!dateFormat.overenie(datumObj)) {
+                return;
+            }
+            if (!datumDor.isEmpty()) {
+                if (!dateFormat.overenie(datumDor)) {
                     return;
                 }
-                if (!datumDor.isEmpty()) {
-                    if (!dateFormat.overenie(datumDor)){
-                        this.vynulovaniePolicok();
-                        return;
-                    }
-                }
-                transaction.begin();
+            }
+            transaction.begin();
 
-                // Načítanie záznamu z databázy na základe ID a uprava
-                BPolozkaObjednavkyPK primaryKey = new BPolozkaObjednavkyPK(cisloObj, cisloND);
-                BPolozkaObjednavky bPolozkaObjednavky = new BPolozkaObjednavky();
+            // Načítanie záznamu z databázy na základe ID a uprava
+            BPolozkaObjednavkyPK primaryKey = new BPolozkaObjednavkyPK(cisloObj, cisloND);
+            BPolozkaObjednavky bPolozkaObjednavky = new BPolozkaObjednavky();
 
-                bPolozkaObjednavky.setMnozstvo(mnozstvo);
-                bPolozkaObjednavky.setCena(cena);
-                bPolozkaObjednavky.setCisloObjednavky(cisloObj);
-                bPolozkaObjednavky.setCisloNd(cisloND);
+            bPolozkaObjednavky.setMnozstvo(mnozstvo);
+            bPolozkaObjednavky.setCena(cena);
+            bPolozkaObjednavky.setCisloObjednavky(cisloObj);
+            bPolozkaObjednavky.setCisloNd(cisloND);
 
-                entityManager.persist(bPolozkaObjednavky);
-                transaction.commit();
-                JOptionPane.showMessageDialog(null, "Nový záznam bol vložený!");
-                this.refreshTable();
+            entityManager.persist(bPolozkaObjednavky);
+            transaction.commit();
+            JOptionPane.showMessageDialog(null, "Nový záznam bol vložený!");
+            this.refreshTable();
 
-            } catch (Exception e) {
-                e.getCause();
-                //e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní záznamu: " + e.getMessage() + " skúste to znovu!");
-            } finally {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
+        } catch (Exception e) {
+            e.getCause();
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní záznamu: " + e.getMessage() + " skúste to znovu!");
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
         }
     }
@@ -784,10 +820,11 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
                 // ziskanie dat - JPQL
                 TypedQuery<Object[]> query = entityManager.createQuery(
-                        "SELECT p.cisloObjednavky, p.cisloNd, p.mnozstvo, p.cena, o.datumObjednavky, o.datumDorucenia " +
+                        "SELECT p.cisloObjednavky, p.cisloNd, p.mnozstvo, p.cena, o.datumObjednavky, o.datumDorucenia, nd.nazovND " +
                                 "FROM BPolozkaObjednavky p " +
                                 "JOIN BObjednavka o ON p.cisloObjednavky = o.cisloObjednavky " +
-                                "WHERE o.datumDorucenia IS NOT NULL", Object[].class);
+                                "JOIN BNahradnyDiel nd ON nd.cisloNd = p.cisloNd " +
+                                "WHERE o.datumDorucenia IS NOT NULL ", Object[].class);
 
                 List<Object[]> results = query.getResultList();
 
@@ -800,7 +837,8 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
                             result[2],  // mnozstvo
                             result[3],  // cena
                             result[4],  // datumObjednavky
-                            result[5]   // datumDorucenia
+                            result[5],  // datumDorucenia
+                            result[6],  // nazovND
                     };
                     model.addRow(row);
                 }
