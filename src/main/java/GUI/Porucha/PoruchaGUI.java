@@ -134,13 +134,13 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         //jComboBoxIdStroja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBoxZavaznost.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ","1", "2", "3", "4"}));
+        jComboBoxZavaznost.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "1", "2", "3", "4"}));
 
         jComboBoxStrojVPrevadzke.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ","0", "1"}));
+        jComboBoxStrojVPrevadzke.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "0", "1"}));
 
         jComboBoxTypPoruchy.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ","E", "M", "I", "H", "B"}));
+        jComboBoxTypPoruchy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "M", "I", "H", "B"}));
 
         jTextFieldPoruchaOd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -405,7 +405,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     @Override
     // sluzi na naplnenie komboboxu po uspesnom logine (inak to hadzalo nullException)
     public void onLoginSuccess() {
-        System.out.println("onLoginSuccess - PoruchaGUI");
+        //System.out.println("onLoginSuccess - PoruchaGUI");
         this.rolaA = this.loginGUI.getRolaZam();
         this.osCisloOpravyA = this.loginGUI.getOsCisloLogin();
         naplnComboBoxIdStrojov();
@@ -548,6 +548,11 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // nacitam si vypisane udaje
+        if (!loginGUI.getRolaZam().equals("I") && !loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+            this.vynulovaniePolicok();
+            return;
+        }
 
         int rowNumber = -1;
         rowNumber = jTable1.getSelectedRow();
@@ -561,17 +566,15 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         if (loginGUI.getRolaZam().equals("I")) {
             if (!osCislo.equals(loginGUI.getOsCisloLogin())) {
                 //System.out.println(loginGUI.getOsCisloLogin());
-                JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
+                JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
                 this.vynulovaniePolicok();
                 return;
             }
-            //System.out.println("tu som");
         }
-        //System.out.println("tu som2");
         //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
 
         String idStroja = (String) jComboBoxIdStroja.getSelectedItem();
-        if  (idStroja.equals(" ")) {
+        if (idStroja.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
             return;
         }
@@ -579,7 +582,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
         String zavaznost = (String) jComboBoxZavaznost.getSelectedItem();
         String vPrevadzke = (String) jComboBoxStrojVPrevadzke.getSelectedItem();
-        if  (vPrevadzke.equals(" ")) {
+        if (vPrevadzke.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
             return;
         }
@@ -635,6 +638,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -645,11 +649,14 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
+        if (!loginGUI.getRolaZam().equals("I") && !loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+            this.vynulovaniePolicok();
+            return;
+        }
         BigInteger osCisloBigInt = loginGUI.getOsCisloLogin();
-        //BigInteger osCisloBigInt = new BigInteger(String.valueOf(28));
-
         String idStroja = (String) jComboBoxIdStroja.getSelectedItem();
-        if  (idStroja.equals(" ")) {
+        if (idStroja.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
             return;
         }
@@ -657,7 +664,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
         String zavaznost = (String) jComboBoxZavaznost.getSelectedItem();
         String vPrevadzke = (String) jComboBoxStrojVPrevadzke.getSelectedItem();
-        if  (vPrevadzke.equals(" ")) {
+        if (vPrevadzke.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
             return;
         }
@@ -665,14 +672,14 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
         String typPoruchy = (String) jComboBoxTypPoruchy.getSelectedItem();
         String poruchaOd = jTextFieldPoruchaOd.getText();
-
         // moze byt null
         String poruchaDo = jTextFieldPoruchaDo.getText();
         String popis = jTextAreaPopis.getText();
 
         // overenie vypisania udajov
-        if (/*osCislo.equals("") || */idStroja.equals(" ") || zavaznost.equals(" ") ||
-                vPrevadzke.equals(" ") || typPoruchy.equals(" ") || poruchaOd.equals("")) {
+        if (idStroja.equals(" ") || zavaznost.equals(" ") ||
+                vPrevadzke.equals(" ") || typPoruchy.equals(" ") ||
+                poruchaOd.equals("")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
             try {
@@ -706,6 +713,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -715,7 +723,11 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonPrebratieActionPerformed(java.awt.event.ActionEvent evt) {
-
+        if (this.rolaA.equals("I")) {
+            JOptionPane.showMessageDialog(null, "Na tento úkon nemáte oprávnenie!");
+            this.vynulovaniePolicok();
+            return;
+        }
         int actualRowNumber = -1;
         actualRowNumber = jTable1.getSelectedRow();
         if (actualRowNumber < 0) {
@@ -723,23 +735,17 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
             this.vynulovaniePolicok();
             return;
         }
-        if (this.rolaA.equals("I") || this.rolaA.equals("S")) {
-            JOptionPane.showMessageDialog(null, "Na tento úkon nemáte oprávnenie!");
-            return;
-        }
-
         TypedQuery<Object[]> query = entityManager.createQuery(
                 "SELECT DISTINCT p.idPoruchy " +
                         "FROM BUdrzbaPoruchy up" +
                         " JOIN BPorucha p ON p.idPoruchy = up.idPoruchy", Object[].class);
         List<Object[]> results = query.getResultList();
-        BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,0)));
+        BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber, 0)));
 
         if (results.contains(idPoruchy)) {
             JOptionPane.showMessageDialog(null, "Táto porucha už je prebratá!");
             return;
         }
-
         try {
             transaction.begin();
             if (jTable1.getValueAt(actualRowNumber, 7) != null) {
@@ -780,7 +786,6 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
     private void jButtonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHomeActionPerformed
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
-
         this.dispose();
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_jButtonHomeActionPerformed

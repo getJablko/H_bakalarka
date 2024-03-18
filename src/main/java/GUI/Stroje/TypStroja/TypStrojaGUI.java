@@ -308,6 +308,7 @@ public class TypStrojaGUI extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -327,7 +328,6 @@ public class TypStrojaGUI extends javax.swing.JFrame {
         if (typStroja.equals("") || priorita.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
         } else {
-
             // overenie cislaDielu
             int rowCount = jTable1.getRowCount();
             List<String> typyStrojov = new ArrayList<>();
@@ -341,17 +341,14 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                     break;
                 }
             }
-            System.out.println(typyStrojov);
+            //System.out.println(typyStrojov);
             if (zhoda == false) {
-                JOptionPane.showMessageDialog(null, "Nenašie sa  daný typ stroja, prosím vyberte záznam z tabuľky!");
+                JOptionPane.showMessageDialog(null, "Nenašiel sa daný typ stroja, prosím vyberte záznam z tabuľky!");
                 this.vynulovaniePolicok();
                 return;
             }
-
-
             try {
                 transaction.begin();
-
                 // ziskanie ID
                 int rowNumber = jTable1.getSelectedRow();
                 String idStroja = (String) jTable1.getValueAt(rowNumber, 0);
@@ -373,25 +370,22 @@ public class TypStrojaGUI extends javax.swing.JFrame {
                 e.getCause();
                 //System.out.println(e.getMessage());
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri upravovaní záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
             }
             JOptionPane.getRootFrame().setAlwaysOnTop(false);
-
         }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
         // vynulovanie policok
         this.vynulovaniePolicok();
-
-
         if (strojeGUI != null) {
             strojeGUI.onBTypStrojaGUIClosed();
         }
-
         this.dispose();
     }//GEN-LAST:event_jButtonExitActionPerformed
 

@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -256,11 +257,11 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
 
                 },
                 new String[]{
-                        "ID poruchy", "os. číslo opravy", "prebratie poruchy", "doba opravy", "popis údržby", "príčina poruchy"
+                        "ID poruchy", "os. číslo opravy", "prebratie poruchy", "doba opravy", "popis údržby", "príčina poruchy", "typ stroja"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false, false
+                    false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -342,7 +343,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
 
     @Override
     public void onPrebratieSuccess() {
-        System.out.println("on prebratie success - Udrzba poruchy");
+        //System.out.println("on prebratie success - Udrzba poruchy");
         this.refreshTable();
     }
 
@@ -352,8 +353,10 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
 
             // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy " +
-                            "FROM BUdrzbaPoruchy u ", Object[].class);
+                    "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy, str.typStroja " +
+                            "FROM BUdrzbaPoruchy u " +
+                            "JOIN BPorucha p on p.idPoruchy = u.idPoruchy " +
+                            "JOIN BStroj str on str.idStroja = p.idStroja", Object[].class);
 
             List<Object[]> results = query.getResultList();
 
@@ -366,7 +369,8 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                         result[2],  // prebratie
                         result[3],  // doobaOpravy
                         result[4],  // popisUdrzby
-                        result[5]   // pricinyPoruchy
+                        result[5],  // pricinyPoruchy
+                        result[6],  // typ Stroja
                 };
                 model.addRow(row);
             }
@@ -476,13 +480,6 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         BigInteger idPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 0)));
         BigInteger osCisloOpravy = new BigInteger(String.valueOf(jTable1.getValueAt(rowNumber, 1)));
 
-        if (loginGUI.getRolaZam().equals("I") || loginGUI.getRolaZam().equals("S")) {
-            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
-            this.vynulovaniePolicok();
-            return;
-            //System.out.println("tu som");
-        }
-
         String prebratiePoruchy = jTextFieldPrebratiePoruchy.getText();
         // pretypovanie
 
@@ -506,7 +503,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                 BUdrzbaPoruchy bUdrzbaPoruchy = entityManager.find(BUdrzbaPoruchy.class, primaryKey);
 
                 bUdrzbaPoruchy.setPricinaPoruchy(pricinaPoruchy);
-                if (!dateFormat.overenie(prebratiePoruchy)){
+                if (!dateFormat.overenie(prebratiePoruchy)) {
                     this.vynulovaniePolicok();
                     return;
                 }
@@ -548,26 +545,35 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
             this.vynulovaniePolicok();
             return;
         }
-        // naplnenie kompozitneho PK pre UdrzbaNahradnyDielGUI
-        this.IdPoruchy = (BigInteger) jTable1.getValueAt(actualRowNumber, 0);
-        this.osCisloNahlasenia = (BigInteger) jTable1.getValueAt(actualRowNumber, 1);
+        try {
+            // naplnenie kompozitneho PK pre UdrzbaNahradnyDielGUI
+            this.IdPoruchy = (BigInteger) jTable1.getValueAt(actualRowNumber, 0);
+            this.osCisloNahlasenia = (BigInteger) jTable1.getValueAt(actualRowNumber, 1);
 
-        // vratenie typu stroja
-        TypedQuery<String> query = entityManager.createQuery(
-                "SELECT DISTINCT nd.typStroja " +
-                        "FROM BUdrzbaPoruchy u " +
-                        "JOIN BPorucha p ON u.idPoruchy = p.idPoruchy " +
-                        "JOIN BStroj str on p.idStroja = str.idStroja " +
-                        "JOIN BTypStroja ts on str.typStroja = ts.typStroja  " +
-                        "JOIN BNahradnyDiel nd ON ts.typStroja = nd.typStroja " +
-                        "WHERE u.idPoruchy = :id AND u.osCisloOpravy = :oCislo", String.class);
-        query.setParameter("id", this.IdPoruchy);
-        query.setParameter("oCislo", this.osCisloNahlasenia);
-        this.typStrojaA = query.getSingleResult();
+            // vratenie typu stroja
+            TypedQuery<String> query = entityManager.createQuery(
+                    "SELECT str.typStroja " +
+                            "FROM BUdrzbaPoruchy u " +
+                            "JOIN BPorucha p on u.idPoruchy = p.idPoruchy " +
+                            "JOIN BStroj str on str.idStroja = p.idStroja " +
+                            "WHERE u.idPoruchy = :id AND u.osCisloOpravy = :oCislo", String.class);
+            query.setParameter("id", this.IdPoruchy);
+            query.setParameter("oCislo", this.osCisloNahlasenia);
+            this.typStrojaA = query.getSingleResult();
+            //System.out.println("typ stroja:" + this.typStrojaA);
 
-        this.vynulovaniePolicok();
-        this.onNovaPoziadavka();
-        this.guiManager.zobrazUdrzbaNahradnyDiel();
+            this.vynulovaniePolicok();
+            this.onNovaPoziadavka();
+            this.guiManager.zobrazUdrzbaNahradnyDiel();
+
+        } catch (Exception e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
         // vynuluje selected row
         jTable1.clearSelection();
     }//GEN-LAST:event_jButtonPoziadavkaNDActionPerformed

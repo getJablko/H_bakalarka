@@ -417,16 +417,14 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
         // nacitam si vypisane udaje
 
         int rowNumber = jTable1.getSelectedRow();
-
         // restrikcie podla roly
         if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
-            System.out.println(loginGUI.getOsCisloLogin());
-            System.out.println(loginGUI.getRolaZam());
-            JOptionPane.showMessageDialog(null, "Nemôžete vkladat nový záznam!");
+            //System.out.println(loginGUI.getRolaZam());
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
             this.vynulovaniePolicok();
             return;
         }
-        String nazovND = (String) jTextFieldNazovND.getText();
+        String nazovND = jTextFieldNazovND.getText();
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
         String stringDostupneMnozstvo = jTextFieldDostupneMnozstvo.getText();
@@ -435,7 +433,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
             return;
         }
         BigInteger dostupneMnozstvo = new BigInteger(stringDostupneMnozstvo);
-        String miestoUskladnenia = (String) jTextFieldMiestoUskladnenia.getText();
+        String miestoUskladnenia = jTextFieldMiestoUskladnenia.getText();
 
         // overenie vypisania udajov
         if (typStroja.equals(" ") || dostupnost.equals(" ") ||
@@ -463,6 +461,7 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
                 e.getCause();
                 //e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -473,24 +472,27 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // nacitam si vypisane udaje
-
-        // ziskanie ID
-        int rowNumber = jTable1.getSelectedRow();
+        int rowNumber = -1;
+        rowNumber = jTable1.getSelectedRow();
+        if (rowNumber < 0) {
+            JOptionPane.showMessageDialog(null, "Vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
+            return;
+        }
         BigInteger cisloND = (BigInteger) jTable1.getValueAt(rowNumber, 0);
 
         // restrikcie podla roly
         if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
             //System.out.println(loginGUI.getOsCisloLogin());
-            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
             this.vynulovaniePolicok();
             return;
         }
-
-        String nazovND = (String) jTextFieldNazovND.getText();
+        String nazovND = jTextFieldNazovND.getText();
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String dostupnost = (String) jComboBoxDostupnostDielu.getSelectedItem();
         //BigInteger dostupneMnozstvo = new BigInteger(jTextFieldDostupneMnozstvo.getText());
-        String miestoUskladnenia = (String) jTextFieldMiestoUskladnenia.getText();
+        String miestoUskladnenia = jTextFieldMiestoUskladnenia.getText();
         String dostupneMnozstvoText = jTextFieldDostupneMnozstvo.getText();
 
         BigInteger dostupneMnozstvo = null;
@@ -527,12 +529,14 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
                 e.getCause();
                 //e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
             }
         }
+        jTable1.clearSelection();
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonPoziadavkyNDActionPerformed(java.awt.event.ActionEvent evt) {
@@ -541,13 +545,13 @@ public class NahradneDielyGUI extends javax.swing.JFrame implements Poziadavka2L
 
     @Override
     public void onPoziadavkaUpdate() {
-        System.out.println("onPoziadavkaUpdate - NdGUI");
+        //System.out.println("onPoziadavkaUpdate - NdGUI");
         this.refreshTable();
     }
 
     @Override
     public void onDorucenieSuccess() {
-        System.out.println("onDorucenieSuccess - NdGUI");
+        //System.out.println("onDorucenieSuccess - NdGUI");
         this.refreshTable();
     }
 

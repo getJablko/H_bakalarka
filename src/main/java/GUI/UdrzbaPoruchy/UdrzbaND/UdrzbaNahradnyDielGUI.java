@@ -436,6 +436,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         rowNumber = jTable1.getSelectedRow();
         if (rowNumber == -1) {
             JOptionPane.showMessageDialog(null, "Prosím vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
             return;
         } else {
             String nazov = (String) jTable1.getValueAt(rowNumber, 4);
@@ -445,7 +446,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
             String poziadavka = jTextAreaPoziadavka.getText();
             String cisloDielu = (String) jComboBoxCisloDielu.getSelectedItem();
-            String nazovND = (String) jTextFieldNazovND.getText();
+            String nazovND = jTextFieldNazovND.getText();
             String pozMnoz = jTextFieldPozMnoz.getText();
 
             // overenie cislaDielu
@@ -456,6 +457,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
             if (cisloDielu.equals(" ")) {
                 JOptionPane.showMessageDialog(null, "Nenašlo sa číslo ND, prosím vyberte záznam z tabuľky!");
+                this.vynulovaniePolicok();
                 return;
             }
             BigInteger cisloDieluBigInteger = new BigInteger(cisloDielu);
@@ -497,6 +499,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " Skúste to znovu!");
+                    this.vynulovaniePolicok();
                 } finally {
                     if (transaction.isActive()) {
                         transaction.rollback();
@@ -505,6 +508,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             }
         }
         JOptionPane.getRootFrame().setAlwaysOnTop(false);
+        jTable1.clearSelection();
     }
 
     private void jButtonNovyDielActionPerformed(java.awt.event.ActionEvent evt) {
@@ -532,6 +536,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         } catch (Exception e) {
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri vytváraní záznamu: " + e.getMessage() + " skúste to znovu!");
+            this.vynulovaniePolicok();
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -557,6 +562,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
         if (pocetMoznosti == 1) {
             JOptionPane.showMessageDialog(null, "Prosím vytvorte nový náhradný diel!");
+            this.vynulovaniePolicok();
             return;
         }
 
@@ -593,6 +599,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -608,19 +615,18 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
 
     @Override
     public void onPoziadavkaUpdate() {
-        System.out.println("on poziadavka update - udrzba ND");
-
+        //System.out.println("on poziadavka update - udrzba ND");
         this.refreshTable();
     }
     @Override
     public void onDorucenieSuccess() {
-        System.out.println("on dorucenie success - udrzba ND");
+        //System.out.println("on dorucenie success - udrzba ND");
         this.refreshTable();
     }
 
     @Override
     public void onVybaveniePoziadavky() {
-        System.out.println("on vybaveniePoziadavky - udrzba ND :3");
+        //System.out.println("on vybaveniePoziadavky - udrzba ND :3");
         this.refreshTable();
     }
 

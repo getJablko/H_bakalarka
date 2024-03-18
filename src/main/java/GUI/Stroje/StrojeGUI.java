@@ -383,7 +383,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
 
     @Override
     public void onBTypStrojaGUIClosed() {
-        System.out.println("onBTypStrojaClose - StrojeGUI");
+        //System.out.println("onBTypStrojaClose - StrojeGUI");
         this.refreshTable();
         this.naplnComboBoxTypyStrojov();
     }
@@ -404,7 +404,6 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     }
 
     private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
         int rowNumber = jTable1.getSelectedRow();
 
         String typStroja = (String) jTable1.getValueAt(rowNumber, 1);
@@ -422,25 +421,25 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         } else {
             jTextFieldVyradenie.setText("");
         }
-
         if (jTable1.getValueAt(rowNumber, 6) != null) {
             String popis = (String) jTable1.getValueAt(rowNumber, 6);
             jTextAreaPopis.setText(popis);
         } else {
             jTextAreaPopis.setText("");
         }
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // vynulovanie policok
         this.vynulovaniePolicok();
-
         guiManager.zviditelniHlavneMenu();
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (!loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        }
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String cisloHaly = (String) jComboBoxCisloHaly.getSelectedItem();
         String zaradenie = jTextFieldZaradenie.getText();
@@ -476,22 +475,20 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                 } else {
                     bStroj.setVyradenie(null);
                 }
-
                 if (popis != null) {
                     bStroj.setPopis(popis);
                 } else {
                     bStroj.setPopis(null);
                 }
-
                 entityManager.persist(bStroj);
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Nový stroj bol vložený!");
 
                 this.refreshTable();
-
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -502,7 +499,10 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (!loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        }
         String typStroja = (String) jComboBoxTypStroja.getSelectedItem();
         String cisloHaly = (String) jComboBoxCisloHaly.getSelectedItem();
         String zaradenie = jTextFieldZaradenie.getText();
@@ -557,7 +557,6 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                 } else {
                     bStroj.setPopis(null);
                 }
-
                 entityManager.persist(bStroj);
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonaná!");
@@ -567,12 +566,14 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri upravovaní záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
             }
             JOptionPane.getRootFrame().setAlwaysOnTop(false);
+            jTable1.clearSelection();
         }
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
@@ -580,7 +581,6 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
         //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
         if (!loginGUI.getRolaZam().equals("A")) {
             JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
-            return;
         } else {
             this.guiManager.zobrazTypStroja();
         }

@@ -36,7 +36,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
      * Creates new form tabulkaZamGUI
      */
     public TabulkaZamGUI(GUIManager guiManager) {
-
         initComponents();
         this.guiManager = guiManager;
 
@@ -396,7 +395,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         if (meno.equals("") || priezvisko.equals("") || heslo.equals("") ||
                 dostupnost.equals(" ") || pracovisko.equals(" ") || typZam.equals(" ")) {
             JOptionPane.showMessageDialog(null, "Prosím zadajte všetky povinné políčka!");
-
         } else {
             try {
                 transaction.begin();
@@ -419,6 +417,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladani záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -432,8 +431,10 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         rowNumber = jTable1.getSelectedRow();
         if (rowNumber == -1) {
             JOptionPane.showMessageDialog(null, "Prosím vyberte riadok v tabuľke!");
+            this.vynulovaniePolicok();
             return;
         }
+
         // nacitam si vstupne udaje
         String meno = jTextField1.getText();
         String priezvisko = jTextField2.getText();
@@ -472,6 +473,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+                this.vynulovaniePolicok();
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();

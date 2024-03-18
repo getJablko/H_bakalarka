@@ -529,11 +529,6 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             this.vynulovaniePolicok();
             return;
         }
-        if (!this.loginGUI.getRolaZam().equals("A") && !this.loginGUI.getRolaZam().equals("S")) {
-            JOptionPane.showMessageDialog(null, "Na tento úkon nemáte oprávnenie!");
-            this.vynulovaniePolicok();
-            return;
-        }
         if (!jTable1.getValueAt(actualRowNumber, 5).equals("")) {
             JOptionPane.showMessageDialog(null, "Táto objednávka už je označená ako doručená!");
             this.vynulovaniePolicok();
@@ -579,10 +574,10 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             }
             JOptionPane.showMessageDialog(null, "Objednávka:" + cisloObj + " označená ako doručená!");
             this.refreshTable();
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri preberaní záznamu: " + e.getMessage() + " skúste to znovu!");
+            this.vynulovaniePolicok();
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -614,14 +609,6 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             return;
         }
         BigInteger cisloND = new BigInteger(stringCisloND);
-
-        // restrikcie podla roly
-        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
-            //System.out.println(loginGUI.getOsCisloLogin());
-            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
-            this.vynulovaniePolicok();
-            return;
-        }
         // obmedzenie pre UPDATE - nie je mozne vytvarat nove objednavky/polozkyObj
         if (!cisloND.equals(cisloNDOriginal) || !cisloObj.equals(cisloObjOriginal)) {
             JOptionPane.showMessageDialog(null, "Nemôžete meniť číslo objednávky alebo číslo ND, prosím skúste to znovu!");
@@ -668,7 +655,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             bObjednavka.setDatumObjednavky(datumObj);
             //bObjednavka.setDatumDorucenia("2023-12-12");
             bObjednavka.setDatumDorucenia(datumDor);
-            System.out.println(jTextFieldDatumDoruc.getText());
+            //System.out.println(jTextFieldDatumDoruc.getText());
 
             bPolozkaObjednavky.setMnozstvo(mnozstvo);
             bPolozkaObjednavky.setCena(cena);
@@ -684,6 +671,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             e.getCause();
             //e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+            this.vynulovaniePolicok();
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();

@@ -278,7 +278,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private void jButton6_OBJEDNAVKY_ActionPerformed(java.awt.event.ActionEvent evt) {
         //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
-        if (loginGUI.getRolaZam().equals("I") ) {
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
             JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
         } else {
             this.guiManager.zobrazObjednavky();

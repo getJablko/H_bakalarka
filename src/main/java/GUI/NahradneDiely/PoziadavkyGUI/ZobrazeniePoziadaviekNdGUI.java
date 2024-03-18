@@ -391,7 +391,13 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
     private void jButtonVybaveneActionPerformed(java.awt.event.ActionEvent evt) {
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
-
+        // restrikcie podla roly
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
+            //System.out.println(loginGUI.getOsCisloLogin());
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+            this.vynulovaniePolicok();
+            return;
+        }
         int actualRowNumber = -1;
         actualRowNumber = jTable1.getSelectedRow();
         if (actualRowNumber < 0) {
@@ -419,6 +425,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
             e.getCause();
             //e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+            this.vynulovaniePolicok();
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -431,7 +438,13 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
-
+        // restrikcie podla roly
+        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
+            //System.out.println(loginGUI.getOsCisloLogin());
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+            this.vynulovaniePolicok();
+            return;
+        }
         int actualRowNumber = -1;
         actualRowNumber = jTable1.getSelectedRow();
         if (actualRowNumber < 0) {
@@ -440,23 +453,15 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
             return;
         }
         BigInteger cisloND = (BigInteger) jTable1.getValueAt(actualRowNumber, 2);
-        // restrikcie podla roly
-        if (!loginGUI.getRolaZam().equals("S") && !loginGUI.getRolaZam().equals("A")) {
-            //System.out.println(loginGUI.getOsCisloLogin());
-            JOptionPane.showMessageDialog(null, "Nemôžete meniť tento záznam!");
-            this.vynulovaniePolicok();
-            return;
-        }
+
         String dostupneMnozstvoText = jTextFieldDostupneMnozstvo.getText();
         if (dostupneMnozstvoText.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vyplnte prosim všetky povinné políčka!");
             return;
         }
-
         BigInteger dostupneMnozstvo = new BigInteger(dostupneMnozstvoText);
         try {
             transaction.begin();
-
             // Načítanie záznamu z databázy na základe ID a uprava
             BNahradnyDiel bNahradnyDiel = entityManager.find(BNahradnyDiel.class, cisloND);
             bNahradnyDiel.setDostupneMnozstvo(dostupneMnozstvo);
@@ -469,6 +474,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
             e.getCause();
             //e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri aktualizácii záznamu: " + e.getMessage() + " skúste to znovu!");
+            this.vynulovaniePolicok();
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -490,7 +496,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
 
     @Override
     public void onDorucenieSuccess() {
-        System.out.println("onDorucenieSuccess - ZobrazeniePoziadaviekGUI");
+        //System.out.println("onDorucenieSuccess - ZobrazeniePoziadaviekGUI");
         this.refreshTable();
     }
 
