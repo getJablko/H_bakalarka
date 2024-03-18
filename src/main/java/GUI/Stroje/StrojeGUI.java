@@ -5,6 +5,7 @@
 package GUI.Stroje;
 
 import GUI.GUIManager;
+import GUI.Login.LoginGUI;
 import Sifrovanie.DateFormat;
 import Tabulky.BStroj;
 import Tabulky.BTypStroja;
@@ -29,13 +30,15 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     private EntityTransaction transaction = entityManager.getTransaction();
     private GUIManager guiManager;
     private DateFormat dateFormat;
+    private LoginGUI loginGUI;
 
     /**
      * Creates new form Stroje
      */
-    public StrojeGUI(GUIManager guiManager) {
+    public StrojeGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents();
         this.guiManager = guiManager;
+        this.loginGUI = loginGUI;
         this.dateFormat = new DateFormat();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -571,11 +574,16 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
             }
             JOptionPane.getRootFrame().setAlwaysOnTop(false);
         }
-
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonNovyStrojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovyStrojActionPerformed
-        this.guiManager.zobrazTypStroja();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (!loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+            return;
+        } else {
+            this.guiManager.zobrazTypStroja();
+        }
     }
 
     /**

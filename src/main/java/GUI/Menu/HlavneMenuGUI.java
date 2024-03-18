@@ -2,9 +2,11 @@
 package GUI.Menu;
 
 import GUI.GUIManager;
+import GUI.Login.LoginGUI;
 import GUI.Menu.Graphs.GraphBarChart;
 import GUI.Menu.Graphs.GraphPieChart;
 
+import javax.swing.*;
 import java.awt.*;
 
 
@@ -18,10 +20,12 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
      */
 
     private GUIManager guiManager;
+    private LoginGUI loginGUI;
 
-    public HlavneMenuGUI(GUIManager guiManager) {
+    public HlavneMenuGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents2();
         this.guiManager = guiManager;
+        this.loginGUI = loginGUI;
         this.displayGraph1();
         this.displayGraph2();
     }
@@ -246,27 +250,57 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }
 
     private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.zobrazUdrzbuPoruchy();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (loginGUI.getRolaZam().equals("S") || loginGUI.getRolaZam().equals("I") ) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazUdrzbuPoruchy();
+        }
     }
 
     private void jButton2_NAHLASENIE_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.zobrazPoruchu();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (loginGUI.getRolaZam().equals("S")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazPoruchu();
+        }
     }
 
     private void jButton3_STROJE_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.zobrazStoje();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (loginGUI.getRolaZam().equals("S") || loginGUI.getRolaZam().equals("I") ) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazStoje();
+        }
     }
 
     private void jButton6_OBJEDNAVKY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.zobrazObjednavky();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (loginGUI.getRolaZam().equals("I") ) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazObjednavky();
+        }
     }
 
     private void jButton5_ZAMESTNANCI_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.zobrazTabulkuZam();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (!loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazTabulkuZam();
+        }
     }
 
     private void jButton_NAHRADNE_DIELY_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.zobrazNahradneDiely();
+        //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
+        if (loginGUI.getRolaZam().equals("I")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazNahradneDiely();
+        }
     }
 
     private void jButton_LOGOUT_ActionPerformed(java.awt.event.ActionEvent evt) {

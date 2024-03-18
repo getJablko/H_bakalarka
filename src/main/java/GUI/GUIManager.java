@@ -32,9 +32,9 @@ public class GUIManager {
 
     public GUIManager() {
         this.login = new LoginGUI(this);
-        this.hlavneMenuGUI = new HlavneMenuGUI(this);
+        this.hlavneMenuGUI = new HlavneMenuGUI(this,this.login);
         this.zamestnanciGUI = new TabulkaZamGUI(this);
-        this.strojeGUI = new StrojeGUI(this);
+        this.strojeGUI = new StrojeGUI(this,this.login);
         this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
         this.poruchaGUI = new PoruchaGUI(this, this.login);
         this.udrzbaPoruchyGUI = new UdrzbaPoruchyGUI(this,this.login,this.poruchaGUI);

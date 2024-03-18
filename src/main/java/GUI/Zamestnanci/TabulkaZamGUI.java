@@ -6,6 +6,7 @@ package GUI.Zamestnanci;
 
 
 import GUI.GUIManager;
+import GUI.Login.LoginGUI;
 import Sifrovanie.PasswordUtils;
 import Tabulky.BZamestnanec;
 
@@ -29,6 +30,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     EntityTransaction transaction = entityManager.getTransaction();
 
     private GUIManager guiManager;
+
 
     /**
      * Creates new form tabulkaZamGUI
@@ -156,7 +158,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jLabel6.setText("typ_zam_d*:");
 
         jComboBox3.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "V", "M", "S", "I","A"}));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "V", "M", "S", "I", "A"}));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 254));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -426,6 +428,12 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2_UPDATE_ActionPerformed(java.awt.event.ActionEvent evt) {
+        int rowNumber = -1;
+        rowNumber = jTable1.getSelectedRow();
+        if (rowNumber == -1) {
+            JOptionPane.showMessageDialog(null, "Prosím vyberte riadok v tabuľke!");
+            return;
+        }
         // nacitam si vstupne udaje
         String meno = jTextField1.getText();
         String priezvisko = jTextField2.getText();
@@ -443,7 +451,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 transaction.begin();
 
                 // pre vratenie ID
-                int rowNumber = jTable1.getSelectedRow();
                 BigInteger id = (BigInteger) jTable1.getValueAt(rowNumber, 0);
 
                 // Načítanie záznamu z databázy na základe ID
@@ -471,6 +478,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 }
             }
         }
+        jTable1.clearSelection();
     }
 
     public void jButton2_DELETE_ActionPerformed(java.awt.event.ActionEvent evt) {

@@ -432,8 +432,8 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             this.vynulovaniePolicok();
             return;
         }
-
-        int rowNumber = jTable1.getSelectedRow();
+        int rowNumber = -1;
+        rowNumber = jTable1.getSelectedRow();
         if (rowNumber == -1) {
             JOptionPane.showMessageDialog(null, "Prosím vyberte riadok v tabuľke!");
             return;
