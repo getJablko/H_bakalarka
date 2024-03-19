@@ -523,7 +523,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
                                 "FROM BPorucha s " +
                                 "JOIN BStroj str on str.idStroja = s.idStroja " +
                                 "JOIN BTypStroja bt on bt.typStroja = str.typStroja " +
-                                "WHERE s.poruchaDo IS NULL", Object[].class);
+                                "WHERE s.poruchaDo IS NULL AND NOT EXISTS (SELECT 1 FROM BUdrzbaPoruchy bup WHERE bup.idPoruchy = s.idPoruchy)", Object[].class);
                 List<Object[]> results = query.getResultList();
 
                 // nahra udaje priamo do tabulky jTable1
