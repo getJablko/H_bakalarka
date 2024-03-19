@@ -36,7 +36,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
      * Creates new form tabulkaZamGUI
      */
     public TabulkaZamGUI(GUIManager guiManager) {
-        initComponents();
+        initComponents2();
         this.guiManager = guiManager;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -61,7 +61,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents2() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -82,45 +82,45 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jComboBox3 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jCheckBoxZobrazAktualnych = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1040, 700));
 
         jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                // reprezentuje uvodne riadky - momentalne po spusteni nie su ziadne prazdne riadky navyse
-                new Object[][]{
+                new Object [][] {
 
                 },
-                new String[]{
+                new String [] {
                         "os_cislo", "meno", "priezvisko", "dostupnost_zam", "pracovisko_d", "typ_zam_d", "password"
                 }
         ) {
-            Class[] types = new Class[]{
+            Class[] types = new Class [] {
                     java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[]{
+            boolean[] canEdit = new boolean [] {
                     false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
-
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableMouseClick_ActionPerformed(evt);
             }
         });
-
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 153));
 
@@ -128,40 +128,38 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-
         jLabel3.setText("priezvisko*:");
 
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("ZAMESTNANCI");
 
         jPasswordField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-
         jLabel7.setText("heslo*:");
 
         jLabel4.setText("dostupnost_zam*:");
 
         jComboBox1.setBackground(new java.awt.Color(254, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "0", "1"}));
-
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "0", "1" }));
+        jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
         jLabel5.setText("pracovisko_d*:");
 
         jComboBox2.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200"}));
-
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "HS6400", "HS6100", "HS5900", "HS5700", "HS5400", "HS5200" }));
 
         jLabel6.setText("typ_zam_d*:");
 
         jComboBox3.setBackground(new java.awt.Color(255, 255, 254));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{" ", "E", "V", "M", "S", "I", "A"}));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "E", "V", "M", "S", "I", "A" }));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 254));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("INSERT");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        jButton1.setSize(95,25);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1_INSERT_ActionPerformed(evt);
@@ -172,19 +170,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setText("UPDATE");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
-            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2_UPDATE_ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setBackground(new java.awt.Color(255, 255, 254));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton3.setText("DELETE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2_DELETE_ActionPerformed(evt);
             }
         });
 
@@ -215,16 +202,24 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
             }
         });
 
+        jCheckBoxZobrazAktualnych.setFont(new java.awt.Font("Segoe UI", 0, 9)); // NOI18N
+        jCheckBoxZobrazAktualnych.setText("Zobraz len aktuálnych");
+        jCheckBoxZobrazAktualnych.setBackground(new java.awt.Color(255, 204, 153));
+        jCheckBoxZobrazAktualnych.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxZobrazAktualnychActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
-                                .addGap(117, 117, 117))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(33, 33, 33)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -251,27 +246,31 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addContainerGap()
                                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(26, 26, 26)
+                                                .addGap(18, 18, 18)
                                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(30, 30, 30)
-                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jButton4)))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jCheckBoxZobrazAktualnych)))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(117, 117, 117))
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jButton4)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(1, 1, 1)
                                 .addComponent(jLabel1)
-                                .addGap(44, 44, 44)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(21, 21, 21)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(48, 48, 48)
+                                                .addComponent(jLabel2))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(44, 44, 44)
+                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel3)
                                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -293,10 +292,10 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                                         .addComponent(jLabel6))
                                 .addGap(50, 50, 50)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1)
-                                        .addComponent(jButton2)
-                                        .addComponent(jButton3))
-                                .addContainerGap(354, Short.MAX_VALUE))
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jCheckBoxZobrazAktualnych))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -311,12 +310,11 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>
 
     // metoda na zobraznie udajov v tabulke jTable1 z databazovej tabulky BZamestnanec
     private void displayDataInTable() {
@@ -446,7 +444,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         // overenie vypisania udajov
         if (meno.equals("") || priezvisko.equals("") || heslo.equals("") ||
                 dostupnost.equals(" ") || pracovisko.equals(" ") || typZam.equals(" ")) {
-            JOptionPane.showMessageDialog(null, "Prosim vyberte zamestnanca z tabulky a vypiste potrebne zmeny!");
+            JOptionPane.showMessageDialog(null, "Prosim, vypíšte všetky potrebné údaje!");
+            return;
         } else {
             try {
                 transaction.begin();
@@ -482,9 +481,54 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         }
         jTable1.clearSelection();
     }
+    private void refreshTableActual() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
 
-    public void jButton2_DELETE_ActionPerformed(java.awt.event.ActionEvent evt) {
-        // nie je potreba
+        // vynulovanie textovych policok
+        this.vynulovaniePolicok();
+    }
+
+    private void jCheckBoxZobrazAktualnychActionPerformed(java.awt.event.ActionEvent evt) {
+        if (jCheckBoxZobrazAktualnych.isSelected()) {
+            this.refreshTableActual();
+            try {
+                // Begin a transaction
+                transaction.begin();
+
+                // ziskanie dat
+                // nejedna sa o typicky SQL statement (nepouzivam SELECT * FROM BZamestnanec), toto je pouzitie JPQL - rozumie tomu framework hibernate
+                TypedQuery<BZamestnanec> query = entityManager.createQuery("SELECT b FROM BZamestnanec b " +
+                        "WHERE b.dostupnostZam = 1 ", BZamestnanec.class);
+                // List zamestnancov - preto lebo ma vela metod,dynamicku velkost,dobre sa pracuje s insert/delete
+                List<BZamestnanec> employees = query.getResultList();
+
+                // nahra udaje priamo do tabulky jTable1
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                for (BZamestnanec employee : employees) {
+                    Object[] row = {
+                            employee.getOsCislo(),
+                            employee.getMeno(),
+                            employee.getPriezvisko(),
+                            employee.getDostupnostZam(),
+                            employee.getPracoviskoD(),
+                            employee.getTypZamD(),
+                            employee.getPassword()
+                    };
+                    model.addRow(row);
+                }
+                // Commit
+                transaction.commit();
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri nacitavani udajov: " + e.getMessage() + " skúste to znovu!");
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+            }
+        } else {
+            this.refreshTable();
+        }
     }
 
     private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -551,5 +595,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JCheckBox jCheckBoxZobrazAktualnych;
     // End of variables declaration//GEN-END:variables
 }
