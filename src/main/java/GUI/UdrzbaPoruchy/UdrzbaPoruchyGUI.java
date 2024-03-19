@@ -257,11 +257,11 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
 
                 },
                 new String[]{
-                        "ID poruchy", "os. číslo opravy", "prebratie poruchy", "doba opravy", "popis údržby", "príčina poruchy", "typ stroja"
+                        "ID poruchy", "os. číslo opravy", "prebratie poruchy", "doba opravy", "popis údržby", "príčina poruchy", "typ stroja", "ID stroja"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false, false, false
+                    false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -353,7 +353,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
 
             // ziskanie dat - JPQL
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy, str.typStroja " +
+                    "SELECT u.idPoruchy, u.osCisloOpravy, u.prebratiePoruchy, u.dobaOpravy, u.popisUdrzby, u.pricinaPoruchy, str.typStroja, p.idStroja " +
                             "FROM BUdrzbaPoruchy u " +
                             "JOIN BPorucha p on p.idPoruchy = u.idPoruchy " +
                             "JOIN BStroj str on str.idStroja = p.idStroja", Object[].class);
@@ -371,6 +371,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                         result[4],  // popisUdrzby
                         result[5],  // pricinyPoruchy
                         result[6],  // typ Stroja
+                        result[7],  // id stroja
                 };
                 model.addRow(row);
             }

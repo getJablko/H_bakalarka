@@ -304,11 +304,11 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
                 },
                 new String[]{
-                        "ID poruchy", "os. cislo nahlasenia", "ID stroja", "zavaznost", "stroj v prevadzke", "typ poruchy", "porucha od", "porucha do", "popis poruchy"
+                        "ID poruchy", "os. cislo nahlasenia", "ID stroja", "zavaznost", "stroj v prevadzke", "typ poruchy", "porucha od", "porucha do", "popis poruchy", "typ stroja", "priorita stroja"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false, false, false, false, false
+                    false, false, false, false, false, false, false, false, false, false ,false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -346,23 +346,29 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
             //ziskanie dat
             //pouzitie JPQL - rozumie tomu framework hibernate
-            TypedQuery<BPorucha> query = entityManager.createQuery("SELECT s FROM BPorucha s ", BPorucha.class);
+            TypedQuery<Object[]> query = entityManager.createQuery(
+                    "SELECT s.idPoruchy, s.osCisloNahlasenia, s.idStroja, s.zavaznostD, s.strojVPrevadzke, s.typPoruchyD, s.poruchaOd, s.poruchaDo, s.popisPoruchy , str.typStroja, bt.prioritaD " +
+                            "FROM BPorucha s " +
+                            "JOIN BStroj str on str.idStroja = s.idStroja " +
+                            "JOIN BTypStroja bt on bt.typStroja = str.typStroja", Object[].class);
 
-            List<BPorucha> results = query.getResultList();
+            List<Object[]> results = query.getResultList();
 
             // nahra udaje priamo do tabulky jTable1
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            for (BPorucha result : results) {
+            for (Object[] result : results) {
                 Object[] row = {
-                        result.getIdPoruchy(),          // id poruchy
-                        result.getOsCisloNahlasenia(),  // os cislo nahlasenia
-                        result.getIdStroja(),           // id stroja
-                        result.getZavaznostD(),         // zavaznost poruchy
-                        result.getStrojVPrevadzke(),    // ci je stroj v prevadzke
-                        result.getTypPoruchyD(),        // typ poruchy
-                        result.getPoruchaOd(),          // porucha do
-                        result.getPoruchaDo(),          // porucha do
-                        result.getPopisPoruchy()        // popis
+                        result[0],        // id poruchy
+                        result[1],        // os cislo nahlasenia
+                        result[2],        // id stroja
+                        result[3],        // zavaznost poruchy
+                        result[4],        // ci je stroj v prevadzke
+                        result[5],        // typ poruchy
+                        result[6],        // porucha do
+                        result[7],        // porucha do
+                        result[8],        // popis
+                        result[9],        // typ stroja
+                        result[10],       // priorita stroja
                 };
                 model.addRow(row);
             }
@@ -512,23 +518,29 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
 
                 //ziskanie dat
                 //pouzitie JPQL - rozumie tomu framework hibernate
-                TypedQuery<BPorucha> query = entityManager.createQuery("SELECT s FROM BPorucha s WHERE s.poruchaDo IS NULL ", BPorucha.class);
-
-                List<BPorucha> results = query.getResultList();
+                TypedQuery<Object[]> query = entityManager.createQuery(
+                        "SELECT s.idPoruchy, s.osCisloNahlasenia, s.idStroja, s.zavaznostD, s.strojVPrevadzke, s.typPoruchyD, s.poruchaOd, s.poruchaDo, s.popisPoruchy , str.typStroja, bt.prioritaD " +
+                                "FROM BPorucha s " +
+                                "JOIN BStroj str on str.idStroja = s.idStroja " +
+                                "JOIN BTypStroja bt on bt.typStroja = str.typStroja " +
+                                "WHERE s.poruchaDo IS NULL", Object[].class);
+                List<Object[]> results = query.getResultList();
 
                 // nahra udaje priamo do tabulky jTable1
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                for (BPorucha result : results) {
+                for (Object[] result : results) {
                     Object[] row = {
-                            result.getIdPoruchy(),          // id poruchy
-                            result.getOsCisloNahlasenia(),  // os cislo nahlasenia
-                            result.getIdStroja(),           // id stroja
-                            result.getZavaznostD(),         // zavaznost poruchy
-                            result.getStrojVPrevadzke(),    // ci je stroj v prevadzke
-                            result.getTypPoruchyD(),        // typ poruchy
-                            result.getPoruchaOd(),          // porucha do
-                            result.getPoruchaDo(),          // porucha do
-                            result.getPopisPoruchy()        // popis
+                            result[0],        // id poruchy
+                            result[1],        // os cislo nahlasenia
+                            result[2],        // id stroja
+                            result[3],        // zavaznost poruchy
+                            result[4],        // ci je stroj v prevadzke
+                            result[5],        // typ poruchy
+                            result[6],        // porucha do
+                            result[7],        // porucha do
+                            result[8],        // popis
+                            result[9],        // typ stroja
+                            result[10],       // priorita stroja
                     };
                     model.addRow(row);
                 }
