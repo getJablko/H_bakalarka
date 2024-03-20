@@ -9,6 +9,7 @@ import GUI.Login.LoginGUI;
 import GUI.Porucha.PoruchaGUI;
 import GUI.Porucha.PrebratiePoruchyListener;
 import Sifrovanie.DateFormat;
+import Tabulky.BPorucha;
 import Tabulky.BUdrzbaPoruchy;
 import Tabulky.BUdrzbaPoruchyPK;
 
@@ -20,6 +21,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
     private PoziadavkaListener poziadavkaListener;
     private PoruchaGUI poruchaGUI;
     private DateFormat dateFormat;
+    private OpraveniePoruchyListener opraveniePoruchyListener;
 
     /**
      * Creates new form UdrzbaPoruchyGUI
@@ -61,6 +65,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         });
         this.displayDataInTable();
         this.poruchaGUI.setPrebratieListener(this);
+        this.setOpraveniePoruchyListener(this.poruchaGUI);
     }
 
 
@@ -300,6 +305,10 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         entityManagerFactory.close();
     }
 
+    public void setOpraveniePoruchyListener(OpraveniePoruchyListener opraveniePoruchyListener) {
+        this.opraveniePoruchyListener = opraveniePoruchyListener;
+    }
+
     public String getTypStrojaA() {
         return typStrojaA;
     }
@@ -502,6 +511,15 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                 // Načítanie záznamu z databázy na základe ID a uprava
                 BUdrzbaPoruchyPK primaryKey = new BUdrzbaPoruchyPK(idPoruchy, osCisloOpravy);
                 BUdrzbaPoruchy bUdrzbaPoruchy = entityManager.find(BUdrzbaPoruchy.class, primaryKey);
+                // nastavenie datumu
+                BPorucha bPorucha = entityManager.find(BPorucha.class,idPoruchy);
+                // aktualny datum
+                LocalDate date = LocalDate.now();
+                // formatovanie
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String dateF = date.format(formatter);
+                // nastavenie GUI
+                bPorucha.setPoruchaDo(dateF);
 
                 bUdrzbaPoruchy.setPricinaPoruchy(pricinaPoruchy);
                 if (!dateFormat.overenie(prebratiePoruchy)) {
@@ -517,9 +535,10 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
                 }
 
                 entityManager.persist(bUdrzbaPoruchy);
+                entityManager.persist(bPorucha);
                 transaction.commit();
                 JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
-
+                this.opraveniePoruchyListener.onOpraveniePoruchy();
                 this.refreshTable();
 
             } catch (Exception e) {

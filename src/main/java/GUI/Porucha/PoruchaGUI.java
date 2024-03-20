@@ -7,6 +7,7 @@ package GUI.Porucha;
 import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Login.LoginListener;
+import GUI.UdrzbaPoruchy.OpraveniePoruchyListener;
 import Sifrovanie.DateFormat;
 import Tabulky.BPorucha;
 import Tabulky.BUdrzbaPoruchy;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
+public class PoruchaGUI extends javax.swing.JFrame implements LoginListener, OpraveniePoruchyListener {
 
     /**
      * Creates new form PoruchaGUI
@@ -415,6 +416,12 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener {
         this.rolaA = this.loginGUI.getRolaZam();
         this.osCisloOpravyA = this.loginGUI.getOsCisloLogin();
         naplnComboBoxIdStrojov();
+    }
+
+    @Override
+    public void onOpraveniePoruchy() {
+        //System.out.println("onOpraveniePoruchy - refreshTable");
+        this.refreshTable();
     }
 
     public void setPrebratieListener(PrebratiePoruchyListener listener) {
