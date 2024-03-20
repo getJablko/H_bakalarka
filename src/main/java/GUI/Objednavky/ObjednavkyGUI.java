@@ -72,7 +72,6 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         this.naplnComboBoxCisloND();
         this.naplnComboBoxCisloObj();
 
-
         // Set NahradneDielyGUI as the listener in ObjednavkyGUI
         this.setDorucenieObjednavkyListener(this.nahradneDielyGUI);
         this.setDorucenieObjednavkyListener2(this.zobrazeniePoziadaviekNdGUI);

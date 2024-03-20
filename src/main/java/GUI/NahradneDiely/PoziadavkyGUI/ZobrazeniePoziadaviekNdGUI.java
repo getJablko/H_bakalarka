@@ -407,15 +407,32 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
         }
         try {
             transaction.begin();
-            BigInteger IdPoruchy =new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,0)));
-            BigInteger osCislo =new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,1)));
-            BigInteger cisloNd =new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,2)));
+            BigInteger IdPoruchy = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,0)));
+            BigInteger osCislo = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,1)));
+            BigInteger cisloNd = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,2)));
+
+            BigInteger dostupneMnozstvo = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,5)));
+            BigInteger pozadovaneMnozstvo = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,6)));
+
+            if (dostupneMnozstvo.equals(BigInteger.ZERO)) {
+                JOptionPane.showMessageDialog(null, "Nemožno vykonať zmenu - nedostatok ks!");
+                this.vynulovaniePolicok();
+                return;
+            }
 
             // Načítanie záznamu z databázy na základe ID a uprava
             BUdrzbaPoruchyNahradnyDielPK PK = new BUdrzbaPoruchyNahradnyDielPK(IdPoruchy,osCislo,cisloNd);
             BUdrzbaPoruchyNahradnyDiel bUdrzbaPoruchyNahradnyDiel = entityManager.find(BUdrzbaPoruchyNahradnyDiel.class,PK);
 
+            BNahradnyDiel bNahradnyDiel = entityManager.find(BNahradnyDiel.class,cisloNd);
+            // odcitanie
+            BigInteger pom = dostupneMnozstvo.subtract(pozadovaneMnozstvo);
+            bNahradnyDiel.setDostupneMnozstvo(pom);
+
             bUdrzbaPoruchyNahradnyDiel.setPripravene(BigInteger.valueOf(1));
+
+            entityManager.persist(bNahradnyDiel);
+            entityManager.persist(bUdrzbaPoruchyNahradnyDiel);
 
             transaction.commit();
             JOptionPane.showMessageDialog(null, "Zmena bola vykonana!");
