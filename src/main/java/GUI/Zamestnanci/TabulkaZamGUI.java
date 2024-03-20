@@ -380,7 +380,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         entityManagerFactory.close();
     }
 
-    private void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    void jButton1_INSERT_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // nacitam si vypisane udaje
         String meno = jTextField1.getText();
         String priezvisko = jTextField2.getText();
@@ -579,9 +579,9 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    javax.swing.JComboBox<String> jComboBox1;
+    javax.swing.JComboBox<String> jComboBox2;
+    javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -590,11 +590,11 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
+    javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    javax.swing.JTable jTable1;
+    javax.swing.JTextField jTextField1;
+    javax.swing.JTextField jTextField2;
     private javax.swing.JCheckBox jCheckBoxZobrazAktualnych;
     // End of variables declaration//GEN-END:variables
 }

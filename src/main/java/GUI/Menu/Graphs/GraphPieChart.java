@@ -7,9 +7,13 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.general.DefaultPieDataset;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class GraphPieChart extends JPanel {
@@ -78,6 +82,28 @@ public class GraphPieChart extends JPanel {
             // Set preferred size
             chartPanel.setPreferredSize(new Dimension(435, 225));
             add(chartPanel);
+
+            //TODO
+
+            BufferedImage chartImage = new BufferedImage(435, 225, BufferedImage.TYPE_INT_RGB);
+            Graphics2D chartGraphics = chartImage.createGraphics();
+            chartPanel.paint(chartGraphics);
+            chartGraphics.dispose();
+
+            // Save the image to the desktop directory
+            String desktopPath = "C:\\Users\\Mario\\Desktop\\reporty01";
+            File chartFile = new File(desktopPath + "pie_chart.png"); // Append the file name to the desktop path
+
+            try {
+                ImageIO.write(chartImage, "PNG", chartFile);
+                System.out.println("Pie chart image saved successfully to the desktop.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error saving pie chart image: " + e.getMessage());
+            }
+
+
         }
+
     }
 

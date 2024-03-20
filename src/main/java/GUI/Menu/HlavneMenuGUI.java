@@ -5,9 +5,24 @@ import GUI.GUIManager;
 import GUI.Login.LoginGUI;
 import GUI.Menu.Graphs.GraphBarChart;
 import GUI.Menu.Graphs.GraphPieChart;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -21,6 +36,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private GUIManager guiManager;
     private LoginGUI loginGUI;
+    private GraphPieChart graphPieChart;
 
     public HlavneMenuGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents2();
@@ -28,6 +44,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         this.loginGUI = loginGUI;
         this.displayGraph1();
         this.displayGraph2();
+        this.graphPieChart = new GraphPieChart();
     }
 
     /**
@@ -304,7 +321,45 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }
 
     private void jButton_LOGOUT_ActionPerformed(java.awt.event.ActionEvent evt) {
-        this.guiManager.odhlasenie();
+        //TODO odkomentovat
+        //this.guiManager.odhlasenie();
+        //TODO novy button
+        String filePath = "C:\\Users\\Mario\\Desktop\\reporty01\\Dok1.pdf";
+        String content = "Hello, this is a simple PDF report!";
+        String graphImagePath = "C:\\Users\\Mario\\Desktop\\reporty01\\graf01.png"; // Replace with the actual path
+
+        try {
+            BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
+            generatePdfReport(filePath, content, graphImage);
+            System.out.println("PDF report generated successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void generatePdfReport(String filePath, String content, BufferedImage graphImage) throws IOException {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                // Add text content
+                contentStream.beginText();
+                PDType1Font pdType1Font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+                contentStream.setFont(pdType1Font, 12); // Set font
+                contentStream.newLineAtOffset(100, 700);
+                contentStream.showText(content);
+                contentStream.endText();
+
+                // Create a PDImageXObject from the BufferedImage
+                PDImageXObject pdImage = LosslessFactory.createFromImage(document, graphImage);
+
+                // Add the graph image
+                contentStream.drawImage(pdImage, 100, 500, 400, 300); // Adjust coordinates and dimensions
+            }
+
+            document.save(filePath);
+        }
     }
 
     /**
