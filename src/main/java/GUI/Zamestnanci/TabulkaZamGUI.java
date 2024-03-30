@@ -46,7 +46,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                 // vynulovanie textovych policok
                 vynulovaniePolicok();
 
-                guiManager.zviditelniHlavneMenu();
+                guiManager.zviditelniHlMenuGUI();
             }
         });
 
@@ -313,6 +313,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+        //jTable1.getTableHeader().setOpaque(false);
+        //jTable1.getTableHeader().setBackground(Color.green);
         pack();
     }// </editor-fold>
 
@@ -533,8 +535,8 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
     private void jButton4_HOME_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.vynulovaniePolicok();
-
-        guiManager.zviditelniHlavneMenu();
+        this.dispose();
+        this.guiManager.zviditelniHlMenuGUI();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTableMouseClick_ActionPerformed(MouseEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

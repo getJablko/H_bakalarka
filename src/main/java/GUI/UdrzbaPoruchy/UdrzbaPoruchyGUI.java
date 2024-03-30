@@ -60,7 +60,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
             public void windowClosing(WindowEvent e) {
                 // vynulovanie textovych policok
                 vynulovaniePolicok();
-                guiManager.zviditelniHlavneMenu();
+                guiManager.zviditelniHlMenuGUI();
             }
         });
         this.displayDataInTable();
@@ -441,7 +441,7 @@ public class UdrzbaPoruchyGUI extends javax.swing.JFrame implements PrebratiePor
         this.vynulovaniePolicok();
 
         this.dispose();
-        guiManager.zviditelniHlavneMenu();
+        this.guiManager.zviditelniHlMenuGUI();
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
     private void jCheckBoxZobrazLenAktualneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxZobrazOpraveneActionPerformed

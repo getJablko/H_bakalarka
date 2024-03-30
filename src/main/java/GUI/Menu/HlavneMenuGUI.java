@@ -38,7 +38,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     private LoginGUI loginGUI;
     private GraphPieChart graphPieChart;
 
-    public HlavneMenuGUI(GUIManager guiManager, LoginGUI loginGUI) {
+    public HlavneMenuGUI(GUIManager guiManager, LoginGUI loginGUI) throws IOException {
         initComponents2();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
@@ -147,7 +147,11 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         jButton4.setBorder(null);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_LOGOUT_ActionPerformed(evt);
+                try {
+                    jButton_LOGOUT_ActionPerformed(evt);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -250,9 +254,9 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    private void displayGraph1() {
+    private void displayGraph1() throws IOException {
         GraphPieChart graph = new GraphPieChart();
-        graph.setPreferredSize(new Dimension(450, 225));
+        graph.setPreferredSize(new Dimension(435, 230));
         graph.setBackground(new java.awt.Color(255, 255, 254));
         jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
         jPanel3.add(graph);
@@ -260,7 +264,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private void displayGraph2() {
         GraphBarChart graph = new GraphBarChart();
-        graph.setPreferredSize(new Dimension(450, 225));
+        graph.setPreferredSize(new Dimension(450, 230));
         graph.setBackground(new java.awt.Color(255, 255, 254));
         jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
         jPanel3.add(graph);
@@ -268,7 +272,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
         //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
-        if (loginGUI.getRolaZam().equals("S") || loginGUI.getRolaZam().equals("I") ) {
+        if (loginGUI.getRolaZam().equals("S") || loginGUI.getRolaZam().equals("I")) {
             JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
         } else {
             this.guiManager.zobrazUdrzbuPoruchy();
@@ -286,7 +290,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
 
     private void jButton3_STROJE_ActionPerformed(java.awt.event.ActionEvent evt) {
         //System.out.println(loginGUI.getRolaZam() + " - TU SOM");
-        if (loginGUI.getRolaZam().equals("S") || loginGUI.getRolaZam().equals("I") ) {
+        if (loginGUI.getRolaZam().equals("S") || loginGUI.getRolaZam().equals("I")) {
             JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
         } else {
             this.guiManager.zobrazStoje();
@@ -320,20 +324,23 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         }
     }
 
-    private void jButton_LOGOUT_ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton_LOGOUT_ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
+
         //TODO odkomentovat
         //this.guiManager.odhlasenie();
+
         //TODO novy button
+        GraphPieChart pie = new GraphPieChart();
         String filePath = "C:\\Users\\Mario\\Desktop\\reporty01\\Dok1.pdf";
-        String content = "Hello, this is a simple PDF report!";
-        String graphImagePath = "C:\\Users\\Mario\\Desktop\\reporty01\\graf01.png"; // Replace with the actual path
+        String content = "Môj prvý PDF report!";
+        String graphImagePath = "C:\\Users\\Mario\\Desktop\\reporty01\\pie_chart.png"; // Replace with the actual path
 
         try {
             BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
             generatePdfReport(filePath, content, graphImage);
-            System.out.println("PDF report generated successfully.");
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
         }
     }
 
@@ -343,7 +350,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
             document.addPage(page);
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Add text content
+                // Add text
                 contentStream.beginText();
                 PDType1Font pdType1Font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
                 contentStream.setFont(pdType1Font, 12); // Set font
@@ -355,9 +362,11 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
                 PDImageXObject pdImage = LosslessFactory.createFromImage(document, graphImage);
 
                 // Add the graph image
-                contentStream.drawImage(pdImage, 100, 500, 400, 300); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage, 80, 450, 435, 225); // Adjust coordinates and dimensions
+            } catch (Exception e) {
+                e.getCause();
+                JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
             }
-
             document.save(filePath);
         }
     }

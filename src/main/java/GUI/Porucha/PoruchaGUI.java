@@ -54,7 +54,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener, Opr
             public void windowClosing(WindowEvent e) {
                 // vynulovanie textovych policok
                 vynulovaniePolicok();
-                guiManager.zviditelniHlavneMenu();
+                guiManager.zviditelniHlMenuGUI();
             }
         });
         this.displayDataInTable();
@@ -806,7 +806,7 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener, Opr
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
         this.dispose();
-        guiManager.zviditelniHlavneMenu();
+        this.guiManager.zviditelniHlMenuGUI();
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
     public void vynulovaniePolicok() {

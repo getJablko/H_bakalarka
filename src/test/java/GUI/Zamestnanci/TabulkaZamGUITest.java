@@ -6,13 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.table.DefaultTableModel;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TabulkaZamGUITest {
     private TabulkaZamGUI tabulkaZamGUI;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         tabulkaZamGUI = new TabulkaZamGUI(new GUIManager());
     }
 /*

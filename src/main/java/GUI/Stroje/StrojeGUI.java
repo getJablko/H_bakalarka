@@ -48,7 +48,7 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
                 // vynulovanie policok
                 vynulovaniePolicok();
 
-                guiManager.zviditelniHlavneMenu();
+                guiManager.zviditelniHlMenuGUI();
             }
         });
         this.displayDataInTable();
@@ -432,7 +432,8 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // vynulovanie policok
         this.vynulovaniePolicok();
-        guiManager.zviditelniHlavneMenu();
+        this.dispose();
+        this.guiManager.zviditelniHlMenuGUI();
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed

@@ -73,7 +73,7 @@ public class LoginGUI extends javax.swing.JFrame {
         Left.setMinimumSize(new java.awt.Dimension(400, 500));
         Left.setPreferredSize(new java.awt.Dimension(400, 500));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("DM Sans", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 204, 153));
         jLabel1.setText("LOGIN");
 
@@ -270,7 +270,8 @@ public class LoginGUI extends javax.swing.JFrame {
                     this.rola = zam.getTypZamD();
                     this.cisloHaly = zam.getPracoviskoD();
                     this.onLoginSuccess();
-                    guiManager.zobrazHlavneMenu();
+                    //guiManager.zobrazHlavneMenu();
+                    this.guiManager.zobrazHlMenuGUI();
                 } else {
                     // Nespravne prihlasovacie udaje
                     JOptionPane.showMessageDialog(this, "Zadali ste nesprávne prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);

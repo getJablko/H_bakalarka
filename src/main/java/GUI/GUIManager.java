@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.HlMenu2.HlMenuGUI;
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
@@ -13,6 +14,7 @@ import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import GUI.Zamestnanci.TabulkaZamGUI;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +30,13 @@ public class GUIManager {
     private NahradneDielyGUI nahradneDielyGUI;
     private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
     private ZobrazeniePoziadaviekNdGUI zobrazeniePoziadaviekNdGUI;
+    private HlMenuGUI hlMenuGUI;
     private List<JFrame> oknaGUI = new ArrayList<>();
 
-    public GUIManager() {
+    public GUIManager() throws IOException {
         this.login = new LoginGUI(this);
         this.hlavneMenuGUI = new HlavneMenuGUI(this,this.login);
+        this.hlMenuGUI = new HlMenuGUI(this,this.login);
         this.zamestnanciGUI = new TabulkaZamGUI(this);
         this.strojeGUI = new StrojeGUI(this,this.login);
         this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
@@ -54,6 +58,7 @@ public class GUIManager {
         this.oknaGUI.add(nahradneDielyGUI);
         this.oknaGUI.add(udrzbaNahradnyDielGUI);
         this.oknaGUI.add(zobrazeniePoziadaviekNdGUI);
+        this.oknaGUI.add(hlMenuGUI);
     }
 
     public void zobrazLogin() {
@@ -73,32 +78,38 @@ public class GUIManager {
         this.zobrazLogin();
     }
 
+    public void zobrazHlMenuGUI(){
+        if (this.login != null) {
+            this.login.dispose();
+        }
+        this.hlMenuGUI.pack();
+        this.hlMenuGUI.setLocationRelativeTo(null);
+        this.hlMenuGUI.setVisible(true);
+    }
+
     public void zobrazHlavneMenu() {
         if (this.login != null) {
             this.login.dispose();
         }
-
         this.hlavneMenuGUI.pack();
         this.hlavneMenuGUI.setLocationRelativeTo(null);
         this.hlavneMenuGUI.setVisible(true);
     }
 
-    public void zviditelniHlavneMenu() {
-
-        if (this.zamestnanciGUI.isVisible()) {
-            this.zamestnanciGUI.dispose();
-        } else if (this.strojeGUI.isVisible()) {
-            this.strojeGUI.dispose();
+    public void zviditelniHlMenuGUI() {
+        if (!this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(true);
         }
-
+    }
+    public void zviditelniHlavneMenu() {
         if (!this.hlavneMenuGUI.isVisible()) {
             this.hlavneMenuGUI.setVisible(true);
         }
     }
 
     public void zobrazTabulkuZam() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
 
         if (this.zamestnanciGUI.isActive()) {
@@ -111,8 +122,8 @@ public class GUIManager {
     }
 
     public void zobrazStoje() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.strojeGUI.isActive()) {
             this.strojeGUI.setVisible(true);
@@ -135,8 +146,8 @@ public class GUIManager {
     }
 
     public void zobrazPoruchu() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.poruchaGUI.isActive()) {
             this.poruchaGUI.setVisible(true);
@@ -148,8 +159,8 @@ public class GUIManager {
     }
 
     public void zobrazObjednavky() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.objednavkyGUI.isActive()) {
             this.objednavkyGUI.setVisible(true);
@@ -161,8 +172,8 @@ public class GUIManager {
     }
 
     public void zobrazUdrzbuPoruchy() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.udrzbaPoruchyGUI.isActive()) {
             this.udrzbaPoruchyGUI.setVisible(true);
@@ -174,8 +185,8 @@ public class GUIManager {
     }
 
     public void zobrazNahradneDiely() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.nahradneDielyGUI.isActive()) {
             this.nahradneDielyGUI.setVisible(true);
@@ -187,8 +198,8 @@ public class GUIManager {
     }
 
     public void zobrazUdrzbaNahradnyDiel() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.udrzbaNahradnyDielGUI.isActive()) {
             this.udrzbaNahradnyDielGUI.setVisible(true);
@@ -200,8 +211,8 @@ public class GUIManager {
     }
 
     public void zobrazeniePoziadaviek() {
-        if (this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(false);
+        if (this.hlMenuGUI.isVisible()) {
+            this.hlMenuGUI.setVisible(false);
         }
         if (this.zobrazeniePoziadaviekNdGUI.isActive()) {
             this.zobrazeniePoziadaviekNdGUI.setVisible(true);

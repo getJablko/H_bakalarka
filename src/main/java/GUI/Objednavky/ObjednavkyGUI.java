@@ -65,7 +65,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e) {
                 // vynulovanie textovych policok
                 vynulovaniePolicok();
-                guiManager.zviditelniHlavneMenu();
+                guiManager.zviditelniHlMenuGUI();
             }
         });
         this.displayDataInTable();
@@ -771,7 +771,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
         // vynulovanie textovych policok
         this.vynulovaniePolicok();
         this.dispose();
-        guiManager.zviditelniHlavneMenu();
+        this.guiManager.zviditelniHlMenuGUI();
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {
