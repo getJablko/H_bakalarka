@@ -20,7 +20,7 @@ public class GraphPieChart extends JPanel {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
 
-    public GraphPieChart() throws IOException {
+    public GraphPieChart(String datumOd, String DatumDo) throws IOException {
         // novy dataset
         DefaultPieDataset dataset = new DefaultPieDataset();
         int result1 = 0;
@@ -28,11 +28,12 @@ public class GraphPieChart extends JPanel {
         try {
             transaction.begin();
             // ziskanie dat z databazy - JPQL
-            TypedQuery<Long> query1 = entityManager.createQuery(
-                    "SELECT COUNT (p.idPoruchy) " +
-                            "FROM BPorucha p " +
-                            " WHERE p.poruchaDo IS NOT NULL ", Long.class);
-            result1 = Math.toIntExact(query1.getSingleResult());
+            Query query = entityManager.createNativeQuery(
+                    "SELECT COUNT(p.id_poruchy) " +
+                            "FROM B_porucha p " +
+                            "WHERE TO_DATE(SUBSTR(p.porucha_od, 1, 4000), 'YYYY-MM-DD') >= TO_DATE(:datumOd, 'YYYY-MM-DD')");
+            query.setParameter("datumOd", datumOd);
+            result1 = ((Number) query.getSingleResult()).intValue();
 
             TypedQuery<Long> query2 = entityManager.createQuery(
                     "SELECT COUNT (p.idPoruchy) " +
@@ -84,8 +85,8 @@ public class GraphPieChart extends JPanel {
         chartPanel.setVisible(true);
 
         // export grafu
-        String desktopPath = "C:\\Users\\Mario\\Desktop\\reporty01";
-        ChartUtilities.saveChartAsPNG(new File(desktopPath + "\\pie_chart.png"), chart, chartPanel.getWidth(), chartPanel.getHeight());
+        //String desktopPath = "C:\\Users\\Mario\\Desktop\\reporty01";
+        ChartUtilities.saveChartAsPNG(new File("reports\\pie_chart.png"), chart, chartPanel.getWidth(), chartPanel.getHeight());
     }
 
 }

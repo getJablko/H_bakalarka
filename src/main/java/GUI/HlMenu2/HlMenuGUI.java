@@ -5,8 +5,8 @@
 package GUI.HlMenu2;
 
 import GUI.GUIManager;
+import GUI.HlMenu2.Reporty.ReportyOknoGUI;
 import GUI.Login.LoginGUI;
-import GUI.Menu.Graphs.GraphBarChart;
 import GUI.Menu.Graphs.GraphPieChart;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -33,10 +33,15 @@ public class HlMenuGUI extends javax.swing.JFrame {
     private GUIManager guiManager;
     private LoginGUI loginGUI;
 
+    private String datumOd;
+    private String datumDo;
+
     public HlMenuGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
+
+
     }
 
     /**
@@ -156,6 +161,8 @@ public class HlMenuGUI extends javax.swing.JFrame {
                 try {
                     jButtonReportActionPerformed(evt);
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -281,9 +288,30 @@ public class HlMenuGUI extends javax.swing.JFrame {
         this.guiManager.odhlasenie();
     }
 
-    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
+    public void setDatumOd(String datumOd) {
+        this.datumOd = datumOd;
+    }
+
+    public void setDatumDo(String datumDo) {
+        this.datumDo = datumDo;
+    }
+
+
+    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) throws IOException, InterruptedException {
         // TODO add your handling code here:
-        GraphPieChart pie = new GraphPieChart();
+        this.datumDo = "";
+        this.datumOd = "";
+        this.guiManager.zobrazenieReportOkno();
+        //System.out.println("TU SOM: " + this.datumOd + " " + this.datumDo);
+/*
+        if (this.datumOd == null || this.datumDo == null) {
+            return;
+        }
+
+
+ */
+        /*
+        GraphPieChart pie = new GraphPieChart("2020-02-20","2024-02-20");
         String filePath = "C:\\Users\\Mario\\Desktop\\reporty01\\Dok1.pdf";
         String content = "Môj prvý PDF report!";
         String graphImagePath = "C:\\Users\\Mario\\Desktop\\reporty01\\pie_chart.png"; // Replace with the actual path
@@ -295,6 +323,10 @@ public class HlMenuGUI extends javax.swing.JFrame {
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
         }
+
+
+         */
+
     }
 
     private static void generatePdfReport(String filePath, String content, BufferedImage graphImage) throws IOException {

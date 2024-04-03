@@ -44,7 +44,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         this.loginGUI = loginGUI;
         this.displayGraph1();
         this.displayGraph2();
-        this.graphPieChart = new GraphPieChart();
+        //this.graphPieChart = new GraphPieChart();
     }
 
     /**
@@ -255,11 +255,11 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void displayGraph1() throws IOException {
-        GraphPieChart graph = new GraphPieChart();
-        graph.setPreferredSize(new Dimension(435, 230));
-        graph.setBackground(new java.awt.Color(255, 255, 254));
-        jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
-        jPanel3.add(graph);
+        //GraphPieChart graph = new GraphPieChart();
+        //graph.setPreferredSize(new Dimension(435, 230));
+        //graph.setBackground(new java.awt.Color(255, 255, 254));
+        //jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
+        //jPanel3.add(graph);
     }
 
     private void displayGraph2() {
@@ -330,7 +330,7 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
         //this.guiManager.odhlasenie();
 
         //TODO novy button
-        GraphPieChart pie = new GraphPieChart();
+        //GraphPieChart pie = new GraphPieChart();
         String filePath = "C:\\Users\\Mario\\Desktop\\reporty01\\Dok1.pdf";
         String content = "Môj prvý PDF report!";
         String graphImagePath = "C:\\Users\\Mario\\Desktop\\reporty01\\pie_chart.png"; // Replace with the actual path

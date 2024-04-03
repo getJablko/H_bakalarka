@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.HlMenu2.HlMenuGUI;
+import GUI.HlMenu2.Reporty.ReportyOknoGUI;
 import GUI.Login.LoginGUI;
 import GUI.Menu.HlavneMenuGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
@@ -31,12 +32,19 @@ public class GUIManager {
     private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
     private ZobrazeniePoziadaviekNdGUI zobrazeniePoziadaviekNdGUI;
     private HlMenuGUI hlMenuGUI;
+    private ReportyOknoGUI reportyOknoGUI;
+    private String datumOd;
+    private String datumDo;
     private List<JFrame> oknaGUI = new ArrayList<>();
 
     public GUIManager() throws IOException {
         this.login = new LoginGUI(this);
         this.hlavneMenuGUI = new HlavneMenuGUI(this,this.login);
+
+
         this.hlMenuGUI = new HlMenuGUI(this,this.login);
+        this.reportyOknoGUI = new ReportyOknoGUI(this,this.hlMenuGUI);
+
         this.zamestnanciGUI = new TabulkaZamGUI(this);
         this.strojeGUI = new StrojeGUI(this,this.login);
         this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
@@ -46,6 +54,7 @@ public class GUIManager {
         this.udrzbaNahradnyDielGUI = new UdrzbaNahradnyDielGUI(this.udrzbaPoruchyGUI);
         this.zobrazeniePoziadaviekNdGUI = new ZobrazeniePoziadaviekNdGUI(this,this.login,this.nahradneDielyGUI,this.udrzbaNahradnyDielGUI);
         this.objednavkyGUI = new ObjednavkyGUI(this,this.login,this.nahradneDielyGUI,this.zobrazeniePoziadaviekNdGUI,this.udrzbaNahradnyDielGUI);
+
         // pridanie do arraylistu okien
         this.oknaGUI.add(login);
         this.oknaGUI.add(hlavneMenuGUI);
@@ -59,6 +68,23 @@ public class GUIManager {
         this.oknaGUI.add(udrzbaNahradnyDielGUI);
         this.oknaGUI.add(zobrazeniePoziadaviekNdGUI);
         this.oknaGUI.add(hlMenuGUI);
+        this.oknaGUI.add(reportyOknoGUI);
+    }
+
+    public String getDatumOd() {
+        return this.datumOd;
+    }
+
+    public String getDatumDo() {
+        return this.datumDo;
+    }
+
+    public void setDatumOd(String datumOd) {
+        this.datumOd = datumOd;
+    }
+
+    public void setDatumDo(String datumDo) {
+        this.datumDo = datumDo;
     }
 
     public void zobrazLogin() {
@@ -220,6 +246,16 @@ public class GUIManager {
             this.zobrazeniePoziadaviekNdGUI.pack();
             this.zobrazeniePoziadaviekNdGUI.setLocationRelativeTo(null);
             this.zobrazeniePoziadaviekNdGUI.setVisible(true);
+        }
+    }
+
+    public void zobrazenieReportOkno() {
+        if (this.reportyOknoGUI.isActive()) {
+            this.reportyOknoGUI.setVisible(true);
+        } else {
+            this.reportyOknoGUI.pack();
+            this.reportyOknoGUI.setLocationRelativeTo(null);
+            this.reportyOknoGUI.setVisible(true);
         }
     }
 
