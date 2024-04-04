@@ -12,31 +12,44 @@ import Sifrovanie.DateFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import javax.imageio.ImageIO;
+import javax.persistence.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mario
  */
 public class ReportyOknoGUI extends javax.swing.JFrame {
-
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    EntityTransaction transaction = entityManager.getTransaction();
     private String datumOd;
     private String datumDo;
     private GUIManager guiManager;
     private DateFormat dateFormat;
-
+    private String popis1;
     private HlMenuGUI hlMenuGUI;
+    private ArrayList<String> stringPopis1;
 
     /**
      * Creates new form reportyOknoGUI
@@ -45,6 +58,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         this.guiManager = guiManager;
         this.hlMenuGUI = hlMenuGUI;
 
+        this.stringPopis1 = new ArrayList<>();
         this.dateFormat = new DateFormat();
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -170,14 +184,6 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public String getDatumOd() {
-        return this.datumOd;
-    }
-
-    public String getDatumDo() {
-        return this.datumDo;
-    }
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_jButton1ActionPerformed
         if (jTextField1.equals("") || jTextField2.equals("")) {
             JOptionPane.showMessageDialog(null, "zadaj povinne policka!");
@@ -199,6 +205,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
             return;
         }
 
+        this.naplnPopis1();
         this.zobrazGraf2();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -221,7 +228,10 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     private void zobrazGraf2() throws IOException {
         GraphBarChart bar = new GraphBarChart();
         String filePath = "reports\\Dok1.pdf";
-        String content = "Toto je 2. graf!";
+        //String content = "Toto je 2. graf!";
+        String content = String.valueOf(this.stringPopis1);
+        //content = content.replaceAll("\\t", "   ");
+        //System.out.println(this.popis1);
         String graphImagePath = "reports\\bar_chart.png"; // Replace with the actual path
 
         try {
@@ -233,30 +243,80 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         }
     }
 
-    private static void generatePdfReport(String filePath, String content, BufferedImage graphImage) throws IOException {
+    private void generatePdfReport(String filePath, String content, BufferedImage graphImage) throws IOException {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
-
+            // 2020-10-10
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 // Add text
-                contentStream.beginText();
-                PDType1Font pdType1Font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-                contentStream.setFont(pdType1Font, 12); // Set font
-                contentStream.newLineAtOffset(100, 700);
-                contentStream.showText(content);
-                contentStream.endText();
+                PDFont formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\cour.ttf")), false);
+                PDResources res = new PDResources();
+                //PDType1Font pdType1Font = new PDType1Font(Standard14Fonts.FontName.COURIER);
+
+                String fontName = res.add(formFont).getName();
+                String defaultAppearanceString = "/" + fontName + " 12 Tf"; // Adjust font size if needed
+
+                int y = 700; // Initial y-coordinate
+                for (String element : stringPopis1) {
+                    contentStream.beginText();
+                    contentStream.setFont(formFont, 12);
+                    contentStream.newLineAtOffset(100, y); // Set position for current line
+                    contentStream.showText(element);
+                    contentStream.endText();
+                    y -= 15; // Move to the next line
+                }
 
                 // Create a PDImageXObject from the BufferedImage
                 PDImageXObject pdImage = LosslessFactory.createFromImage(document, graphImage);
 
                 // Add the graph image
-                contentStream.drawImage(pdImage, 80, 450, 435, 225); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage, 80, y-235, 435, 225); // Adjust coordinates and dimensions
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
             }
             document.save(filePath);
+        }
+    }
+
+    private void naplnPopis1() {
+        try {
+            transaction.begin();
+
+            // Retrieve data from the database using JPQL with a join
+            TypedQuery<Object[]> query = entityManager.createQuery(
+                    "SELECT p.idStroja, " +
+                            "COUNT(DISTINCT p.idPoruchy) AS priemernyPocetPoruch " +
+                            "FROM BPorucha p " +
+                            "GROUP BY p.idStroja " +
+                            "ORDER BY p.idStroja ASC " , Object[].class);
+
+            List<Object[]> results = query.getResultList();
+
+            for (Object[] result : results) {
+                StringBuilder popis1Builder = new StringBuilder();
+                // Calculate the number of spaces needed between ID and "pocet poruch"
+                int spaces = 15 - ("ID stroja: " + result[0]).length();
+                // Append ID stroja with appropriate spacing
+                popis1Builder.append("ID stroja: ").append(result[0]);
+                // Append calculated number of spaces
+                for (int i = 0; i < spaces; i++) {
+                    popis1Builder.append(" ");
+                }
+                // Append pocet poruch
+                popis1Builder.append("počet porúch: ").append(result[1]);
+                this.stringPopis1.add(popis1Builder.toString());
+            }
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní údajov: " + e.getMessage() + " Skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
         }
     }
 

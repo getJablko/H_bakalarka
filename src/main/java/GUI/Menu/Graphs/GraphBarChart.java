@@ -83,7 +83,7 @@ public class GraphBarChart extends JPanel {
         // export grafu
         //String desktopPath = "C:\\Users\\Mario\\Desktop\\reporty01";
         ChartUtilities.saveChartAsPNG(new File("reports\\bar_chart.png"), chart, chartPanel.getWidth(), chartPanel.getHeight());
-        System.out.println("VYGENEROVANIE GRAFU2");
+        //System.out.println("VYGENEROVANIE GRAFU2");
     }
 
     private CategoryDataset createDataset() {
