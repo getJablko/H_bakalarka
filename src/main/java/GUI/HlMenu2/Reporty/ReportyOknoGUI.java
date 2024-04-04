@@ -6,6 +6,7 @@ package GUI.HlMenu2.Reporty;
 
 import GUI.GUIManager;
 import GUI.HlMenu2.HlMenuGUI;
+import GUI.Menu.Graphs.GraphBarChart;
 import GUI.Menu.Graphs.GraphPieChart;
 import Sifrovanie.DateFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -198,15 +199,30 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
             return;
         }
 
-        this.zobrazGraf();
+        this.zobrazGraf2();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void zobrazGraf() throws IOException {
+    private void zobrazGraf1() throws IOException {
         GraphPieChart pie = new GraphPieChart(this.datumOd, this.datumDo);
         String filePath = "reports\\Dok1.pdf";
         String content = "Môj prvý PDF report!";
         String graphImagePath = "reports\\pie_chart.png"; // Replace with the actual path
+
+        try {
+            BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
+            generatePdfReport(filePath, content, graphImage);
+        } catch (IOException e) {
+            e.getCause();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
+        }
+    }
+
+    private void zobrazGraf2() throws IOException {
+        GraphBarChart bar = new GraphBarChart();
+        String filePath = "reports\\Dok1.pdf";
+        String content = "Toto je 2. graf!";
+        String graphImagePath = "reports\\bar_chart.png"; // Replace with the actual path
 
         try {
             BufferedImage graphImage = ImageIO.read(new File(graphImagePath));

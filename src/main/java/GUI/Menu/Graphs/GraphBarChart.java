@@ -2,6 +2,7 @@ package GUI.Menu.Graphs;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -14,6 +15,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import javax.persistence.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class GraphBarChart extends JPanel {
@@ -22,14 +25,14 @@ public class GraphBarChart extends JPanel {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
 
-    public GraphBarChart() {
+    public GraphBarChart() throws IOException {
         // vytvorenie datasetu
         DefaultCategoryDataset dataset = (DefaultCategoryDataset) createDataset();
 
         // vytvorenie grafu
         JFreeChart chart = ChartFactory.createBarChart(
-                "Poruchy typov strojov",
-                "Typ stroja",
+                "Poruchovosť strojov",
+                "typ stroja",
                 "Počet porúch",
                 dataset
         );
@@ -73,7 +76,14 @@ public class GraphBarChart extends JPanel {
         // zobrazenie grafu v ChartPanel
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(450, 225)); // preferred size
+        chartPanel.setSize(435,225);
         add(chartPanel);
+        chartPanel.setVisible(true);
+
+        // export grafu
+        //String desktopPath = "C:\\Users\\Mario\\Desktop\\reporty01";
+        ChartUtilities.saveChartAsPNG(new File("reports\\bar_chart.png"), chart, chartPanel.getWidth(), chartPanel.getHeight());
+        System.out.println("VYGENEROVANIE GRAFU2");
     }
 
     private CategoryDataset createDataset() {

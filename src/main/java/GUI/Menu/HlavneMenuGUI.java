@@ -263,11 +263,11 @@ public class HlavneMenuGUI extends javax.swing.JFrame {
     }
 
     private void displayGraph2() {
-        GraphBarChart graph = new GraphBarChart();
-        graph.setPreferredSize(new Dimension(450, 230));
-        graph.setBackground(new java.awt.Color(255, 255, 254));
-        jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
-        jPanel3.add(graph);
+        //GraphBarChart graph = new GraphBarChart();
+        //graph.setPreferredSize(new Dimension(450, 230));
+        //graph.setBackground(new java.awt.Color(255, 255, 254));
+        //jPanel3.setLayout(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout to center the graph horizontally
+        //jPanel3.add(graph);
     }
 
     private void jButton1_UDRZBA_PORUCHY_ActionPerformed(java.awt.event.ActionEvent evt) {
