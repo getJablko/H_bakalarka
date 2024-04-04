@@ -50,6 +50,8 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                jTextField2.setText("");
+                jTextField1.setText("");
                 dispose();
             }
         });
@@ -176,12 +178,10 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_jButton1ActionPerformed
-
         if (jTextField1.equals("") || jTextField2.equals("")) {
             JOptionPane.showMessageDialog(null, "zadaj povinne policka!");
             return;
         }
-
         if (!dateFormat.overenie(jTextField2.getText()) || !dateFormat.overenie(jTextField1.getText())) {
             jTextField2.setText("");
             jTextField1.setText("");
@@ -190,9 +190,13 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
 
         this.datumDo = jTextField2.getText();
         this.datumOd = jTextField1.getText();
-
         jTextField2.setText("");
         jTextField1.setText("");
+
+        if (this.datumOd.compareTo(this.datumDo) >= 0) {
+            JOptionPane.showMessageDialog(null,"Nesprávne zadané dátumy!");
+            return;
+        }
 
         this.zobrazGraf();
         this.dispose();

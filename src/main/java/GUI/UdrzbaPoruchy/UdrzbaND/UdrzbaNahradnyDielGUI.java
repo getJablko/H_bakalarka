@@ -10,6 +10,7 @@ import GUI.Objednavky.DorucenieObjednavkyListener;
 import GUI.UdrzbaPoruchy.PoziadavkaListener;
 import GUI.UdrzbaPoruchy.UdrzbaPoruchyGUI;
 import Tabulky.BNahradnyDiel;
+import Tabulky.BPolozkaObjednavky;
 import Tabulky.BUdrzbaPoruchyNahradnyDiel;
 import Tabulky.BUdrzbaPoruchyNahradnyDielPK;
 
@@ -135,7 +136,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
                 jButtonExitActionPerformed(evt);
             }
         });
-
+/*
         jButtonNovyDiel.setBackground(new java.awt.Color(255, 255, 254));
         jButtonNovyDiel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonNovyDiel.setText("NOVÝ DIEL");
@@ -145,6 +146,8 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             }
         });
 
+
+ */
         jLabel4.setText("názov ND*:");
 
         jTextFieldNazovND.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -510,7 +513,8 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         JOptionPane.getRootFrame().setAlwaysOnTop(false);
         jTable1.clearSelection();
     }
-
+    //TODO toto pojde prec!!!
+/*
     private void jButtonNovyDielActionPerformed(java.awt.event.ActionEvent evt) {
 
         JOptionPane.getRootFrame().setAlwaysOnTop(true);
@@ -523,6 +527,12 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
             bNahradnyDiel.setDostupnostNdD("NO");
             bNahradnyDiel.setDostupneMnozstvo(BigInteger.valueOf(0));
             bNahradnyDiel.setNazovND(userInput);
+
+            BPolozkaObjednavky bPolozkaObjednavky = new BPolozkaObjednavky();
+            bPolozkaObjednavky.setCisloNd(bNahradnyDiel.getCisloNd());
+            bPolozkaObjednavky.setCisloObjednavky(BigInteger.valueOf(1));
+            bPolozkaObjednavky.setMnozstvo(BigInteger.valueOf(1));
+            bPolozkaObjednavky.setCena();
 
             entityManager.persist(bNahradnyDiel);
             JOptionPane.showMessageDialog(null, "Bol vytvorený a priradený nový náhradný diel s číslom: " + bNahradnyDiel.getCisloNd() + " !");
@@ -545,6 +555,8 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         JOptionPane.getRootFrame().setAlwaysOnTop(false);
     }
 
+
+ */
     private void jComboBoxCisloDieluActionPerformed(java.awt.event.ActionEvent evt) {
         if (jComboBoxCisloDielu.getSelectedItem() != " ") {
             BigInteger ND = new BigInteger(String.valueOf(jComboBoxCisloDielu.getSelectedItem()));
