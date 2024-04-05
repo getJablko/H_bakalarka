@@ -209,19 +209,6 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void zobrazGraf1() throws IOException {
-        GraphBarChart bar = new GraphBarChart(this.datumOd, this.datumDo);
-        String filePath = "reports\\Dok1.pdf";
-        String graphImagePath = "reports\\bar_chart.png";
-        try {
-            BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
-            generatePdfReport(filePath, graphImage, null);
-        } catch (IOException e) {
-            e.getCause();
-            JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
-        }
-    }
-
     private void zobrazGrafy() throws IOException {
         GraphBarChart2 bar2 = new GraphBarChart2(this.datumOd, this.datumDo);
         GraphBarChart bar1 = new GraphBarChart(this.datumOd, this.datumDo);
@@ -256,7 +243,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                 contentStream.newLineAtOffset(150, y); // Set position for article content
                 contentStream.showText("REPORT " + this.datumOd + " - " + this.datumDo);
                 contentStream.endText();
-                y = 700;
+                y = 750;
                 y -= 30; // Move to the next line
                 formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\cour.ttf")), false);
 
@@ -271,9 +258,11 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                 // Create a PDImageXObject from the BufferedImage
                 PDImageXObject pdImage1 = LosslessFactory.createFromImage(document, graphImage1);
                 PDImageXObject pdImage2 = LosslessFactory.createFromImage(document, graphImage2);
-
+                y-=225;
                 // Add the graph image
-                contentStream.drawImage(pdImage1, 80, y - 235, 400, 203); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage1, 80, y, 400, 203); // Adjust coordinates and dimensions
+                y-=45;
+
                 for (String element : this.stringPopis2) {
                     contentStream.beginText();
                     contentStream.setFont(formFont, 12);
@@ -283,7 +272,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                     y -= 15; // Move to the next line
                 }
 
-                contentStream.drawImage(pdImage2, 80, y - 225 - 225, 400, 203); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage2, 80, y - 225, 400, 203); // Adjust coordinates and dimensions
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
