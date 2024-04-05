@@ -323,7 +323,6 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     }
 
     private void naplnPopis2() {
-        //TODO
         try {
             transaction.begin();
             // Retrieve data from the database using JPQL with a join
