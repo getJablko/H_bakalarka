@@ -1,4 +1,4 @@
-package GUI.Menu.Graphs;
+package GUI.HlMenu.Graphs;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

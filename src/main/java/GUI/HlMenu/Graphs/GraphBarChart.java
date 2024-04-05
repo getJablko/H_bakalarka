@@ -1,4 +1,4 @@
-package GUI.Menu.Graphs;
+package GUI.HlMenu.Graphs;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -19,15 +19,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class GraphBarChart2 extends JPanel {
+public class GraphBarChart extends JPanel {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
     private String datumOd;
     private String datumDo;
-
-    public GraphBarChart2(String datumOd,String datumDo) throws IOException {
+    public GraphBarChart(String datumOd, String datumDo) throws IOException {
         this.datumOd = datumOd;
         this.datumDo = datumDo;
         // vytvorenie datasetu
@@ -35,9 +34,9 @@ public class GraphBarChart2 extends JPanel {
 
         // vytvorenie grafu
         JFreeChart chart = ChartFactory.createBarChart(
-                "Priemerná cena opráv",
-                "ID poruchy",
-                "Priemerná cena [ € ]",
+                "Poruchovosť strojov",
+                "Typ stroja",
+                "Počet porúch",
                 dataset
         );
         // nastavenie nazvu
@@ -88,7 +87,7 @@ public class GraphBarChart2 extends JPanel {
 
         // export grafu
         //String desktopPath = "C:\\Users\\Mario\\Desktop\\reporty01";
-        ChartUtilities.saveChartAsPNG(new File("reports\\bar_chart2.png"), chart, chartPanel.getWidth(), chartPanel.getHeight());
+        ChartUtilities.saveChartAsPNG(new File("reports\\bar_chart.png"), chart, chartPanel.getWidth(), chartPanel.getHeight());
         //System.out.println("VYGENEROVANIE GRAFU2");
     }
 
@@ -97,27 +96,24 @@ public class GraphBarChart2 extends JPanel {
         try {
             transaction.begin();
             // ziskane data z databazy - JPQL
-            TypedQuery<Object[]> query2 = entityManager.createQuery(
-                    "SELECT up.idPoruchy, AVG(upnd.pozadovaneMnozstvo * po.cena) AS priemernaCenaOpravy " +
-                            "FROM BPorucha p " +
-                            "JOIN BUdrzbaPoruchy up on up.idPoruchy = p.idPoruchy " +
-                            "JOIN BUdrzbaPoruchyNahradnyDiel upnd ON up.idPoruchy = upnd.idPoruchy AND up.osCisloOpravy = upnd.osCisloOpravy " +
-                            "JOIN BNahradnyDiel nd ON upnd.cisloNd = nd.cisloNd " +
-                            "JOIN BPolozkaObjednavky po ON nd.cisloNd = po.cisloNd " +
+            TypedQuery<Object[]> query1 = entityManager.createQuery(
+                    "SELECT t.typStroja , COUNT(p.idStroja) " +
+                            "FROM BStroj t " +
+                            "JOIN BPorucha p ON t.idStroja = p.idStroja " +
                             "WHERE TO_DATE(SUBSTR(p.poruchaOd, 1, 4000), 'YYYY-MM-DD') >= TO_DATE(:datumOd, 'YYYY-MM-DD')" +
-                            "AND TO_DATE(SUBSTR(p.poruchaDo, 1, 4000), 'YYYY-MM-DD') <= TO_DATE(:datumDo, 'YYYY-MM-DD') " +
-                            "GROUP BY up.idPoruchy", Object[].class);
-            query2.setParameter("datumOd", datumOd);
-            query2.setParameter("datumDo", datumDo);
+                            "AND TO_DATE(SUBSTR(p.poruchaDo, 1, 4000), 'YYYY-MM-DD') <= TO_DATE(:datumDo, 'YYYY-MM-DD') OR p.poruchaDo IS NULL " +
+                            "GROUP BY t.typStroja", Object[].class);
+            query1.setParameter("datumOd", datumOd);
+            query1.setParameter("datumDo", datumDo);
 
-            List<Object[]> results = query2.getResultList();
+            List<Object[]> results = query1.getResultList();
 
             for (Object[] result : results) {
                 Object[] row = {
-                        result[0],  // IDstroja
-                        result[1],  // priemerna cena
+                        result[0],  // typStroja
+                        result[1],  // count poruch
                 };
-                dataset.addValue((Double) result[1], (Comparable) result[0], "");
+                dataset.addValue((Number) result[1], (Comparable) result[0], "");
             }
             transaction.commit();
         } catch (Exception e) {
@@ -130,4 +126,3 @@ public class GraphBarChart2 extends JPanel {
         return dataset;
     }
 }
-

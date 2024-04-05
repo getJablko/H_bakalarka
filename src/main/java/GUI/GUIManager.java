@@ -1,9 +1,8 @@
 package GUI;
 
-import GUI.HlMenu2.HlMenuGUI;
-import GUI.HlMenu2.Reporty.ReportyOknoGUI;
+import GUI.HlMenu.HlMenuGUI;
+import GUI.HlMenu.Reporty.ReportyOknoGUI;
 import GUI.Login.LoginGUI;
-import GUI.Menu.HlavneMenuGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
 import GUI.NahradneDiely.PoziadavkyGUI.ZobrazeniePoziadaviekNdGUI;
 import GUI.Objednavky.ObjednavkyGUI;
@@ -21,7 +20,6 @@ import java.util.List;
 
 public class GUIManager {
     private LoginGUI login;
-    private HlavneMenuGUI hlavneMenuGUI;
     private TabulkaZamGUI zamestnanciGUI;
     private StrojeGUI strojeGUI;
     private TypStrojaGUI typStrojaGUI;
@@ -39,12 +37,8 @@ public class GUIManager {
 
     public GUIManager() throws IOException {
         this.login = new LoginGUI(this);
-        this.hlavneMenuGUI = new HlavneMenuGUI(this,this.login);
-
-
         this.hlMenuGUI = new HlMenuGUI(this,this.login);
         this.reportyOknoGUI = new ReportyOknoGUI(this,this.hlMenuGUI);
-
         this.zamestnanciGUI = new TabulkaZamGUI(this);
         this.strojeGUI = new StrojeGUI(this,this.login);
         this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
@@ -57,7 +51,6 @@ public class GUIManager {
 
         // pridanie do arraylistu okien
         this.oknaGUI.add(login);
-        this.oknaGUI.add(hlavneMenuGUI);
         this.oknaGUI.add(zamestnanciGUI);
         this.oknaGUI.add(strojeGUI);
         this.oknaGUI.add(typStrojaGUI);
@@ -113,23 +106,9 @@ public class GUIManager {
         this.hlMenuGUI.setVisible(true);
     }
 
-    public void zobrazHlavneMenu() {
-        if (this.login != null) {
-            this.login.dispose();
-        }
-        this.hlavneMenuGUI.pack();
-        this.hlavneMenuGUI.setLocationRelativeTo(null);
-        this.hlavneMenuGUI.setVisible(true);
-    }
-
     public void zviditelniHlMenuGUI() {
         if (!this.hlMenuGUI.isVisible()) {
             this.hlMenuGUI.setVisible(true);
-        }
-    }
-    public void zviditelniHlavneMenu() {
-        if (!this.hlavneMenuGUI.isVisible()) {
-            this.hlavneMenuGUI.setVisible(true);
         }
     }
 

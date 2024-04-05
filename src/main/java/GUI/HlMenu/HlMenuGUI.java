@@ -2,26 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI.HlMenu2;
+package GUI.HlMenu;
 
 import GUI.GUIManager;
-import GUI.HlMenu2.Reporty.ReportyOknoGUI;
 import GUI.Login.LoginGUI;
-import GUI.Menu.Graphs.GraphPieChart;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
-import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -289,7 +276,6 @@ public class HlMenuGUI extends javax.swing.JFrame {
     }
 
     private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) throws IOException, InterruptedException {
-        // TODO add your handling code here:
         if (!loginGUI.getRolaZam().equals("A")) {
             JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
         } else {

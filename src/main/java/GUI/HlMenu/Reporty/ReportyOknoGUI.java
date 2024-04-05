@@ -2,35 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI.HlMenu2.Reporty;
+package GUI.HlMenu.Reporty;
 
 import GUI.GUIManager;
-import GUI.HlMenu2.HlMenuGUI;
-import GUI.Menu.Graphs.GraphBarChart;
-import GUI.Menu.Graphs.GraphBarChart2;
-import GUI.Menu.Graphs.GraphPieChart;
+import GUI.HlMenu.HlMenuGUI;
+import GUI.HlMenu.Graphs.GraphBarChart;
+import GUI.HlMenu.Graphs.GraphBarChart2;
 import Sifrovanie.DateFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import javax.imageio.ImageIO;
 import javax.persistence.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -48,8 +42,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     private String datumDo;
     private GUIManager guiManager;
     private DateFormat dateFormat;
-    private String popis1;
-    private String stringPopis2;
+    private ArrayList<String> stringPopis2;
     private HlMenuGUI hlMenuGUI;
     private ArrayList<String> stringPopis1;
 
@@ -61,6 +54,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         this.hlMenuGUI = hlMenuGUI;
 
         this.stringPopis1 = new ArrayList<>();
+        this.stringPopis2 = new ArrayList<>();
         this.dateFormat = new DateFormat();
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -207,53 +201,66 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
             return;
         }
 
-        //this.naplnPopis1();
-        //this.naplnPopis2();
+        this.naplnPopis1();
+        this.naplnPopis2();
 
-        //this.zobrazGraf2();
-        this.zobrazGraf1();
+        this.zobrazGrafy();
 
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void zobrazGraf1() throws IOException {
-        GraphBarChart bar = new GraphBarChart(this.datumOd,this.datumDo);
+        GraphBarChart bar = new GraphBarChart(this.datumOd, this.datumDo);
         String filePath = "reports\\Dok1.pdf";
-        String content = String.valueOf(this.stringPopis1);
         String graphImagePath = "reports\\bar_chart.png";
         try {
             BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
-            generatePdfReport(filePath, content, graphImage);
+            generatePdfReport(filePath, graphImage, null);
         } catch (IOException e) {
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
         }
     }
 
-    private void zobrazGraf2() throws IOException {
-        GraphBarChart2 bar2 = new GraphBarChart2(this.datumOd,this.datumDo);
+    private void zobrazGrafy() throws IOException {
+        GraphBarChart2 bar2 = new GraphBarChart2(this.datumOd, this.datumDo);
+        GraphBarChart bar1 = new GraphBarChart(this.datumOd, this.datumDo);
         String filePath = "reports\\Dok1.pdf";
-        String content = String.valueOf(this.stringPopis2);
-        String graphImagePath = "reports\\bar_chart2.png";
+        String graphImagePath2 = "reports\\bar_chart2.png";
+        String graphImagePath1 = "reports\\bar_chart.png";
+
         try {
-            BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
-            generatePdfReport(filePath, content, graphImage);
+            BufferedImage graphImage1 = ImageIO.read(new File(graphImagePath1));
+            BufferedImage graphImage2 = ImageIO.read(new File(graphImagePath2));
+
+            generatePdfReport(filePath, graphImage1, graphImage2);
         } catch (IOException e) {
             e.getCause();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
         }
     }
 
-    private void generatePdfReport(String filePath, String content, BufferedImage graphImage) throws IOException {
+    private void generatePdfReport(String filePath, BufferedImage graphImage1, BufferedImage graphImage2) throws IOException {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
             // 2020-10-10
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 // Add text
-                PDFont formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\cour.ttf")), false);
-                int y = 700; // Initial y-coordinate
-                for (String element : stringPopis1) {
+                PDFont formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\courbd.ttf")), false);
+                int y = 790; // Initial y-coordinate
+
+                // Add article content
+                contentStream.beginText();
+                contentStream.setFont(formFont, 18);
+                contentStream.newLineAtOffset(150, y); // Set position for article content
+                contentStream.showText("REPORT " + this.datumOd + " - " + this.datumDo);
+                contentStream.endText();
+                y = 700;
+                y -= 30; // Move to the next line
+                formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\cour.ttf")), false);
+
+                for (String element : this.stringPopis1) {
                     contentStream.beginText();
                     contentStream.setFont(formFont, 12);
                     contentStream.newLineAtOffset(100, y); // Set position for current line
@@ -262,9 +269,21 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                     y -= 15; // Move to the next line
                 }
                 // Create a PDImageXObject from the BufferedImage
-                PDImageXObject pdImage = LosslessFactory.createFromImage(document, graphImage);
+                PDImageXObject pdImage1 = LosslessFactory.createFromImage(document, graphImage1);
+                PDImageXObject pdImage2 = LosslessFactory.createFromImage(document, graphImage2);
+
                 // Add the graph image
-                contentStream.drawImage(pdImage, 80, y - 235, 435, 225); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage1, 80, y - 235, 400, 203); // Adjust coordinates and dimensions
+                for (String element : this.stringPopis2) {
+                    contentStream.beginText();
+                    contentStream.setFont(formFont, 12);
+                    contentStream.newLineAtOffset(100, y); // Set position for current line
+                    contentStream.showText(element);
+                    contentStream.endText();
+                    y -= 15; // Move to the next line
+                }
+
+                contentStream.drawImage(pdImage2, 80, y - 225 - 225, 400, 203); // Adjust coordinates and dimensions
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
@@ -281,9 +300,13 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                     "SELECT p.idStroja, " +
                             "COUNT(DISTINCT p.idPoruchy) AS priemernyPocetPoruch " +
                             "FROM BPorucha p " +
+                            "WHERE TO_DATE(SUBSTR(p.poruchaOd, 1, 4000), 'YYYY-MM-DD') >= TO_DATE(:datumOd, 'YYYY-MM-DD')" +
+                            "AND TO_DATE(SUBSTR(p.poruchaDo, 1, 4000), 'YYYY-MM-DD') <= TO_DATE(:datumDo, 'YYYY-MM-DD') " +
                             "GROUP BY p.idStroja " +
                             "ORDER BY p.idStroja ASC ", Object[].class);
 
+            query.setParameter("datumOd", this.datumOd);
+            query.setParameter("datumDo", this.datumDo);
             List<Object[]> results = query.getResultList();
 
             for (Object[] result : results) {
@@ -297,7 +320,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                     popis1Builder.append(" ");
                 }
                 // Append pocet poruch
-                popis1Builder.append("počet porúch: ").append(result[1]);
+                popis1Builder.append("počet vzniknutých porúch: ").append(result[1]);
                 this.stringPopis1.add(popis1Builder.toString());
             }
             transaction.commit();
@@ -316,27 +339,33 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
             transaction.begin();
             // Retrieve data from the database using JPQL with a join
             TypedQuery<Object[]> query = entityManager.createQuery(
-                    "SELECT p.idStroja, " +
-                            "COUNT(DISTINCT p.idPoruchy) AS priemernyPocetPoruch " +
-                            "FROM BPorucha p " +
-                            "GROUP BY p.idStroja " +
-                            "ORDER BY p.idStroja ASC ", Object[].class);
+                    "SELECT up.idPoruchy, up.dobaOpravy " +
+                            "FROM BUdrzbaPoruchy up " +
+                            "JOIN BPorucha p ON p.idPoruchy = up.idPoruchy " +
+                            "WHERE up.dobaOpravy IS NOT NULL " +
+                            "AND TO_DATE(SUBSTR(up.prebratiePoruchy, 1, 10), 'YYYY-MM-DD') >= TO_DATE(:datumOd, 'YYYY-MM-DD') " +
+                            "AND TO_DATE(SUBSTR(p.poruchaDo, 1, 10), 'YYYY-MM-DD') <= TO_DATE(:datumDo, 'YYYY-MM-DD') " +
+                            "GROUP BY up.idPoruchy, up.dobaOpravy " +
+                            "ORDER BY up.idPoruchy",
+                    Object[].class);
 
+            query.setParameter("datumOd", this.datumOd);
+            query.setParameter("datumDo", this.datumDo);
             List<Object[]> results = query.getResultList();
 
             for (Object[] result : results) {
                 StringBuilder popis1Builder = new StringBuilder();
                 // Calculate the number of spaces needed between ID and "pocet poruch"
-                int spaces = 15 - ("ID stroja: " + result[0]).length();
+                int spaces = 15 - ("ID poruchy: " + result[0]).length();
                 // Append ID stroja with appropriate spacing
-                popis1Builder.append("ID stroja: ").append(result[0]);
+                popis1Builder.append("ID poruchy: ").append(result[0]);
                 // Append calculated number of spaces
                 for (int i = 0; i < spaces; i++) {
                     popis1Builder.append(" ");
                 }
                 // Append pocet poruch
-                popis1Builder.append("počet porúch: ").append(result[1]);
-                this.stringPopis1.add(popis1Builder.toString());
+                popis1Builder.append("doba opravy v hodinách: ").append(result[1]);
+                this.stringPopis2.add(popis1Builder.toString());
             }
             transaction.commit();
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package GUI.HlMenu2;
+package GUI.HlMenu;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Dimension;
