@@ -7,6 +7,7 @@ package GUI.HlMenu2.Reporty;
 import GUI.GUIManager;
 import GUI.HlMenu2.HlMenuGUI;
 import GUI.Menu.Graphs.GraphBarChart;
+import GUI.Menu.Graphs.GraphBarChart2;
 import GUI.Menu.Graphs.GraphPieChart;
 import Sifrovanie.DateFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -48,6 +49,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     private GUIManager guiManager;
     private DateFormat dateFormat;
     private String popis1;
+    private String stringPopis2;
     private HlMenuGUI hlMenuGUI;
     private ArrayList<String> stringPopis1;
 
@@ -201,21 +203,24 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         jTextField1.setText("");
 
         if (this.datumOd.compareTo(this.datumDo) >= 0) {
-            JOptionPane.showMessageDialog(null,"Nesprávne zadané dátumy!");
+            JOptionPane.showMessageDialog(null, "Nesprávne zadané dátumy!");
             return;
         }
 
-        this.naplnPopis1();
-        this.zobrazGraf2();
+        //this.naplnPopis1();
+        //this.naplnPopis2();
+
+        //this.zobrazGraf2();
+        this.zobrazGraf1();
+
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void zobrazGraf1() throws IOException {
-        GraphPieChart pie = new GraphPieChart(this.datumOd, this.datumDo);
+        GraphBarChart bar = new GraphBarChart(this.datumOd,this.datumDo);
         String filePath = "reports\\Dok1.pdf";
-        String content = "Môj prvý PDF report!";
-        String graphImagePath = "reports\\pie_chart.png"; // Replace with the actual path
-
+        String content = String.valueOf(this.stringPopis1);
+        String graphImagePath = "reports\\bar_chart.png";
         try {
             BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
             generatePdfReport(filePath, content, graphImage);
@@ -226,14 +231,10 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     }
 
     private void zobrazGraf2() throws IOException {
-        GraphBarChart bar = new GraphBarChart();
+        GraphBarChart2 bar2 = new GraphBarChart2(this.datumOd,this.datumDo);
         String filePath = "reports\\Dok1.pdf";
-        //String content = "Toto je 2. graf!";
-        String content = String.valueOf(this.stringPopis1);
-        //content = content.replaceAll("\\t", "   ");
-        //System.out.println(this.popis1);
-        String graphImagePath = "reports\\bar_chart.png"; // Replace with the actual path
-
+        String content = String.valueOf(this.stringPopis2);
+        String graphImagePath = "reports\\bar_chart2.png";
         try {
             BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
             generatePdfReport(filePath, content, graphImage);
@@ -251,12 +252,6 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 // Add text
                 PDFont formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\cour.ttf")), false);
-                PDResources res = new PDResources();
-                //PDType1Font pdType1Font = new PDType1Font(Standard14Fonts.FontName.COURIER);
-
-                String fontName = res.add(formFont).getName();
-                String defaultAppearanceString = "/" + fontName + " 12 Tf"; // Adjust font size if needed
-
                 int y = 700; // Initial y-coordinate
                 for (String element : stringPopis1) {
                     contentStream.beginText();
@@ -266,12 +261,10 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                     contentStream.endText();
                     y -= 15; // Move to the next line
                 }
-
                 // Create a PDImageXObject from the BufferedImage
                 PDImageXObject pdImage = LosslessFactory.createFromImage(document, graphImage);
-
                 // Add the graph image
-                contentStream.drawImage(pdImage, 80, y-235, 435, 225); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage, 80, y - 235, 435, 225); // Adjust coordinates and dimensions
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
@@ -283,14 +276,13 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     private void naplnPopis1() {
         try {
             transaction.begin();
-
             // Retrieve data from the database using JPQL with a join
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT p.idStroja, " +
                             "COUNT(DISTINCT p.idPoruchy) AS priemernyPocetPoruch " +
                             "FROM BPorucha p " +
                             "GROUP BY p.idStroja " +
-                            "ORDER BY p.idStroja ASC " , Object[].class);
+                            "ORDER BY p.idStroja ASC ", Object[].class);
 
             List<Object[]> results = query.getResultList();
 
@@ -308,9 +300,45 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
                 popis1Builder.append("počet porúch: ").append(result[1]);
                 this.stringPopis1.add(popis1Builder.toString());
             }
-
             transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní údajov: " + e.getMessage() + " Skúste to znovu!");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
 
+    private void naplnPopis2() {
+        //TODO
+        try {
+            transaction.begin();
+            // Retrieve data from the database using JPQL with a join
+            TypedQuery<Object[]> query = entityManager.createQuery(
+                    "SELECT p.idStroja, " +
+                            "COUNT(DISTINCT p.idPoruchy) AS priemernyPocetPoruch " +
+                            "FROM BPorucha p " +
+                            "GROUP BY p.idStroja " +
+                            "ORDER BY p.idStroja ASC ", Object[].class);
+
+            List<Object[]> results = query.getResultList();
+
+            for (Object[] result : results) {
+                StringBuilder popis1Builder = new StringBuilder();
+                // Calculate the number of spaces needed between ID and "pocet poruch"
+                int spaces = 15 - ("ID stroja: " + result[0]).length();
+                // Append ID stroja with appropriate spacing
+                popis1Builder.append("ID stroja: ").append(result[0]);
+                // Append calculated number of spaces
+                for (int i = 0; i < spaces; i++) {
+                    popis1Builder.append(" ");
+                }
+                // Append pocet poruch
+                popis1Builder.append("počet porúch: ").append(result[1]);
+                this.stringPopis1.add(popis1Builder.toString());
+            }
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Nastala chyba pri načítavaní údajov: " + e.getMessage() + " Skúste to znovu!");

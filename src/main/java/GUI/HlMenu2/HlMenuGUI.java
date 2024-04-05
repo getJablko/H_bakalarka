@@ -288,71 +288,12 @@ public class HlMenuGUI extends javax.swing.JFrame {
         this.guiManager.odhlasenie();
     }
 
-    public void setDatumOd(String datumOd) {
-        this.datumOd = datumOd;
-    }
-
-    public void setDatumDo(String datumDo) {
-        this.datumDo = datumDo;
-    }
-
-
     private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) throws IOException, InterruptedException {
         // TODO add your handling code here:
-        this.datumDo = "";
-        this.datumOd = "";
-        this.guiManager.zobrazenieReportOkno();
-        //System.out.println("TU SOM: " + this.datumOd + " " + this.datumDo);
-/*
-        if (this.datumOd == null || this.datumDo == null) {
-            return;
-        }
-
-
- */
-        /*
-        GraphPieChart pie = new GraphPieChart("2020-02-20","2024-02-20");
-        String filePath = "C:\\Users\\Mario\\Desktop\\reporty01\\Dok1.pdf";
-        String content = "Môj prvý PDF report!";
-        String graphImagePath = "C:\\Users\\Mario\\Desktop\\reporty01\\pie_chart.png"; // Replace with the actual path
-
-        try {
-            BufferedImage graphImage = ImageIO.read(new File(graphImagePath));
-            generatePdfReport(filePath, content, graphImage);
-        } catch (IOException e) {
-            e.getCause();
-            JOptionPane.showMessageDialog(null, "Nastala chyba pri vkladaní údajov do PDF reportu! " + e.getMessage());
-        }
-
-
-         */
-
-    }
-
-    private static void generatePdfReport(String filePath, String content, BufferedImage graphImage) throws IOException {
-        try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage(PDRectangle.A4);
-            document.addPage(page);
-
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Add text
-                contentStream.beginText();
-                PDType1Font pdType1Font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-                contentStream.setFont(pdType1Font, 12); // Set font
-                contentStream.newLineAtOffset(100, 700);
-                contentStream.showText(content);
-                contentStream.endText();
-
-                // Create a PDImageXObject from the BufferedImage
-                PDImageXObject pdImage = LosslessFactory.createFromImage(document, graphImage);
-
-                // Add the graph image
-                contentStream.drawImage(pdImage, 80, 450, 435, 225); // Adjust coordinates and dimensions
-            } catch (Exception e) {
-                e.getCause();
-                JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
-            }
-            document.save(filePath);
+        if (!loginGUI.getRolaZam().equals("A")) {
+            JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
+        } else {
+            this.guiManager.zobrazenieReportOkno();
         }
     }
 
