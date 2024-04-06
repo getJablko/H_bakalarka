@@ -36,22 +36,6 @@ public class PasswordUtils extends Component {
         }
     }
 
-    public String vratHeslo(int id,EntityManagerFactory entityManagerFactory, EntityManager entityManager, EntityTransaction transaction) {
-
-        String string = "";
-        BZamestnanec existujuciZamestnanec = entityManager.find(BZamestnanec.class, BigInteger.valueOf(id));
-
-        if (existujuciZamestnanec != null) {
-            string = existujuciZamestnanec.getPassword();
-        } else {
-            // Ak zamestnanec s os_cislom neexistuje
-            System.out.println("Zamestnanec s os_cislom " + id + " neexistuje.");
-        }
-
-        //System.out.println(string);
-        return string;
-    }
-
     public static String vratHesloVseobecne(int id) {
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
@@ -60,23 +44,23 @@ public class PasswordUtils extends Component {
         String string = "";
         try {
             transaction.begin();
-        BZamestnanec existujuciZamestnanec = entityManager.find(BZamestnanec.class, BigInteger.valueOf(id));
+            BZamestnanec existujuciZamestnanec = entityManager.find(BZamestnanec.class, BigInteger.valueOf(id));
 
-        if (existujuciZamestnanec != null) {
-            string = existujuciZamestnanec.getPassword();
-        } else {
-            // Ak zamestnanec s os_cislom neexistuje
-            JOptionPane.showMessageDialog(null, "Zamestnanec s os_cislom " + id + " neexistuje.", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
-            //System.out.println("Zamestnanec s os_cislom " + id + " neexistuje.");
+            if (existujuciZamestnanec != null) {
+                string = existujuciZamestnanec.getPassword();
+            } else {
+                // Ak zamestnanec s os_cislom neexistuje
+                JOptionPane.showMessageDialog(null, "Zamestnanec s os_cislom " + id + " neexistuje.", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
+                //System.out.println("Zamestnanec s os_cislom " + id + " neexistuje.");
+            }
+            transaction.commit();
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            entityManager.close();
+            entityManagerFactory.close();
         }
-        transaction.commit();
-    } finally {
-        if (transaction.isActive()) {
-            transaction.rollback();
-        }
-        entityManager.close();
-        entityManagerFactory.close();
-    }
         //System.out.println(string);
         return string;
     }

@@ -6,7 +6,6 @@ package GUI.Zamestnanci;
 
 
 import GUI.GUIManager;
-import GUI.Login.LoginGUI;
 import Sifrovanie.PasswordUtils;
 import Tabulky.BZamestnanec;
 
@@ -550,15 +549,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
 
         String priezvisko = (String) jTable1.getValueAt(rowNumber, 2);
         jTextField2.setText(priezvisko);
-
-        //vratenie hesla ??? je to nutne - NIE JE!!
-
-        //String heslo = (String) PasswordUtils.vratHesloVseobecne(id.intValueExact());
-        //jPasswordField1.setText(heslo);
-
-        // hash-ovane heslo
-        //String heslo = (String) jTable1.getValueAt(rowNumber,6);
-        //jPasswordField1.setText(heslo);
 
         BigInteger dostupnost = (BigInteger) jTable1.getValueAt(rowNumber, 3);
         jComboBox1.setSelectedItem(dostupnost.toString());

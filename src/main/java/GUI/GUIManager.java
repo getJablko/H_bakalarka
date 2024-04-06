@@ -31,8 +31,6 @@ public class GUIManager {
     private ZobrazeniePoziadaviekNdGUI zobrazeniePoziadaviekNdGUI;
     private HlMenuGUI hlMenuGUI;
     private ReportyOknoGUI reportyOknoGUI;
-    private String datumOd;
-    private String datumDo;
     private List<JFrame> oknaGUI = new ArrayList<>();
 
     public GUIManager() throws IOException {
@@ -62,22 +60,6 @@ public class GUIManager {
         this.oknaGUI.add(zobrazeniePoziadaviekNdGUI);
         this.oknaGUI.add(hlMenuGUI);
         this.oknaGUI.add(reportyOknoGUI);
-    }
-
-    public String getDatumOd() {
-        return this.datumOd;
-    }
-
-    public String getDatumDo() {
-        return this.datumDo;
-    }
-
-    public void setDatumOd(String datumOd) {
-        this.datumOd = datumOd;
-    }
-
-    public void setDatumDo(String datumDo) {
-        this.datumDo = datumDo;
     }
 
     public void zobrazLogin() {
@@ -116,7 +98,6 @@ public class GUIManager {
         if (this.hlMenuGUI.isVisible()) {
             this.hlMenuGUI.setVisible(false);
         }
-
         if (this.zamestnanciGUI.isActive()) {
             this.zamestnanciGUI.setVisible(true);
         } else {
