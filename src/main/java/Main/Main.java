@@ -14,13 +14,11 @@ public class Main {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-
         try {
             transaction.begin();
 
             GUIManager guiManager = new GUIManager();
             guiManager.zobrazLogin();
-            //guiManager.zobrazHlavneMenu();
 
             transaction.commit();
         } catch (IOException e) {

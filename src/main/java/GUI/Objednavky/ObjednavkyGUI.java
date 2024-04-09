@@ -221,7 +221,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
 
         jCheckBox1.setBackground(new java.awt.Color(255, 204, 153));
         jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 9)); // NOI18N
-        jCheckBox1.setText("Len doručené objednávky");
+        jCheckBox1.setText("Len nedoručené objednávky");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);
@@ -865,7 +865,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
                                 "FROM BPolozkaObjednavky p " +
                                 "JOIN BObjednavka o ON p.cisloObjednavky = o.cisloObjednavky " +
                                 "JOIN BNahradnyDiel nd ON nd.cisloNd = p.cisloNd " +
-                                "WHERE o.datumDorucenia IS NOT NULL ", Object[].class);
+                                "WHERE o.datumDorucenia IS NULL ", Object[].class);
 
                 List<Object[]> results = query.getResultList();
 

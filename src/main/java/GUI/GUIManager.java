@@ -1,7 +1,7 @@
 package GUI;
 
 import GUI.HlMenu.HlMenuGUI;
-import GUI.HlMenu.Reporty.ReportyOknoGUI;
+import GUI.HlMenu.Reporty.ReportyGUI;
 import GUI.Login.LoginGUI;
 import GUI.NahradneDiely.NahradneDielyGUI;
 import GUI.NahradneDiely.PoziadavkyGUI.ZobrazeniePoziadaviekNdGUI;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUIManager {
-    private LoginGUI login;
+    LoginGUI login;
     private TabulkaZamGUI zamestnanciGUI;
     private StrojeGUI strojeGUI;
     private TypStrojaGUI typStrojaGUI;
@@ -29,14 +29,14 @@ public class GUIManager {
     private NahradneDielyGUI nahradneDielyGUI;
     private UdrzbaNahradnyDielGUI udrzbaNahradnyDielGUI;
     private ZobrazeniePoziadaviekNdGUI zobrazeniePoziadaviekNdGUI;
-    private HlMenuGUI hlMenuGUI;
-    private ReportyOknoGUI reportyOknoGUI;
-    private List<JFrame> oknaGUI = new ArrayList<>();
+    HlMenuGUI hlMenuGUI;
+    private ReportyGUI reportyGUI;
+    List<JFrame> oknaGUI = new ArrayList<>();
 
     public GUIManager() throws IOException {
         this.login = new LoginGUI(this);
         this.hlMenuGUI = new HlMenuGUI(this,this.login);
-        this.reportyOknoGUI = new ReportyOknoGUI(this,this.hlMenuGUI);
+        this.reportyGUI = new ReportyGUI(this,this.hlMenuGUI);
         this.zamestnanciGUI = new TabulkaZamGUI(this);
         this.strojeGUI = new StrojeGUI(this,this.login);
         this.typStrojaGUI = new TypStrojaGUI(this.strojeGUI);
@@ -59,7 +59,7 @@ public class GUIManager {
         this.oknaGUI.add(udrzbaNahradnyDielGUI);
         this.oknaGUI.add(zobrazeniePoziadaviekNdGUI);
         this.oknaGUI.add(hlMenuGUI);
-        this.oknaGUI.add(reportyOknoGUI);
+        this.oknaGUI.add(reportyGUI);
     }
 
     public void zobrazLogin() {
@@ -210,12 +210,12 @@ public class GUIManager {
     }
 
     public void zobrazenieReportOkno() {
-        if (this.reportyOknoGUI.isActive()) {
-            this.reportyOknoGUI.setVisible(true);
+        if (this.reportyGUI.isActive()) {
+            this.reportyGUI.setVisible(true);
         } else {
-            this.reportyOknoGUI.pack();
-            this.reportyOknoGUI.setLocationRelativeTo(null);
-            this.reportyOknoGUI.setVisible(true);
+            this.reportyGUI.pack();
+            this.reportyGUI.setLocationRelativeTo(null);
+            this.reportyGUI.setVisible(true);
         }
     }
 

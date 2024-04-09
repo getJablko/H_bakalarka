@@ -8,7 +8,6 @@ class PasswordUtilsTest {
     void hashPasswordNotEquals() {
         String password = "testPassword";
         String hashedPassword = PasswordUtils.hashPassword(password);
-
         assertNotEquals(password, hashedPassword);
     }
 
@@ -16,7 +15,6 @@ class PasswordUtilsTest {
     void checkPasswordTrue() {
         String password = "testPassword";
         String hashedPassword = PasswordUtils.hashPassword(password);
-
         assertTrue(PasswordUtils.checkPassword(password, hashedPassword));
     }
 
@@ -24,7 +22,6 @@ class PasswordUtilsTest {
     public void checkPasswordFalse() {
         String password = "testPassword";
         String hashedPassword = "invalidHash";
-
         assertFalse(PasswordUtils.checkPassword(password, hashedPassword));
     }
 }

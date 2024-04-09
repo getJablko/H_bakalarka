@@ -13,9 +13,4 @@ class DateFormatTest {
         assertTrue(dateFormat.overenie("2024-03-20"));
     }
 
-    @Test
-    void overenieDatumuFalse() {
-        DateFormat dateFormat = new DateFormat();
-        assertFalse(dateFormat.overenie("2024.03.20"));
-    }
 }

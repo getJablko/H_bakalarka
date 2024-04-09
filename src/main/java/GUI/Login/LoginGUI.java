@@ -30,7 +30,6 @@ public class LoginGUI extends javax.swing.JFrame {
     private GUIManager guiManager;
     private String cisloHaly;
     private LoginListener loginListener;
-
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -243,7 +242,7 @@ public class LoginGUI extends javax.swing.JFrame {
     private void jButtonPrihlasenieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrihlasenieActionPerformed
         // Získajte hodnoty zo vstupných polí
         try {
-            String osobneCisloText = jTextField1.getText().trim(); // Trim to remove leading/trailing whitespaces
+            String osobneCisloText = jTextField1.getText().trim(); // remove whitespaces
             if (osobneCisloText.isEmpty()) {
                 throw new NumberFormatException();  // Throw exception for empty input
             }
@@ -253,16 +252,10 @@ public class LoginGUI extends javax.swing.JFrame {
             if (osobneCislo <= 0 || zadaneHeslo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
             } else {
-
-                // Príklad výpisu hodnôt pre overenie
-                //System.out.println("Osobné číslo: " + osobneCislo);
-                //System.out.println("Heslo: " + zadaneHeslo);
-
                 PasswordUtils pu = new PasswordUtils();
                 String dobreHeslo = pu.vratHesloVseobecne(osobneCislo);
 
                 if (PasswordUtils.checkPassword(zadaneHeslo, dobreHeslo)) {
-
                     this.osCisloLogin = BigInteger.valueOf(osobneCislo);
                     BZamestnanec zam = entityManager.find(BZamestnanec.class, osCisloLogin);
                     jTextField1.setText("");
@@ -270,7 +263,6 @@ public class LoginGUI extends javax.swing.JFrame {
                     this.rola = zam.getTypZamD();
                     this.cisloHaly = zam.getPracoviskoD();
                     this.onLoginSuccess();
-                    //guiManager.zobrazHlavneMenu();
                     this.guiManager.zobrazHlMenuGUI();
                 } else {
                     // Nespravne prihlasovacie udaje
@@ -280,8 +272,6 @@ public class LoginGUI extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Zle vyplnené prihlasovacie údaje!", "Chyba pri prihlásení", JOptionPane.ERROR_MESSAGE);
         }
-
-
     }//GEN-LAST:event_jButtonPrihlasenieActionPerformed
 
     private void jButtonZabudnuteActionPerformed(java.awt.event.ActionEvent evt) {

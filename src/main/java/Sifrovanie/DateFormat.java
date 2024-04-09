@@ -7,16 +7,16 @@ public class DateFormat {
     public boolean overenie(String date){
         // format "yyyy-MM-dd"
         String pattern = "\\d{4}-\\d{2}-\\d{2}";
-        // Create a Pattern object
         Pattern regex = Pattern.compile(pattern);
-        // Create a Matcher object
         Matcher matcher = regex.matcher(date);
 
         // overenie formatu
         if (!matcher.matches()) {
             JOptionPane.showMessageDialog(null,"Dátum v zlom formáte! Potrebný formát: YYYY-MM-DD.");
             return false;
-        } else {
+        }
+
+        else {
             // ziskanie udajov cez substring
             int year = Integer.parseInt(date.substring(0, 4));
             int month = Integer.parseInt(date.substring(5, 7));

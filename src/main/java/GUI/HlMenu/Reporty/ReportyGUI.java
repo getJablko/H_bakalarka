@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author Mario
  */
-public class ReportyOknoGUI extends javax.swing.JFrame {
+public class ReportyGUI extends javax.swing.JFrame {
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
@@ -49,7 +49,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
     /**
      * Creates new form reportyOknoGUI
      */
-    public ReportyOknoGUI(GUIManager guiManager, HlMenuGUI hlMenuGUI) {
+    public ReportyGUI(GUIManager guiManager, HlMenuGUI hlMenuGUI) {
         this.guiManager = guiManager;
         this.hlMenuGUI = hlMenuGUI;
 
@@ -180,6 +180,20 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setDatumOd(String datumOd) {
+        this.datumOd = datumOd;
+    }
+
+    public void setDatumDo(String datumDo) {
+        this.datumDo = datumDo;
+    }
+    public ArrayList<String> getStringPopis2() {
+        return stringPopis2;
+    }
+
+    public ArrayList<String> getStringPopis1() {
+        return stringPopis1;
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_jButton1ActionPerformed
         if (jTextField1.equals("") || jTextField2.equals("")) {
             JOptionPane.showMessageDialog(null, "zadaj povinne policka!");
@@ -215,11 +229,9 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         String filePath = "reports\\Dok1.pdf";
         String graphImagePath2 = "reports\\bar_chart2.png";
         String graphImagePath1 = "reports\\bar_chart.png";
-
         try {
             BufferedImage graphImage1 = ImageIO.read(new File(graphImagePath1));
             BufferedImage graphImage2 = ImageIO.read(new File(graphImagePath2));
-
             generatePdfReport(filePath, graphImage1, graphImage2);
         } catch (IOException e) {
             e.getCause();
@@ -231,48 +243,48 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
-            // 2020-10-10
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Add text
-                PDFont formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\courbd.ttf")), false);
-                int y = 790; // Initial y-coordinate
 
-                // Add article content
+                PDFont formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\courbd.ttf")), false);
+                int y = 790; // zaciatocna pozicia textu
+
+                // nadpis
                 contentStream.beginText();
                 contentStream.setFont(formFont, 18);
-                contentStream.newLineAtOffset(150, y); // Set position for article content
+                contentStream.newLineAtOffset(150, y);
                 contentStream.showText("REPORT " + this.datumOd + " - " + this.datumDo);
                 contentStream.endText();
-                y = 750;
-                y -= 30; // Move to the next line
+                y = 750; // zaciatocna poz.
+                y -= 30; // nový riadok
                 formFont = PDType0Font.load(document, Files.newInputStream(Paths.get("font\\cour.ttf")), false);
 
                 for (String element : this.stringPopis1) {
                     contentStream.beginText();
                     contentStream.setFont(formFont, 12);
-                    contentStream.newLineAtOffset(100, y); // Set position for current line
+                    contentStream.newLineAtOffset(100, y); // nastavenie kurzora na novom riadku
                     contentStream.showText(element);
                     contentStream.endText();
-                    y -= 15; // Move to the next line
+                    y -= 15; // novy riadok
                 }
-                // Create a PDImageXObject from the BufferedImage
+
+                // nacitanie grafov
                 PDImageXObject pdImage1 = LosslessFactory.createFromImage(document, graphImage1);
                 PDImageXObject pdImage2 = LosslessFactory.createFromImage(document, graphImage2);
                 y-=225;
-                // Add the graph image
-                contentStream.drawImage(pdImage1, 80, y, 400, 203); // Adjust coordinates and dimensions
+                // vykreslenie grafu
+                contentStream.drawImage(pdImage1, 80, y, 400, 203);
                 y-=45;
 
                 for (String element : this.stringPopis2) {
                     contentStream.beginText();
                     contentStream.setFont(formFont, 12);
-                    contentStream.newLineAtOffset(100, y); // Set position for current line
+                    contentStream.newLineAtOffset(100, y);
                     contentStream.showText(element);
                     contentStream.endText();
-                    y -= 15; // Move to the next line
+                    y -= 15;
                 }
 
-                contentStream.drawImage(pdImage2, 80, y - 225, 400, 203); // Adjust coordinates and dimensions
+                contentStream.drawImage(pdImage2, 80, y - 225, 400, 203);
             } catch (Exception e) {
                 e.getCause();
                 JOptionPane.showMessageDialog(null, "Nastala chyba pri generovaní PDF reportu! " + e.getMessage());
@@ -281,7 +293,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         }
     }
 
-    private void naplnPopis1() {
+    void naplnPopis1() {
         try {
             transaction.begin();
             // Retrieve data from the database using JPQL with a join
@@ -296,22 +308,22 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
 
             query.setParameter("datumOd", this.datumOd);
             query.setParameter("datumDo", this.datumDo);
+
+
             List<Object[]> results = query.getResultList();
 
             for (Object[] result : results) {
                 StringBuilder popis1Builder = new StringBuilder();
-                // Calculate the number of spaces needed between ID and "pocet poruch"
                 int spaces = 15 - ("ID stroja: " + result[0]).length();
-                // Append ID stroja with appropriate spacing
                 popis1Builder.append("ID stroja: ").append(result[0]);
-                // Append calculated number of spaces
+                // pocet medzier
                 for (int i = 0; i < spaces; i++) {
                     popis1Builder.append(" ");
                 }
-                // Append pocet poruch
                 popis1Builder.append("počet vzniknutých porúch: ").append(result[1]);
                 this.stringPopis1.add(popis1Builder.toString());
             }
+
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -322,7 +334,7 @@ public class ReportyOknoGUI extends javax.swing.JFrame {
         }
     }
 
-    private void naplnPopis2() {
+    void naplnPopis2() {
         try {
             transaction.begin();
             // Retrieve data from the database using JPQL with a join

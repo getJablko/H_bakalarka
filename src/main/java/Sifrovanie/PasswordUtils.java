@@ -27,9 +27,8 @@ public class PasswordUtils extends Component {
     public static boolean checkPassword(String plainTextPassword, String hashedPassword) {
         try {
             if (null == hashedPassword || !hashedPassword.startsWith("$2a$")) {
-                throw new IllegalArgumentException("Invalid hash provided for comparison");
+                throw new IllegalArgumentException("Neplatné zahešované heslo");
             }
-
             return BCrypt.checkpw(plainTextPassword, hashedPassword);
         } catch (Exception e) {
             return false;

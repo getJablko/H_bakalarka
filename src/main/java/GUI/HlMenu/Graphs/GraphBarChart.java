@@ -29,6 +29,7 @@ public class GraphBarChart extends JPanel {
     public GraphBarChart(String datumOd, String datumDo) throws IOException {
         this.datumOd = datumOd;
         this.datumDo = datumDo;
+        
         // vytvorenie datasetu
         DefaultCategoryDataset dataset = (DefaultCategoryDataset) createDataset();
 

@@ -20,15 +20,10 @@ public class HlMenuGUI extends javax.swing.JFrame {
     private GUIManager guiManager;
     private LoginGUI loginGUI;
 
-    private String datumOd;
-    private String datumDo;
-
     public HlMenuGUI(GUIManager guiManager, LoginGUI loginGUI) {
         initComponents();
         this.guiManager = guiManager;
         this.loginGUI = loginGUI;
-
-
     }
 
     /**
@@ -148,8 +143,6 @@ public class HlMenuGUI extends javax.swing.JFrame {
                 try {
                     jButtonReportActionPerformed(evt);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -275,7 +268,7 @@ public class HlMenuGUI extends javax.swing.JFrame {
         this.guiManager.odhlasenie();
     }
 
-    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) throws IOException, InterruptedException {
+    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
         if (!loginGUI.getRolaZam().equals("A")) {
             JOptionPane.showMessageDialog(null, "Na túto operáciu nemáte povolenie!");
         } else {
