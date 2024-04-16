@@ -78,7 +78,6 @@ public class GraphBarChart extends JPanel {
             renderer.setSeriesOutlinePaint(i, Color.BLACK); // farba
         }
 
-
         // zobrazenie grafu v ChartPanel
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(450, 225)); // preferred size

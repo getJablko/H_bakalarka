@@ -298,7 +298,7 @@ public class ReportyGUI extends javax.swing.JFrame {
     void naplnPopis1() {
         try {
             transaction.begin();
-            // Retrieve data from the database using JPQL with a join
+            // ziskanie dat
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT p.idStroja, " +
                             "COUNT(DISTINCT p.idPoruchy) AS priemernyPocetPoruch " +
@@ -339,7 +339,7 @@ public class ReportyGUI extends javax.swing.JFrame {
     void naplnPopis2() {
         try {
             transaction.begin();
-            // Retrieve data from the database using JPQL with a join
+            // ziskanie dat
             TypedQuery<Object[]> query = entityManager.createQuery(
                     "SELECT up.idPoruchy, up.dobaOpravy " +
                             "FROM BUdrzbaPoruchy up " +
@@ -357,15 +357,14 @@ public class ReportyGUI extends javax.swing.JFrame {
 
             for (Object[] result : results) {
                 StringBuilder popis1Builder = new StringBuilder();
-                // Calculate the number of spaces needed between ID and "pocet poruch"
+                // vypocet potrebnych medzier
                 int spaces = 15 - ("ID poruchy: " + result[0]).length();
-                // Append ID stroja with appropriate spacing
                 popis1Builder.append("ID poruchy: ").append(result[0]);
-                // Append calculated number of spaces
+                // pocet medzier
                 for (int i = 0; i < spaces; i++) {
                     popis1Builder.append(" ");
                 }
-                // Append pocet poruch
+
                 popis1Builder.append("doba opravy v hodinách: ").append(result[1]);
                 this.stringPopis2.add(popis1Builder.toString());
             }

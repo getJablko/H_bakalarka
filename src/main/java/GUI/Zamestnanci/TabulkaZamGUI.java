@@ -320,9 +320,7 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     // metoda na zobraznie udajov v tabulke jTable1 z databazovej tabulky BZamestnanec
     private void displayDataInTable() {
         try {
-            // Begin a transaction
             transaction.begin();
-
             // ziskanie dat
             // nejedna sa o typicky SQL statement (nepouzivam SELECT * FROM BZamestnanec), toto je pouzitie JPQL - rozumie tomu framework hibernate
             TypedQuery<BZamestnanec> query = entityManager.createQuery("SELECT b FROM BZamestnanec b", BZamestnanec.class);
@@ -376,7 +374,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
     }
 
     private void closeApplication() {
-        // cleanup code:
         entityManager.close();
         entityManagerFactory.close();
     }
@@ -494,7 +491,6 @@ public class TabulkaZamGUI extends javax.swing.JFrame {
         if (jCheckBoxZobrazAktualnych.isSelected()) {
             this.refreshTableActual();
             try {
-                // Begin a transaction
                 transaction.begin();
 
                 // ziskanie dat

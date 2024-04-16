@@ -232,7 +232,6 @@ public class LoginGUI extends javax.swing.JFrame {
         this.loginListener = listener;
     }
 
-    // Method called after successful login
     private void onLoginSuccess() {
         if (loginListener != null) {
             loginListener.onLoginSuccess();

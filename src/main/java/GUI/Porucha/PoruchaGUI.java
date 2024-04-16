@@ -404,7 +404,6 @@ public class PoruchaGUI extends javax.swing.JFrame implements LoginListener, Opr
     }
 
     private void closeApplication() {
-        // cleanup code:
         entityManager.close();
         entityManagerFactory.close();
     }

@@ -389,7 +389,6 @@ public class StrojeGUI extends javax.swing.JFrame implements BTypStrojaGUIClosed
     }
 
     private void closeApplication() {
-        // cleanup code:
         entityManager.close();
         entityManagerFactory.close();
     }

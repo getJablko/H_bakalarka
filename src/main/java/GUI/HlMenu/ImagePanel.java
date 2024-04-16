@@ -10,7 +10,7 @@ public class ImagePanel extends JPanel {
     private ImageIcon backgroundImage;
 
     public ImagePanel(ImageIcon backgroundImage) {
-        this.backgroundImage = resizeImageIcon(backgroundImage, 785, 460); // Set desired width and height
+        this.backgroundImage = resizeImageIcon(backgroundImage, 785, 460);
         setPreferredSize(new Dimension(this.backgroundImage.getIconWidth(), this.backgroundImage.getIconHeight()));
     }
 

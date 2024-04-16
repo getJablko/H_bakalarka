@@ -509,50 +509,7 @@ public class UdrzbaNahradnyDielGUI extends javax.swing.JFrame implements Poziada
         JOptionPane.getRootFrame().setAlwaysOnTop(false);
         jTable1.clearSelection();
     }
-    //TODO toto pojde prec!!!
-/*
-    private void jButtonNovyDielActionPerformed(java.awt.event.ActionEvent evt) {
 
-        JOptionPane.getRootFrame().setAlwaysOnTop(true);
-        try {
-            transaction.begin();
-            // Show input dialog with a text field
-            String userInput = JOptionPane.showInputDialog(null, "zvoľte názov ND:");
-            BNahradnyDiel bNahradnyDiel = new BNahradnyDiel();
-            bNahradnyDiel.setTypStroja(this.typStrojaA);
-            bNahradnyDiel.setDostupnostNdD("NO");
-            bNahradnyDiel.setDostupneMnozstvo(BigInteger.valueOf(0));
-            bNahradnyDiel.setNazovND(userInput);
-
-            BPolozkaObjednavky bPolozkaObjednavky = new BPolozkaObjednavky();
-            bPolozkaObjednavky.setCisloNd(bNahradnyDiel.getCisloNd());
-            bPolozkaObjednavky.setCisloObjednavky(BigInteger.valueOf(1));
-            bPolozkaObjednavky.setMnozstvo(BigInteger.valueOf(1));
-            bPolozkaObjednavky.setCena();
-
-            entityManager.persist(bNahradnyDiel);
-            JOptionPane.showMessageDialog(null, "Bol vytvorený a priradený nový náhradný diel s číslom: " + bNahradnyDiel.getCisloNd() + " !");
-            //DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
-            //comboBoxModel.addElement(bNahradnyDiel.getCisloNd().toString());
-            jComboBoxCisloDielu.addItem(bNahradnyDiel.getCisloNd().toString());
-            // Nastavte model do JComboBox
-            //jComboBoxCisloDielu.setModel(comboBoxModel);
-            jComboBoxCisloDielu.setSelectedItem(bNahradnyDiel.getCisloNd().toString());
-            transaction.commit();
-        } catch (Exception e) {
-            e.getCause();
-            JOptionPane.showMessageDialog(null, "Nastala chyba pri vytváraní záznamu: " + e.getMessage() + " skúste to znovu!");
-            this.vynulovaniePolicok();
-        } finally {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-        }
-        JOptionPane.getRootFrame().setAlwaysOnTop(false);
-    }
-
-
- */
     private void jComboBoxCisloDieluActionPerformed(java.awt.event.ActionEvent evt) {
         if (jComboBoxCisloDielu.getSelectedItem() != " ") {
             BigInteger ND = new BigInteger(String.valueOf(jComboBoxCisloDielu.getSelectedItem()));
