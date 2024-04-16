@@ -414,7 +414,7 @@ public class ZobrazeniePoziadaviekNdGUI extends javax.swing.JFrame implements Do
             BigInteger dostupneMnozstvo = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,5)));
             BigInteger pozadovaneMnozstvo = new BigInteger(String.valueOf(jTable1.getValueAt(actualRowNumber,6)));
 
-            if (dostupneMnozstvo.equals(BigInteger.ZERO)) {
+            if (dostupneMnozstvo.equals(BigInteger.ZERO) || dostupneMnozstvo.compareTo(pozadovaneMnozstvo) < 0) {
                 JOptionPane.showMessageDialog(null, "Nemožno vykonať zmenu - nedostatok ks!");
                 this.vynulovaniePolicok();
                 return;

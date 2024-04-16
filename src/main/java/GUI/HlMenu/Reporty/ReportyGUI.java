@@ -217,8 +217,10 @@ public class ReportyGUI extends javax.swing.JFrame {
 
         this.naplnPopis1();
         this.naplnPopis2();
-
         this.zobrazGrafy();
+
+        this.stringPopis2.clear();
+        this.stringPopis1.clear();
 
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -580,7 +580,7 @@ public class ObjednavkyGUI extends javax.swing.JFrame {
             this.vynulovaniePolicok();
             return;
         }
-        if (!jTable1.getValueAt(actualRowNumber, 5).equals("")) {
+        if (!(jTable1.getValueAt(actualRowNumber, 5) == null)) {
             JOptionPane.showMessageDialog(null, "Táto objednávka už je označená ako doručená!");
             this.vynulovaniePolicok();
             return;
